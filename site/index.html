@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Bordeaux Threads project</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+  </head>
+
+  <body>
+    <div class="header">
+      <h1>Bordeaux Threads</h1>
+      <h2>Portable shared-state concurrency for Common Lisp</h2>
+    </div>
+
+    <h3>Introduction</h3>
+
+    <p>Based on an original proposal by Dan Barlow (Bordeaux-MP) this
+    library is meant to make writing portable multi-threaded apps
+    simple.</p>
+
+    <p>Tested (whatever that means) on the following platforms:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>implementation</th><th>load</th><th>tests</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>allegro-a7.0-macosx-powerpc</td>
+          <td>ok</td>
+          <td>all passed!</td>
+        </tr>
+        <tr>
+          <td>armedbear-0.0.9-darwin-unknown</td>
+          <td>ok</td>
+          <td>[no Closer-MOP support]</td>
+        </tr>
+        <tr>
+          <td>cmu-19c (19c)-darwin-ppc</td>
+          <td>ok</td>
+          <td>[no threads on Darwin/PPC]</td>
+        </tr>
+        <tr>
+          <td>corman</td>
+          <td colspan="2">unknown</td>
+        </tr>
+        <tr>
+          <td>ecl-0.9h-darwin-powerpc</td>
+          <td>ok</td>
+          <td>[no Closer-MOP on Darwin/PPC]</td>
+        </tr>
+        <tr>
+          <td>lispworks-4.4.6-macosx-unknown</td>
+          <td>error</td>
+        </tr>
+        <tr>
+          <td>mcl-5.1-darwin-ppc</td>
+          <td colspan="2">unknown</td>
+        </tr>
+        <tr>
+          <td>openmcl-1.0-darwin-powerpc</td>
+          <td>ok</td>
+          <td>all passed!</td>
+        </tr>
+        <tr>
+          <td>sbcl-0.9.11-darwin-ppc</td>
+          <td>ok</td>
+          <td>{no threads in my build}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p>There is also some code in place for Corman Common Lisp and
+    MCL-5.1, but I don't have either installed to test with. CLISP doesn't
+    have threads, so don't even bother asking if I can get it working
+    there, because I can't. Really.</p>
+
+    <h3>Mailing Lists</h3>
+    <ul>
+      <li><a href="http://www.common-lisp.net/mailman/listinfo/bordeaux-threads-devel">bordeaux-threads-devel</a> for developers</li>
+      <!--   <li><a href="http://www.common-lisp.net/mailman/listinfo/bordeaux-threads-cvs">bordeaux-threads-cvs</a> CVS log feed.</li> -->
+      <li><a href="http://www.common-lisp.net/mailman/listinfo/bordeaux-threads-announce">bordeaux-threads-announce</a> for announcements</li>
+      <li><a href="http://www.common-lisp.net/mailman/listinfo/bordeaux-threads-ticket">bordeaux-threads-ticket</a> for bug updates</li>
+    </ul>
+
+    <h3>Download</h3>
+
+    <p>This project has not released any files.</p>
+
+    <h3>Darcs</h3>
+
+    <p>You can <!-- browse our <a href="http://common-lisp.net/cgi-bin/viewcvs.cgi/?cvsroot=sample"> repository</a> or --> download the current development tree at <a href="http://common-lisp.net/project/bordeaux-threads/darcs/bordeaux-threads/">http://common-lisp.net/project/bordeaux-threads/darcs/bordeaux-threads/</a></p>
+
+    <div class="footer">
+      <a href="http://www.cliki.net/Greg%20Pfeil">Greg Pfeil</a>, 5 June 2006
+    </div>
+
+    <div class="check">
+      <a href="http://validator.w3.org/check/referer">Valid XHTML 1.0 Strict</a>
+    </div>
+  </body>
+</html>
