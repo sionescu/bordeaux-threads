@@ -13,10 +13,16 @@
 (defmethod thread-name (thread)
   (ext:thread-name thread))
 
+;;; Yes, this is nasty
+(defmethod threadp (object)
+  (handler-case (progn (thread-name object) t)
+    (type-error () nil)))
+
 ;;; Resource contention: locks and recursive locks
 
 (defmethod make-lock (&optional name)
-  (ext:make-thread-lock name))
+  (declare (ignore name))
+  (ext:make-thread-lock))
 
 (defmethod acquire-lock (lock &optional (wait-p t))
   (ext:thread-lock lock))
@@ -26,6 +32,11 @@
 
 (defmacro with-lock-held ((place) &body body)
   `(ext:with-thread-lock (,place) ,@body))
+
+;;; Resource contention: condition variables
+
+(defmethod thread-yield ()
+  (sleep 0))
 
 ;;; Introspection/debugging
 
