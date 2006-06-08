@@ -27,63 +27,80 @@
     <table>
       <thead>
         <tr>
-          <th>implementation</th><th>load</th><th>tests</th>
+          <th>implementation</th><th>version</th><th>platform</th><th>load</th><th>tests (total-fail-error)</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>allegro-a7.0-macosx-powerpc</td>
+          <td>allegro</td><td>a7.0</td><td>macosx-powerpc</td>
           <td>ok</td>
-          <td>all passed!</td>
+          <td class="perfect">6-0-0</td>
         </tr>
+      </tbody>
+      <tbody>
         <tr>
-          <td>armedbear-0.0.9-darwin-unknown</td>
+          <td>armedbear</td><td>0.0.9</td><td>darwin-unknown</td>
           <td>ok</td>
           <td>[no Closer-MOP support]</td>
         </tr>
+      </tbody>
+      <tbody>
         <tr>
-          <td>cmu-19c (19c)-darwin-ppc</td>
+          <td>cmu</td><td>19c (19c)</td><td>darwin-ppc</td>
+          <td>ok</td>
+          <td>[no threads on Darwin/PPC]</td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td>corman</td></td><td><td></td>
+          <td colspan="2">unknown</td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td rowspan="2">ecl</td><td rowspan="2">0.9h</td><td>darwin-pentium3</td>
+          <td></td>
+          <td>[no threads on Darwin/x86]</td>
+        </tr>
+        <tr>
+          <td>darwin-powerpc</td>
+          <td>ok</td>
+          <td>[no Closer-MOP on Darwin/PPC]</td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td>lispworks</td><td>4.4.6</td><td>macosx-unknown</td>
+          <td>error</td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td>mcl</td><td>5.1</td><td>darwin-ppc</td>
+          <td colspan="2">unknown</td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td>openmcl</td><td>1.0</td><td>darwin-powerpc</td>
+          <td>ok</td>
+          <td class="perfect">6-0-0</td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td rowspan="2">sbcl</td><td>0.9.11</td><td>darwin-ppc</td>
           <td>ok</td>
           <td>[no threads on Darwin/PPC]</td>
         </tr>
         <tr>
-          <td>corman</td>
-          <td colspan="2">unknown</td>
-        </tr>
-        <tr>
-          <td>ecl-0.9h-darwin-pentium3</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>ecl-0.9h-darwin-powerpc</td>
+          <td>0.9.13.30</td>
+          <td>darwin-x86</td>
           <td>ok</td>
-          <td>[no Closer-MOP on Darwin/PPC]</td>
+          <td class="perfect">6-0-0</td>
         </tr>
-        <tr>
-          <td>lispworks-4.4.6-macosx-unknown</td>
-          <td>error</td>
-        </tr>
-        <tr>
-          <td>mcl-5.1-darwin-ppc</td>
-          <td colspan="2">unknown</td>
-        </tr>
-        <tr>
-          <td>openmcl-1.0-darwin-powerpc</td>
-          <td>ok</td>
-          <td>all passed!</td>
-        </tr>
-        <tr>
-          <td>sbcl-0.9.11-darwin-ppc</td>
-          <td>ok</td>
-          <td>{no threads in my build}</td>
-        </tr>
-        <tr>
-          <td>sbcl-0.9.11-darwin-x86</td>
-          <td>ok</td>
-          <td>{no threads in my build}</td>
-        </tr>
-        </tbody>
+      </tbody>
     </table>
 
     <p>There is also some code in place for Corman Common Lisp and

@@ -1,3 +1,15 @@
+tbody {
+    border-top: thin dotted black;
+}
+
+.perfect {
+    background-color: #0f0;
+}
+
+.error {
+    background-color: #f00;
+}
+
 .header {
 	font-size: medium;
 	background-color:#336699;
