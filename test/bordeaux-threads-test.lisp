@@ -17,9 +17,9 @@
   (ensure-same (thread-name (make-thread (lambda () t) :name "foo")) "foo"))
 
 (addtest should-lock-without-contention
-  (acquire-lock lock t)
+  (ensure (acquire-lock lock t))
   (release-lock lock)
-  (acquire-lock lock nil)
+  (ensure (acquire-lock lock nil))
   (release-lock lock))
 
 (defparameter *shared* 0)
