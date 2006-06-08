@@ -34,8 +34,11 @@
 (defmethod release-lock ((lock mp:lock))
   (mp:process-unlock lock))
 
-(defmacro with-lock-held ((place) &body body)
-  `(mp:with-lock (,place) ,@body))
+;;; Apparently this EVAL-WHEN is needed so that the macro is available
+;;; when compiling condition-variables.lisp
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (defmacro with-lock-held ((place) &body body)
+    `(mp:with-lock (,place) ,@body)))
 
 ;;; Resource contention: condition variables
 
@@ -44,7 +47,7 @@
 
 ;;; Introspection/debugging
 
-(defmethod all-threadss ()
+(defmethod all-threads ()
   (mp:list-all-processes))
 
 (defmethod interrupt-thread ((thread mp:process) function)
