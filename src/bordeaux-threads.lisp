@@ -1,4 +1,5 @@
 (defpackage bordeaux-threads
+  (:nicknames #:bt #:threads)
   (:documentation "BORDEAUX-MP is a proposed standard for a minimal
   MP/Threading interface. It is similar to the CLIM-SYS threading and
   lock support, but for the following broad differences:
