@@ -27,79 +27,78 @@
     <table>
       <thead>
         <tr>
-          <th>implementation</th><th>version</th><th>platform</th><th>load</th><th>tests (total-fail-error)</th>
+          <th rowspan="2">implementation</th><th rowspan="2">version</th>
+          <th colspan="2">Darwin (OS X)</th>
+          <th colspan="2">Linux</th>
+          <th>Windows</th>
+        </tr>
+        <tr>
+          <th>PPC</th><th>x86</th>
+          <th>PPC</th><th>x86</th>
+          <th>x86</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>allegro</td><td>a7.0</td><td>macosx-powerpc</td>
-          <td>ok</td>
-          <td class="perfect">6-0-0</td>
+          <th rowspan="3">Allegro</th>
+          <th>a7.0</th><td class="perfect">6-0-0</td><td class="nonexistant"></td>
+        </tr>
+        <tr>
+          <th>a8.0</th><td></td><td class="perfect">6-0-0</td>
+        </tr>
+        <tr>
+          <th>m8.0</th><td></td><td class="perfect">6-0-0</td>
         </tr>
       </tbody>
       <tbody>
         <tr>
-          <td>armedbear</td><td>0.0.9</td><td>darwin-unknown</td>
-          <td>ok</td>
-          <td>[no Closer-MOP support]</td>
+          <th>ArmedBear</th>
+          <th>0.0.9</th><td align="center" colspan="5">[no Closer-MOP support]</td>
         </tr>
       </tbody>
       <tbody>
         <tr>
-          <td>cmu</td><td>19c (19c)</td><td>darwin-ppc</td>
-          <td>ok</td>
-          <td>[no threads on Darwin/PPC]</td>
+          <th>CMU</th>
+          <th>19c</th><td>[no threads]</td><td class="nonexistant" colspan="2"></td><td></td><td class="nonexistant"></td>
         </tr>
       </tbody>
       <tbody>
         <tr>
-          <td>corman</td></td><td><td></td>
-          <td colspan="2">unknown</td>
+          <th>Corman</th>
+          <th></th><td class="nonexistant" colspan="4"></td>
         </tr>
       </tbody>
       <tbody>
         <tr>
-          <td rowspan="2">ecl</td><td rowspan="2">0.9h</td><td>darwin-pentium3</td>
-          <td></td>
-          <td>[no threads on Darwin/x86]</td>
-        </tr>
-        <tr>
-          <td>darwin-powerpc</td>
-          <td>ok</td>
-          <td class="perfect">6-0-0</td>
+          <th>ECL</th>
+          <th>0.9h</th><td class="perfect">6-0-0</td><td>[no threads]</td>
         </tr>
       </tbody>
       <tbody>
         <tr>
-          <td>lispworks</td><td>4.4.6</td><td>macosx-powerpc</td>
-          <td>ok</td>
-          <td class="perfect">6-0-0</td>
+          <th>LispWorks</th>
+          <th>4.4.6</th><td class="perfect">6-0-0</td><td class="nonexistant" colspan="2"></td>
         </tr>
       </tbody>
       <tbody>
         <tr>
-          <td>mcl</td><td>5.1</td><td>darwin-ppc</td>
-          <td colspan="2">unknown</td>
+          <th>MCL</th>
+          <th>5.1</th><td></td><td class="nonexistant" colspan="4"></td>
         </tr>
       </tbody>
       <tbody>
         <tr>
-          <td>openmcl</td><td>1.0</td><td>darwin-powerpc</td>
-          <td>ok</td>
-          <td class="perfect">6-0-0</td>
+          <th>OpenMCL</th>
+          <th>1.0</th><td class="perfect">6-0-0</td><td class="nonexistant"></td><td></td><td class="nonexistant" colspan="2"></td>
         </tr>
       </tbody>
       <tbody>
         <tr>
-          <td rowspan="2">sbcl</td><td>0.9.11</td><td>darwin-ppc</td>
-          <td>ok</td>
-          <td>[no threads on Darwin/PPC]</td>
+          <th rowspan="2">SBCL</th>
+          <th>0.9.11</th><td>[no threads]</td>
         </tr>
         <tr>
-          <td>0.9.13.30</td>
-          <td>darwin-x86</td>
-          <td>ok</td>
-          <td class="perfect">6-0-0</td>
+          <th>0.9.13</th><td>[no threads]</td><td class="perfect">6-0-0</td>
         </tr>
       </tbody>
     </table>

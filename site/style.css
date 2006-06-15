@@ -2,6 +2,10 @@ tbody {
     border-top: thin dotted black;
 }
 
+.nonexistant {
+    background-color: #ccc;
+}
+
 .perfect {
     background-color: #0f0;
 }
