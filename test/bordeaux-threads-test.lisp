@@ -11,7 +11,8 @@
 
 (addtest should-identify-threads-correctly
   (ensure (threadp (current-thread)))
-  (ensure (threadp (make-thread (lambda () t) :name "foo"))))
+  (ensure (threadp (make-thread (lambda () t) :name "foo")))
+  (ensure (not (threadp (make-lock)))))
 
 (addtest should-retrieve-thread-name
   (ensure-same (thread-name (make-thread (lambda () t) :name "foo")) "foo"))
