@@ -20,6 +20,8 @@
 
 ;;; Resource contention: locks and recursive locks
 
+;;; Don't know what the arguments to MAKE-THREAD-LOCK are, but it
+;;; doesn't mind being a thunk
 (defmethod make-lock (&optional name)
   (declare (ignore name))
   (ext:make-thread-lock))

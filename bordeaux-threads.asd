@@ -25,9 +25,11 @@
                                             #-(or allegro armedbear cmu corman
                                                   (and digitool ccl-5.1) ecl
                                                   lispworks openmcl sbcl)
-                                            "unsupported")
+                                            "unsupported"
+                                            :depends-on ("bordeaux-threads"))
                                      #+(or armedbear ecl lispworks)
-                                     (:file "condition-variables"))))
+                                     (:file "condition-variables"
+                                            #+armedbear #+armedbear :depends-on ("armedbear")))))
   :in-order-to ((test-op (load-op bordeaux-threads-test)))
   :perform (test-op :after (op c)
                     (describe

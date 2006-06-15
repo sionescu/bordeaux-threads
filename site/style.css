@@ -2,6 +2,10 @@ tbody {
     border-top: thin dotted black;
 }
 
+.failure {
+    background-color: #ff0;
+}
+
 .nonexistant {
     background-color: #ccc;
 }
