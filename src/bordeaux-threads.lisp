@@ -42,7 +42,7 @@
   in other more traditionally named packages.")
   (:use #:cl)
   (:export #:make-thread #:current-thread #:threadp #:thread-name
-	   #:*default-special-bindings*
+	   #:*default-special-bindings* #:*supports-threads-p*
 
 	   #:make-lock #:acquire-lock #:release-lock #:with-lock-held
 	   #:make-recursive-lock #:acquire-recursive-lock
@@ -57,6 +57,10 @@
 
 (defvar *supports-threads-p* nil
   "This should be set to T if the running instance has thread support.")
+
+(defun mark-supported ()
+  (setf *supports-threads-p* t)
+  (pushnew :bordeaux-threads *features*))
 
 (define-condition bordeaux-mp-condition (error)
   ((message :initarg :message :reader message))
@@ -223,7 +227,7 @@
   "Evaluates BODY with the recursive lock named by PLACE, which is a
   reference to a recursive lock created by MAKE-RECURSIVE-LOCK. See
   WITH-LOCK-HELD etc etc"
-  `(when (acquire-recursive-lock ,place t)
+  `(when (acquire-recursive-lock ,place)
      (unwind-protect
 	  (locally ,@body)
        (release-recursive-lock ,place))))

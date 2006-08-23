@@ -1,7 +1,5 @@
 (in-package #:bordeaux-threads)
 
-(setf *supports-threads-p* t)
-
 ;;; Thread Creation
 
 (defmethod make-thread (function &key name)
@@ -47,3 +45,5 @@
 
 (defmethod destroy-thread (thread)
   (ext:destroy-thread thread))
+
+(mark-supported)

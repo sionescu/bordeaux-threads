@@ -5,8 +5,6 @@
 
 (mp:initialize-multiprocessing)
 
-(setf *supports-threads-p* t)
-
 ;;; Thread Creation
 
 (defmethod make-thread (function &key name)
@@ -55,3 +53,5 @@
 
 (defmethod destroy-process ((thread mp:process))
   (mp:process-kill thread))
+
+(mark-supported)

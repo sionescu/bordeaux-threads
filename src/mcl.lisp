@@ -1,7 +1,5 @@
 (in-package #:bordeaux-threads)
 
-(setf *supports-threads-p* t)
-
 ;;; Thread Creation
 
 (defmethod make-thread (function &key name)
@@ -38,3 +36,4 @@
 (defmethod destroy-thread (thread)
   (ccl:process-kill thread))
 
+(mark-supported)

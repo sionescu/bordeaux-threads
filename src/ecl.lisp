@@ -5,8 +5,6 @@
 
 ;;; FIXME: Need some sort of *FEATURES* check
 
-(setf *supports-threads-p* t)
-
 ;;; Thread Creation
 
 (defmethod make-thread (function &key name)
@@ -55,3 +53,5 @@
 
 (defmethod destroy-thread ((thread mp:process))
   (mp:process-kill thread))
+
+(mark-supported)

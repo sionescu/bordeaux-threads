@@ -2,8 +2,6 @@
 
 #+mp (progn
 
-(setf *supports-threads-p* t)
-
 (defstruct condition-var
   "CMUCL doesn't have conditions, so we need to create our own type."
   lock
@@ -83,4 +81,5 @@
 (defmethod destroy-thread ((thread mp:process))
   (mp:destroy-process thread))
 
+(mark-supported)
 ) ; end PROGN

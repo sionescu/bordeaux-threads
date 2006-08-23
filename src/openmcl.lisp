@@ -5,8 +5,6 @@
 
 #+openmcl-native-threads (progn
 
-(setf *supports-threads-p* t)
-
 ;;; Thread Creation
   
 (defmethod make-thread (function &key name)
@@ -83,4 +81,5 @@
 (defmethod destroy-thread ((thread ccl:process))
   (ccl:process-kill thread))
 
+(mark-supported)
 ) ; end PROGN

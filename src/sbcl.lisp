@@ -5,8 +5,6 @@
 
 #+sb-thread (progn
 
-(setf *supports-threads-p* t)
-
 ;;; Thread Creation
 
 (defmethod make-thread (function &key name)
@@ -73,4 +71,5 @@
 (defmethod destroy-thread ((thread sb-thread:thread))
   (sb-thread:terminate-thread thread))
 
+(mark-supported)
 ) ; end PROGN

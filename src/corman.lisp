@@ -3,8 +3,6 @@
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (require :threads))
 
-(setf *supports-threads-p* t)
-
 ;;; Thread Creation
 
 (defmethod make-thread (function &key name)
@@ -18,3 +16,5 @@
 
 (defmethod destroy-thread (thread)
   (threads:terminate-thread thread))
+
+(mark-supported)
