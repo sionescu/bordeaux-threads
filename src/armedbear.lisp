@@ -1,3 +1,9 @@
+#|
+Copyright 2006,2007 Greg Pfeil
+
+Distributed under the MIT license (see LICENSE file)
+|#
+
 (in-package #:bordeaux-threads)
 
 ;;; Thread Creation

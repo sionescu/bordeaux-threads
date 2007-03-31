@@ -1,3 +1,9 @@
+#|
+Copyright 2006,2007 Greg Pfeil
+
+Distributed under the MIT license (see LICENSE file)
+|#
+
 (defpackage bordeaux-threads
   (:nicknames #:bt #:threads)
   (:documentation "BORDEAUX-MP is a proposed standard for a minimal
