@@ -15,7 +15,7 @@ Distributed under the MIT license (see LICENSE file)
   :author "Greg Pfeil <greg@technomadic.org>"
   ;; based on original Bordeaux-MP spec by Dan Barlow <dan@telent.net>
   :licence "MIT"
-  :version "0.0.1"
+  :version "0.0.2"
   :serial t
   :components ((:module "src"
                         :components ((:file "bordeaux-threads")
