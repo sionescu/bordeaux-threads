@@ -57,7 +57,7 @@ Distributed under the MIT license (see LICENSE file)
 (defmethod interrupt-thread ((thread mp:process) function)
   (mp:process-interrupt thread function))
 
-(defmethod destroy-process ((thread mp:process))
+(defmethod destroy-thread ((thread mp:process))
   (mp:process-kill thread))
 
 (mark-supported)
