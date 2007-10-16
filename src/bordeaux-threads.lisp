@@ -6,8 +6,8 @@ Distributed under the MIT license (see LICENSE file)
 
 (defpackage bordeaux-threads
   (:nicknames #:bt #:threads)
-  (:documentation "BORDEAUX-MP is a proposed standard for a minimal
-  MP/Threading interface. It is similar to the CLIM-SYS threading and
+  (:documentation "BORDEAUX-THREADS is a proposed standard for a minimal
+  MP/threading interface. It is similar to the CLIM-SYS threading and
   lock support, but for the following broad differences:
 
   1) Some behaviours are defined in additional detail: attention has
@@ -43,7 +43,7 @@ Distributed under the MIT license (see LICENSE file)
   single-thread implementations without need of conditionals.
 
   To avoid conflict with existing MP/threading interfaces in
-  implementations, these symbols live in the BORDEAUX-MP package.
+  implementations, these symbols live in the BORDEAUX-THREADS package.
   Implementations and/or users may also make them visible or exported
   in other more traditionally named packages.")
   (:use #:cl)
@@ -73,9 +73,9 @@ Distributed under the MIT license (see LICENSE file)
   (:report (lambda (condition stream)
 	     (format stream (message condition)))))
 
-(defgeneric make-mp-support-error ()
-  (:documentation "Creates a BORDEAUX-MP condition which specifies
-  whether there is no BORDEAUX-MP support for the implementation, no
+(defgeneric make-threading-support-error ()
+  (:documentation "Creates a BORDEAUX-THREADS condition which specifies
+  whether there is no BORDEAUX-THREADS support for the implementation, no
   threads enabled for the system, or no support for a particular
   function.")
   (:method ()
