@@ -355,7 +355,8 @@ Distributed under the MIT license (see LICENSE file)
 			      :message "Can not destroy the current thread")))))
 
 (defgeneric thread-alive-p (thread)
-  (:documentation "")
+  (:documentation "Returns true if THREAD is alive, that is, if
+  DESTROY-THREAD has not been called on it.")
   (:method (thread)
     (declare (ignore thread))
     (error (make-mp-support-error))))
