@@ -87,5 +87,8 @@ Distributed under the MIT license (see LICENSE file)
 (defmethod destroy-thread ((thread ccl:process))
   (ccl:process-kill thread))
 
+(defmethod thread-alive-p ((thread ccl:process))
+  (ccl::process-active-p thread))
+
 (mark-supported)
 ) ; end PROGN

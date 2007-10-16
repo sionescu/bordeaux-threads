@@ -77,5 +77,8 @@ Distributed under the MIT license (see LICENSE file)
 (defmethod destroy-thread ((thread sb-thread:thread))
   (sb-thread:terminate-thread thread))
 
+(defmethod thread-alive-p ((thread sb-thread:thread))
+  (sb-thread:thread-alive-p thread))
+
 (mark-supported)
 ) ; end PROGN

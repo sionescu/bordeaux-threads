@@ -57,7 +57,7 @@ Distributed under the MIT license (see LICENSE file)
 	   #:make-condition-variable #:condition-wait #:condition-notify
 	   #:thread-yield
 
-	   #:all-threads #:interrupt-thread #:destroy-thread))
+	   #:all-threads #:interrupt-thread #:destroy-thread #:thread-alive-p))
 
 (in-package #:bordeaux-threads)
 
@@ -353,3 +353,9 @@ Distributed under the MIT license (see LICENSE file)
 	     (error
 	      (make-condition 'bordeaux-mp-condition
 			      :message "Can not destroy the current thread")))))
+
+(defgeneric thread-alive-p (thread)
+  (:documentation "")
+  (:method (thread)
+    (declare (ignore thread))
+    (error (make-mp-support-error))))

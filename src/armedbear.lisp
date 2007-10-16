@@ -55,4 +55,7 @@ Distributed under the MIT license (see LICENSE file)
 (defmethod destroy-thread (thread)
   (ext:destroy-thread thread))
 
+(defmethod thread-alive-p (thread)
+  (ext:thread-alive-p thread))
+
 (mark-supported)

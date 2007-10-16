@@ -87,5 +87,8 @@ Distributed under the MIT license (see LICENSE file)
 (defmethod destroy-thread ((thread mp:process))
   (mp:destroy-process thread))
 
+(defmethod thread-alive-p ((thread mp:process))
+  (mp:process-active-p thread))
+
 (mark-supported)
 ) ; end PROGN
