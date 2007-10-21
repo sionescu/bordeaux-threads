@@ -61,19 +61,20 @@ Distributed under the MIT license (see LICENSE file)
 
 (defmethod condition-wait ((condition-variable condition-var)
 			   (lock mp:lock))
-  (progn (setf (condition-var-active condition-variable) nil)
-	 (release-lock lock)
-	 (do ()
-	     ((when (condition-var-active condition-variable)
-		(acquire-lock lock)
-		t))
-	   (process-yield))))
+  (with-lock-held ((condition-var-lock condition-variable))
+    (setf (condition-var-active condition-variable) nil))
+  (release-lock lock)
+  (mp:process-wait "Condition Wait"
+                   #'(lambda () (condition-var-active condition-variable)))
+  (acquire-lock lock)
+  t))
 
 (defmethod condition-notify ((condition-variable condition-var))
   (with-lock-held ((condition-var-lock condition-variable))
-    (setf (condition-var-active condition-variable) t)))
+    (setf (condition-var-active condition-variable) t))
+  (thread-yield))
 
-(defmethod process-yield ()
+(defmethod thread-yield ()
   (mp:process-yield))
 
 ;;; Introspection/debugging
@@ -81,13 +82,13 @@ Distributed under the MIT license (see LICENSE file)
 (defmethod all-threads ()
   (mp:all-processes))
 
-(defmethod interrupt-thread ((thread mp:process) function)
+(defmethod interrupt-thread ((thread mp::process) function)
   (mp:process-interrupt thread function))
 
-(defmethod destroy-thread ((thread mp:process))
+(defmethod destroy-thread ((thread mp::process))
   (mp:destroy-process thread))
 
-(defmethod thread-alive-p ((thread mp:process))
+(defmethod thread-alive-p ((thread mp::process))
   (mp:process-active-p thread))
 
 (mark-supported)
