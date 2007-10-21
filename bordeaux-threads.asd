@@ -14,6 +14,11 @@ Distributed under the MIT license (see LICENSE file)
   :long-description ""
   :author "Greg Pfeil <greg@technomadic.org>"
   ;; based on original Bordeaux-MP spec by Dan Barlow <dan@telent.net>
+  ;; contributors:
+  ;; Attila Lendvai <attila.lendvai@gmail.com>
+  ;; - better handling of unsupported Lisps
+  ;; Vladimir Sekissov <svg@surnet.ru>
+  ;; - fixes for CMUCL implementation
   :licence "MIT"
   :version "0.1.2"
   :serial t
