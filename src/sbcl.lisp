@@ -9,8 +9,6 @@ Distributed under the MIT license (see LICENSE file)
 ;;; documentation on the SBCL Threads interface can be found at
 ;;; http://www.sbcl.org/manual/Threading.html
 
-#+sb-thread (progn
-
 ;;; Thread Creation
 
 (defmethod make-thread (function &key name)
@@ -81,4 +79,3 @@ Distributed under the MIT license (see LICENSE file)
   (sb-thread:thread-alive-p thread))
 
 (mark-supported)
-) ; end PROGN

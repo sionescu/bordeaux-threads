@@ -32,10 +32,11 @@ Distributed under the MIT license (see LICENSE file)
                                             #+ecl "ecl"
                                             #+lispworks "lispworks"
                                             #+openmcl "openmcl"
-                                            #+sbcl "sbcl"
+                                            #+(and sbcl sb-thread) "sbcl"
                                             #-(or allegro armedbear cmu corman
                                                   (and digitool ccl-5.1) ecl
-                                                  lispworks openmcl sbcl)
+                                                  lispworks openmcl
+                                                  (and sbcl sb-thread))
                                             "unsupported"
                                             :depends-on ("bordeaux-threads"))
                                      #+(or armedbear ecl lispworks)
