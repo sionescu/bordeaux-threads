@@ -44,7 +44,7 @@
     particular behaviour in this case, nor should it assign to such
     variables without first rebinding them in the new thread."
   (declare (ignore function name))
-  (error (make-mp-support-error)))
+  (error (make-threading-support-error)))
 
 (defdfun make-lock (&optional name)
   "Creates a lock (a mutex) whose name is NAME. If the system does not

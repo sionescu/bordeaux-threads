@@ -225,7 +225,7 @@ Distributed under the MIT license (see LICENSE file)
   function signals an error.")
   (:method (condition-variable lock)
     (declare (ignore condition-variable lock))
-    (error (make-mp-support-error))))
+    (error (make-threading-support-error))))
 
 (defgeneric condition-notify (condition-variable)
   (:documentation "Notify at least one of the threads waiting for
@@ -260,7 +260,7 @@ Distributed under the MIT license (see LICENSE file)
   function signals an error.")
   (:method (thread function)
     (declare (ignore thread function))
-    (error (make-mp-support-error))))
+    (error (make-threading-support-error))))
 
 (defgeneric destroy-thread (thread)
   (:documentation "Terminates the thread THREAD, which is an object
@@ -280,4 +280,4 @@ Distributed under the MIT license (see LICENSE file)
   DESTROY-THREAD has not been called on it.")
   (:method (thread)
     (declare (ignore thread))
-    (error (make-mp-support-error))))
+    (error (make-threading-support-error))))
