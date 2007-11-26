@@ -165,15 +165,6 @@ Distributed under the MIT license (see LICENSE file)
     (declare (ignore lock))
     (values)))
 
-(defmacro with-recursive-lock-held ((place &key timeout) &body body)
-  "Evaluates BODY with the recursive lock named by PLACE, which is a
-  reference to a recursive lock created by MAKE-RECURSIVE-LOCK. See
-  WITH-LOCK-HELD etc etc"
-  `(when (acquire-recursive-lock ,place t)
-     (unwind-protect
-	  (locally ,@body)
-       (release-recursive-lock ,place))))
-
 ;;; Resource contention: condition variables
 
 ;;; A condition variable provides a mechanism for threads to put

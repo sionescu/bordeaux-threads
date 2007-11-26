@@ -74,7 +74,7 @@ Distributed under the MIT license (see LICENSE file)
     (setf (condition-var-active condition-variable) t))
   (thread-yield))
 
-(defmethod process-yield ()
+(defun thread-yield ()
   (mp:process-yield))
 
 ;;; Introspection/debugging

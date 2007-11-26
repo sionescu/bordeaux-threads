@@ -86,7 +86,7 @@ is restarted."
 reference to a recursive lock created by MAKE-RECURSIVE-LOCK. See
 WITH-LOCK-HELD etc etc"
   (declare (ignore timeout))
-  `(when (acquire-recursive-lock ,place t)
+  `(when (acquire-recursive-lock ,place)
      (unwind-protect
           (locally ,@body)
        (release-recursive-lock ,place))))
