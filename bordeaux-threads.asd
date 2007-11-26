@@ -19,8 +19,10 @@ Distributed under the MIT license (see LICENSE file)
   ;; - better handling of unsupported Lisps
   ;; Vladimir Sekissov <svg@surnet.ru>
   ;; - fixes for CMUCL implementation
+  ;; Pierre Thierry <nowhere.man@levallois.eu.org>
+  ;; - added license information
   :licence "MIT"
-  :version "0.1.2"
+  :version "0.2.1"
   :serial t
   :components ((:module "src"
                         :components ((:file "bordeaux-threads")
