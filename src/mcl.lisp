@@ -8,7 +8,7 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Thread Creation
 
-(defmethod make-thread (function &key name)
+(defun make-thread (function &key name)
   (ccl:process-run-function name function))
 
 (defmethod current-thread ()
@@ -22,13 +22,13 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Resource contention: locks and recursive locks
 
-(defmethod make-lock (&optional name)
+(defun make-lock (&optional name)
   (ccl:make-lock name))
 
 (defmacro with-lock-held ((place) &body body)
   `(ccl:with-lock-grabbed (,place) ,@body))
 
-(defmethod thread-yield ()
+(defun thread-yield ()
   (ccl:process-allow-schedule))
 
 ;;; Introspection/debugging

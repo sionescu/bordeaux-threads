@@ -11,7 +11,7 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Thread Creation
 
-(defmethod make-thread (function &key name)
+(defun make-thread (function &key name)
   (declare (ignore name))
   (threads:create-thread function))
 

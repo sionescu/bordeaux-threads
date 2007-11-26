@@ -37,11 +37,10 @@ Distributed under the MIT license (see LICENSE file)
                                                   (and digitool ccl-5.1) ecl
                                                   lispworks openmcl
                                                   (and sbcl sb-thread))
-                                            "unsupported"
-                                            :depends-on ("bordeaux-threads"))
+                                            "unsupported")
+                                     (:file "default-implementations")
                                      #+(or armedbear ecl lispworks)
-                                     (:file "condition-variables"
-                                            #+armedbear #+armedbear :depends-on ("armedbear")))))
+                                     (:file "condition-variables"))))
   :in-order-to ((test-op (load-op bordeaux-threads-test)))
   :perform (test-op :after (op c)
                     (describe

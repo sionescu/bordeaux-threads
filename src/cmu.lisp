@@ -15,7 +15,7 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Thread Creation
 
-(defmethod make-thread (function &key name)
+(defun make-thread (function &key name)
   (mp:make-process function :name name))
 
 (defmethod current-thread ()
@@ -29,7 +29,7 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Resource contention: locks and recursive locks
 
-(defmethod make-lock (&optional name)
+(defun make-lock (&optional name)
   (mp:make-lock name))
 
 (defmethod acquire-lock ((lock mp:lock) &optional (wait-p t))
@@ -74,7 +74,7 @@ Distributed under the MIT license (see LICENSE file)
     (setf (condition-var-active condition-variable) t))
   (thread-yield))
 
-(defmethod thread-yield ()
+(defmethod process-yield ()
   (mp:process-yield))
 
 ;;; Introspection/debugging

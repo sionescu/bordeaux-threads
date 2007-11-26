@@ -11,7 +11,7 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Thread Creation
 
-(defmethod make-thread (function &key name)
+(defun make-thread (function &key name)
   (sb-thread:make-thread function :name name))
 
 (defmethod current-thread ()
@@ -25,7 +25,7 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Resource contention: locks and recursive locks
 
-(defmethod make-lock (&optional name)
+(defun make-lock (&optional name)
   (sb-thread:make-mutex :name name))
 
 (defmethod acquire-lock ((lock sb-thread:mutex) &optional (wait-p t))
@@ -37,7 +37,7 @@ Distributed under the MIT license (see LICENSE file)
 (defmacro with-lock-held ((place) &body body)
   `(sb-thread:with-mutex (,place) ,@body))
 
-(defmethod make-recursive-lock (&optional name)
+(defun make-recursive-lock (&optional name)
   (sb-thread:make-mutex :name name))
 
 ;;; XXX acquire-recursive-lock and release-recursive-lock are actually
@@ -61,7 +61,7 @@ Distributed under the MIT license (see LICENSE file)
 (defmethod condition-notify ((condition-variable sb-thread:waitqueue))
   (sb-thread:condition-notify condition-variable))
 
-(defmethod thread-yield ()
+(defun thread-yield ()
   (sb-thread:release-foreground))
 
 ;;; Introspection/debugging

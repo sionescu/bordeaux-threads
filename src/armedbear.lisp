@@ -11,7 +11,7 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Thread Creation
 
-(defmethod make-thread (function &key name)
+(defun make-thread (function &key name)
   (ext:make-thread function :name name))
 
 (defmethod current-thread ()
@@ -29,7 +29,7 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Don't know what the arguments to MAKE-THREAD-LOCK are, but it
 ;;; doesn't mind being a thunk
-(defmethod make-lock (&optional name)
+(defun make-lock (&optional name)
   (declare (ignore name))
   (ext:make-thread-lock))
 
@@ -44,7 +44,7 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Resource contention: condition variables
 
-(defmethod thread-yield ()
+(defun thread-yield ()
   (sleep 0))
 
 ;;; Introspection/debugging
