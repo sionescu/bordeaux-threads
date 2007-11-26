@@ -33,7 +33,7 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Introspection/debugging
 
-(defmethod all-threadss ()
+(defmethod all-threads ()
   ccl:*all-processes*)
 
 (defmethod interrupt-thread (thread function)
