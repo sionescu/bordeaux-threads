@@ -22,7 +22,7 @@ Distributed under the MIT license (see LICENSE file)
   ;; Pierre Thierry <nowhere.man@levallois.eu.org>
   ;; - added license information
   :licence "MIT"
-  :version "0.2.1"
+  :version "0.2.2"
   :serial t
   :components ((:module "src"
                         :components ((:file "bordeaux-threads")
