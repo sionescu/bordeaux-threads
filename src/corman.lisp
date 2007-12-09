@@ -6,9 +6,6 @@ Distributed under the MIT license (see LICENSE file)
 
 (in-package #:bordeaux-threads)
 
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (require :threads))
-
 ;;; Thread Creation
 
 (defun make-thread (function &key name)

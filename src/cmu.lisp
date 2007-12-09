@@ -6,8 +6,6 @@ Distributed under the MIT license (see LICENSE file)
 
 (in-package #:bordeaux-threads)
 
-#+mp (progn
-
 (defstruct condition-var
   "CMUCL doesn't have conditions, so we need to create our own type."
   lock
@@ -92,4 +90,3 @@ Distributed under the MIT license (see LICENSE file)
   (mp:process-active-p thread))
 
 (mark-supported)
-) ; end PROGN

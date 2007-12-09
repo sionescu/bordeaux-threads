@@ -7,12 +7,7 @@ Distributed under the MIT license (see LICENSE file)
 (in-package #:bordeaux-threads)
 
 ;;; documentation on the Allegro Multiprocessing interface can be found at
-;;; http://www.franz.com/support/documentation/6.2/doc/multiprocessing.htm
-
-(eval-when (:compile-top-level :load-top-level :execute)
-  (require :process))
-
-#+multiprocessing (progn
+;;; http://www.franz.com/support/documentation/8.1/doc/multiprocessing.htm
 
 ;;; Thread Creation
 
@@ -82,4 +77,3 @@ Distributed under the MIT license (see LICENSE file)
   (mp:process-alive-p thread))
 
 (mark-supported)
-) ; end PROGN

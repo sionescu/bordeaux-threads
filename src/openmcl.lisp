@@ -9,8 +9,6 @@ Distributed under the MIT license (see LICENSE file)
 ;;; documentation on the OpenMCL Threads interface can be found at
 ;;; http://openmcl.clozure.com/Doc/Programming-with-Threads.html
 
-#+openmcl-native-threads (progn
-
 ;;; Thread Creation
   
 (defun make-thread (function &key name)
@@ -91,4 +89,3 @@ Distributed under the MIT license (see LICENSE file)
   (ccl::process-active-p thread))
 
 (mark-supported)
-) ; end PROGN
