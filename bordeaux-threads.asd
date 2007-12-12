@@ -36,7 +36,7 @@ Distributed under the MIT license (see LICENSE file)
                                 #+(and cmu mp) "cmu"
                                 #+corman "corman"
                                 #+(and digitool ccl-5.1) "mcl"
-                                #+ecl "ecl"
+                                #+(and ecl threads) "ecl"
                                 #+lispworks "lispworks"
                                 #+(and openmcl openmcl-native-threads) "openmcl"
                                 #+(and sbcl sb-thread) "sbcl"
@@ -45,14 +45,14 @@ Distributed under the MIT license (see LICENSE file)
                                       (and cmu mp)
                                       corman
                                       (and digitool ccl-5.1)
-                                      ecl
+                                      (and ecl threads)
                                       lispworks
                                       (and openmcl openmcl-native-threads)
                                       (and sbcl sb-thread))
                                 "unsupported")
                          (:file "default-implementations")
                          #+(or armedbear
-                               ecl
+                               (and ecl threads)
                                lispworks
                                (and digitool ccl-5.1))
                          (:file "condition-variables"))))

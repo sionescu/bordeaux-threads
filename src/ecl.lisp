@@ -9,8 +9,6 @@ Distributed under the MIT license (see LICENSE file)
 ;;; documentation on the ECL Multiprocessing interface can be found at
 ;;; http://ecls.sourceforge.net/cgi-bin/view/Main/MultiProcessing
 
-;;; FIXME: Need some sort of *FEATURES* check
-
 ;;; Thread Creation
 
 (defun make-thread (function &key name)
