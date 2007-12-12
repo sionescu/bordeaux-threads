@@ -12,12 +12,13 @@ Distributed under the MIT license (see LICENSE file)
   (declare (ignore name))
   (threads:create-thread function))
 
-(defmethod current-thread ()
+(defun current-thread ()
   threads:*current-thread*)
 
 ;;; Introspection/debugging
 
-(defmethod destroy-thread (thread)
+(defun destroy-thread (thread)
+  (signal-error-if-current-thread thread)
   (threads:terminate-thread thread))
 
 (mark-supported)

@@ -14,14 +14,14 @@ Distributed under the MIT license (see LICENSE file)
 (defun make-thread (function &key name)
   (ext:make-thread function :name name))
 
-(defmethod current-thread ()
+(defun current-thread ()
   (ext:current-thread))
 
-(defmethod thread-name (thread)
+(defun thread-name (thread)
   (ext:thread-name thread))
 
 ;;; Yes, this is nasty
-(defmethod threadp (object)
+(defun threadp (object)
   (handler-case (progn (thread-name object) t)
     (type-error () nil)))
 
@@ -33,10 +33,11 @@ Distributed under the MIT license (see LICENSE file)
   (declare (ignore name))
   (ext:make-thread-lock))
 
-(defmethod acquire-lock (lock &optional (wait-p t))
+(defun acquire-lock (lock &optional (wait-p t))
+  (declare (ignore wait-p))
   (ext:thread-lock lock))
 
-(defmethod release-lock (lock)
+(defun release-lock (lock)
   (ext:thread-unlock lock))
 
 (defmacro with-lock-held ((place) &body body)
@@ -49,13 +50,14 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Introspection/debugging
 
-(defmethod interrupt-thread (thread function)
+(defun interrupt-thread (thread function)
   (ext:interrupt-thread thread function))
 
-(defmethod destroy-thread (thread)
+(defun destroy-thread (thread)
+  (signal-error-if-current-thread thread)
   (ext:destroy-thread thread))
 
-(defmethod thread-alive-p (thread)
+(defun thread-alive-p (thread)
   (ext:thread-alive-p thread))
 
 (mark-supported)

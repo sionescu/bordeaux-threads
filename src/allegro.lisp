@@ -14,13 +14,13 @@ Distributed under the MIT license (see LICENSE file)
 (defun make-thread (function &key name)
   (mp:process-run-function name function))
 
-(defmethod current-thread ()
+(defun current-thread ()
   mp:*current-process*)
 
-(defmethod threadp ((object mp:process))
-  t)
+(defun threadp (object)
+  (typep object 'mp:process))
 
-(defmethod thread-name ((thread mp:process))
+(defun thread-name (thread)
   (mp:process-name thread))
 
 ;;; Resource contention: locks and recursive locks
@@ -28,10 +28,10 @@ Distributed under the MIT license (see LICENSE file)
 (defun make-lock (&optional name)
   (mp:make-process-lock :name name))
 
-(defmethod acquire-lock ((lock mp:process-lock) &optional (wait-p t))
+(defun acquire-lock (lock &optional (wait-p t))
   (mp:process-lock lock mp:*current-process* "Lock" (if wait-p nil 0)))
 
-(defmethod release-lock ((lock mp:process-lock))
+(defun release-lock (lock)
   (mp:process-unlock lock))
 
 (defmacro with-lock-held ((place) &body body)
@@ -44,19 +44,16 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Resource contention: condition variables
 
-(defmethod make-condition-variable ()
+(defun make-condition-variable ()
   (mp:make-gate nil))
 
-(defmethod condition-wait ((condition-variable vector)
-                           (lock mp:process-lock))
+(defun condition-wait (condition-variable lock)
   (release-lock lock)
-  (mp:process-wait "wait for message"
-                   #'mp:gate-open-p
-                   condition-variable)
+  (mp:process-wait "wait for message" #'mp:gate-open-p condition-variable)
   (acquire-lock lock)
   (mp:close-gate condition-variable))
 
-(defmethod condition-notify ((condition-variable vector))
+(defun condition-notify (condition-variable)
   (mp:open-gate condition-variable))
 
 (defun thread-yield ()
@@ -64,16 +61,17 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Introspection/debugging
 
-(defmethod all-threads ()
+(defun all-threads ()
   mp:*all-processes*)
 
-(defmethod interrupt-thread ((thread mp:process) function)
+(defun interrupt-thread (thread function)
   (mp:process-interrupt thread function))
 
-(defmethod destroy-thread ((thread mp:process))
+(defun destroy-thread (thread)
+  (signal-error-if-current-thread thread)
   (mp:process-kill thread))
 
-(defmethod thread-alive-p ((thread mp:process))
+(defun thread-alive-p (thread)
   (mp:process-alive-p thread))
 
 (mark-supported)

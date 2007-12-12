@@ -14,13 +14,13 @@ Distributed under the MIT license (see LICENSE file)
 (defun make-thread (function &key name)
   (sb-thread:make-thread function :name name))
 
-(defmethod current-thread ()
+(defun current-thread ()
   sb-thread:*current-thread*)
 
-(defmethod threadp ((object sb-thread:thread))
-  t)
+(defun threadp (object)
+  (typep object 'sb-thread:thread))
 
-(defmethod thread-name ((thread sb-thread:thread))
+(defun thread-name (thread)
   (sb-thread:thread-name thread))
 
 ;;; Resource contention: locks and recursive locks
@@ -28,10 +28,10 @@ Distributed under the MIT license (see LICENSE file)
 (defun make-lock (&optional name)
   (sb-thread:make-mutex :name name))
 
-(defmethod acquire-lock ((lock sb-thread:mutex) &optional (wait-p t))
+(defun acquire-lock (lock &optional (wait-p t))
   (sb-thread:get-mutex lock nil wait-p))
 
-(defmethod release-lock ((lock sb-thread:mutex))
+(defun release-lock (lock)
   (sb-thread:release-mutex lock))
 
 (defmacro with-lock-held ((place) &body body)
@@ -51,14 +51,13 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Resource contention: condition variables
 
-(defmethod make-condition-variable ()
+(defun make-condition-variable ()
   (sb-thread:make-waitqueue))
 
-(defmethod condition-wait ((condition-variable sb-thread:waitqueue)
-			   (lock sb-thread:mutex))
+(defun condition-wait (condition-variable lock)
   (sb-thread:condition-wait condition-variable lock))
 
-(defmethod condition-notify ((condition-variable sb-thread:waitqueue))
+(defun condition-notify (condition-variable)
   (sb-thread:condition-notify condition-variable))
 
 (defun thread-yield ()
@@ -66,16 +65,17 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Introspection/debugging
 
-(defmethod all-threads ()
+(defun all-threads ()
   (sb-thread:list-all-threads))
 
-(defmethod interrupt-thread ((thread sb-thread:thread) function)
+(defun interrupt-thread (thread function)
   (sb-thread:interrupt-thread thread function))
 
-(defmethod destroy-thread ((thread sb-thread:thread))
+(defun destroy-thread (thread)
+  (signal-error-if-current-thread thread)
   (sb-thread:terminate-thread thread))
 
-(defmethod thread-alive-p ((thread sb-thread:thread))
+(defun thread-alive-p (thread)
   (sb-thread:thread-alive-p thread))
 
 (mark-supported)

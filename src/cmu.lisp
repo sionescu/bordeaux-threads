@@ -6,23 +6,18 @@ Distributed under the MIT license (see LICENSE file)
 
 (in-package #:bordeaux-threads)
 
-(defstruct condition-var
-  "CMUCL doesn't have conditions, so we need to create our own type."
-  lock
-  active)
-
 ;;; Thread Creation
 
 (defun make-thread (function &key name)
   (mp:make-process function :name name))
 
-(defmethod current-thread ()
+(defun current-thread ()
   mp:*current-process*)
 
 (defmethod threadp (object)
   (mp:processp object))
 
-(defmethod thread-name ((thread mp::process))
+(defun thread-name (thread)
   (mp:process-name thread))
 
 ;;; Resource contention: locks and recursive locks
@@ -30,12 +25,12 @@ Distributed under the MIT license (see LICENSE file)
 (defun make-lock (&optional name)
   (mp:make-lock name))
 
-(defmethod acquire-lock ((lock mp:lock) &optional (wait-p t))
+(defun acquire-lock (lock &optional (wait-p t))
   (if wait-p
       (mp::lock-wait lock "Lock")
       (mp::lock-wait-with-timeout lock "Lock" 0)))
 
-(defmethod release-lock ((lock mp:lock))
+(defun release-lock (lock)
   (setf (mp::lock-process lock) nil))
 
 (defmacro with-lock-held ((place) &body body)
@@ -54,20 +49,26 @@ Distributed under the MIT license (see LICENSE file)
 ;;; There's some stuff in x86-vm.lisp that might be worth investigating
 ;;; whether to build on. There's also process-wait and friends.
 
-(defmethod make-condition-variable ()
+(defstruct condition-var
+  "CMUCL doesn't have conditions, so we need to create our own type."
+  lock
+  active)
+
+(defun make-condition-variable ()
   (make-condition-var :lock (make-lock)))
 
-(defmethod condition-wait ((condition-variable condition-var)
-			   (lock mp:lock))
+(defun condition-wait (condition-variable lock)
+  (check-type condition-variable condition-var)
   (with-lock-held ((condition-var-lock condition-variable))
     (setf (condition-var-active condition-variable) nil))
   (release-lock lock)
   (mp:process-wait "Condition Wait"
                    #'(lambda () (condition-var-active condition-variable)))
   (acquire-lock lock)
-  t))
+  t)
 
-(defmethod condition-notify ((condition-variable condition-var))
+(defun condition-notify (condition-variable)
+  (check-type condition-variable condition-var)
   (with-lock-held ((condition-var-lock condition-variable))
     (setf (condition-var-active condition-variable) t))
   (thread-yield))
@@ -77,16 +78,17 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Introspection/debugging
 
-(defmethod all-threads ()
+(defun all-threads ()
   (mp:all-processes))
 
-(defmethod interrupt-thread ((thread mp::process) function)
+(defun interrupt-thread (thread function)
   (mp:process-interrupt thread function))
 
-(defmethod destroy-thread ((thread mp::process))
+(defun destroy-thread (thread)
+  (signal-error-if-current-thread thread)
   (mp:destroy-process thread))
 
-(defmethod thread-alive-p ((thread mp::process))
+(defun thread-alive-p (thread)
   (mp:process-active-p thread))
 
 (mark-supported)

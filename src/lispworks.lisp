@@ -16,13 +16,13 @@ Distributed under the MIT license (see LICENSE file)
 (defun make-thread (function &key name)
   (mp:process-run-function name nil function))
 
-(defmethod current-thread ()
+(defun current-thread ()
   mp:*current-process*)
 
-(defmethod threadp ((object mp:process))
-  t)
+(defun threadp (object)
+  (typep object 'mp:process))
 
-(defmethod thread-name ((thread mp:process))
+(defun thread-name (thread)
   (mp:process-name thread))
 
 ;;; Resource contention: locks and recursive locks
@@ -30,12 +30,12 @@ Distributed under the MIT license (see LICENSE file)
 (defun make-lock (&optional name)
   (mp:make-lock :name name))
 
-(defmethod acquire-lock ((lock mp:lock) &optional (wait-p t))
+(defun acquire-lock (lock &optional (wait-p t))
   (mp:process-lock lock nil (if wait-p
                                 (if (typep wait-p 'number) wait-p nil)
                                 0)))
 
-(defmethod release-lock ((lock mp:lock))
+(defun release-lock (lock)
   (mp:process-unlock lock))
 
 ;;; Apparently this EVAL-WHEN is needed so that the macro is available
@@ -51,16 +51,17 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Introspection/debugging
 
-(defmethod all-threads ()
+(defun all-threads ()
   (mp:list-all-processes))
 
-(defmethod interrupt-thread ((thread mp:process) function)
+(defun interrupt-thread (thread function)
   (mp:process-interrupt thread function))
 
-(defmethod destroy-thread ((thread mp:process))
+(defun destroy-thread (thread)
+  (signal-error-if-current-thread thread)
   (mp:process-kill thread))
 
-(defmethod thread-alive-p ((thread mp:process))
+(defun thread-alive-p (thread)
   (mp:process-alive-p thread))
 
 (mark-supported)

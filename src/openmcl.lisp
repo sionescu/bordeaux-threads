@@ -14,27 +14,26 @@ Distributed under the MIT license (see LICENSE file)
 (defun make-thread (function &key name)
   (ccl:process-run-function name function))
 
-(defmethod current-thread ()
+(defun current-thread ()
   ccl:*current-process*)
 
-(defmethod threadp ((object ccl:process))
-  t)
+(defun threadp (object)
+  (typep object 'ccl:process))
 
-(defmethod thread-name ((thread ccl:process))
+(defun thread-name (thread)
   (ccl:process-name thread))
 
 ;;; Resource contention: locks and recursive locks
 
-
 (defun make-lock (&optional name)
   (ccl:make-lock name))
 
-(defmethod acquire-lock ((lock ccl:lock) &optional (wait-p t))
+(defun acquire-lock (lock &optional (wait-p t))
   (if wait-p
       (ccl:grab-lock lock)
       (ccl:try-lock lock)))
 
-(defmethod release-lock ((lock ccl:lock))
+(defun release-lock (lock)
   (ccl:release-lock lock))
 
 (defmacro with-lock-held ((place) &body body)
@@ -44,10 +43,10 @@ Distributed under the MIT license (see LICENSE file)
 (defun make-recursive-lock (&optional name)
   (ccl:make-lock name))
 
-(defmethod acquire-recursive-lock ((lock ccl::recursive-lock))
+(defun acquire-recursive-lock (lock)
   (ccl:grab-lock lock))
 
-(defmethod release-recursive-lock ((lock ccl::recursive-lock))
+(defun release-recursive-lock (lock)
   (ccl:release-lock lock))
 
 (defmacro with-recursive-lock-held ((place) &body body)
@@ -56,18 +55,17 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Resource contention: condition variables
 
-
-(defmethod make-condition-variable ()
+(defun make-condition-variable ()
   (ccl:make-semaphore))
 
-(defmethod condition-wait ((condition-variable ccl:semaphore) (lock ccl:lock))
+(defun condition-wait (condition-variable lock)
   (unwind-protect
        (progn
 	 (release-lock lock)
 	 (ccl:wait-on-semaphore condition-variable))
     (acquire-lock lock t)))
 
-(defmethod condition-notify ((condition-variable ccl:semaphore))
+(defun condition-notify (condition-variable)
   (ccl:signal-semaphore condition-variable))
 
 (defun thread-yield ()
@@ -75,17 +73,17 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Introspection/debugging
 
-
-(defmethod all-threads ()
+(defun all-threads ()
   (ccl:all-processes))
 
-(defmethod interrupt-thread ((thread ccl:process) function)
+(defun interrupt-thread (thread function)
   (ccl:process-interrupt thread function))
 
-(defmethod destroy-thread ((thread ccl:process))
+(defun destroy-thread (thread)
+  (signal-error-if-current-thread thread)
   (ccl:process-kill thread))
 
-(defmethod thread-alive-p ((thread ccl:process))
+(defun thread-alive-p (thread)
   (ccl::process-active-p thread))
 
 (mark-supported)

@@ -25,6 +25,9 @@ Distributed under the MIT license (see LICENSE file)
   ;; - fixes for CMUCL implementation
   ;; Pierre Thierry <nowhere.man@levallois.eu.org>
   ;; - added license information
+  ;; Stelian Ionescu <sionescu@common-lisp.net>
+  ;; - finished conversion from generic functions
+  ;; - enabled running thread-safe code in unthreaded lisps
   :licence "MIT"
   :version "0.2.2"
   :components ((:module "src"

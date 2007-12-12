@@ -11,13 +11,13 @@ Distributed under the MIT license (see LICENSE file)
 (defun make-thread (function &key name)
   (ccl:process-run-function name function))
 
-(defmethod current-thread ()
+(defun current-thread ()
   ccl:*current-thread*)
 
-(defmethod threadp (object)
+(defun threadp (object)
   (ccl:processp object))
 
-(defmethod thread-name (thread)
+(defun thread-name (thread)
   (ccl:process-name thread))
 
 ;;; Resource contention: locks and recursive locks
@@ -33,13 +33,14 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Introspection/debugging
 
-(defmethod all-threads ()
+(defun all-threads ()
   ccl:*all-processes*)
 
-(defmethod interrupt-thread (thread function)
+(defun interrupt-thread (thread function)
   (ccl:process-interrupt thread function))
 
-(defmethod destroy-thread (thread)
+(defun destroy-thread (thread)
+  (signal-error-if-current-thread thread)
   (ccl:process-kill thread))
 
 (mark-supported)
