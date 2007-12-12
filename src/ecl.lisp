@@ -37,9 +37,10 @@ Distributed under the MIT license (see LICENSE file)
 (defmacro with-lock-held ((place) &body body)
   `(mp:with-lock (,place) ,@body))
 
-;; make-recursive-lock
-;; acquire-recursive-lock
-;; release-recursive-lock
+;; FIXME: Missing:
+;;        * make-recursive-lock
+;;        * acquire-recursive-lock
+;;        * release-recursive-lock
 
 ;;; Resource contention: condition variables
 
