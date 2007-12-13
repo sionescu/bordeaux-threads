@@ -57,7 +57,7 @@ Distributed under the MIT license (see LICENSE file)
 	   #:make-condition-variable #:condition-wait #:condition-notify
 	   #:thread-yield
 
-       #:with-timeout
+       #:with-timeout #:timeout
 
 	   #:all-threads #:interrupt-thread #:destroy-thread #:thread-alive-p))
 
