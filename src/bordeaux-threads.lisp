@@ -57,6 +57,8 @@ Distributed under the MIT license (see LICENSE file)
 	   #:make-condition-variable #:condition-wait #:condition-notify
 	   #:thread-yield
 
+       #:with-timeout
+
 	   #:all-threads #:interrupt-thread #:destroy-thread #:thread-alive-p))
 
 (in-package #:bordeaux-threads)
@@ -84,6 +86,8 @@ Distributed under the MIT license (see LICENSE file)
      :message (if *supports-threads-p*
                   "There is no support for this method on this implementation."
                   "There is no thread support in this instance."))))
+
+(define-condition timeout (serious-condition) ())
 
 ;;; Thread Creation
 

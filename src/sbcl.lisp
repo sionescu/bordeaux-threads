@@ -63,6 +63,12 @@ Distributed under the MIT license (see LICENSE file)
 (defun thread-yield ()
   (sb-thread:release-foreground))
 
+;;; Timeouts
+
+(defmacro with-timeout ((timeout) &body body)
+  `(sb-ext:with-timeout ,timeout
+     ,@body))
+
 ;;; Introspection/debugging
 
 (defun all-threads ()

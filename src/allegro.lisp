@@ -59,6 +59,12 @@ Distributed under the MIT license (see LICENSE file)
 (defun thread-yield ()
   (mp:process-allow-schedule))
 
+;;; Timeouts
+
+(defmacro with-timeout ((timeout) &body body)
+  `(mp:with-timeout (,timeout)
+     ,@body))
+
 ;;; Introspection/debugging
 
 (defun all-threads ()
