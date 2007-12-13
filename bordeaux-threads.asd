@@ -13,6 +13,18 @@ Distributed under the MIT license (see LICENSE file)
   #+allegro (require :process)
   #+corman  (require :threads))
 
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  #+(or (and allegro multiprocessing)
+        armedbear
+        (and cmu mp)
+        corman
+        (and digitool ccl-5.1)
+        (and ecl threads)
+        lispworks
+        (and openmcl openmcl-native-threads)
+        (and sbcl sb-thread))
+  (pushnew :thread-support *features*))
+
 (defsystem bordeaux-threads
   :description ""
   :long-description ""
@@ -34,30 +46,19 @@ Distributed under the MIT license (see LICENSE file)
                         :serial t
                         :components
                         ((:file "bordeaux-threads")
-                         (:file #+(and allegro multiprocessing) "allegro"
-                                #+armedbear "armedbear"
-                                #+(and cmu mp) "cmu"
-                                #+corman "corman"
-                                #+(and digitool ccl-5.1) "mcl"
-                                #+(and ecl threads) "ecl"
-                                #+lispworks "lispworks"
-                                #+(and openmcl openmcl-native-threads) "openmcl"
-                                #+(and sbcl sb-thread) "sbcl"
-                                #-(or (and allegro multiprocessing)
-                                      armedbear
-                                      (and cmu mp)
-                                      corman
-                                      (and digitool ccl-5.1)
-                                      (and ecl threads)
-                                      lispworks
-                                      (and openmcl openmcl-native-threads)
-                                      (and sbcl sb-thread))
-                                "unsupported")
+                         (:file #+(and thread-support allegro)   "allegro"
+                                #+(and thread-support armedbear) "armedbear"
+                                #+(and thread-support cmu)       "cmu"
+                                #+(and thread-support corman)    "corman"
+                                #+(and thread-support digitool)  "mcl"
+                                #+(and thread-support ecl)       "ecl"
+                                #+(and thread-support lispworks) "lispworks"
+                                #+(and thread-support openmcl)   "openmcl"
+                                #+(and thread-support sbcl)      "sbcl"
+                                #-thread-support                 "unsupported")
                          (:file "default-implementations")
-                         #+(or armedbear
-                               (and ecl threads)
-                               lispworks
-                               (and digitool ccl-5.1))
+                         #+(and thread-support
+                                (or armedbear ecl lispworks digitool))
                          (:file "condition-variables"))))
   :in-order-to ((test-op (load-op bordeaux-threads-test)))
   :perform (test-op :after (op c)
