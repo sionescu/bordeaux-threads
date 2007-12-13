@@ -116,12 +116,3 @@ Distributed under the MIT license (see LICENSE file)
     (error
      (make-condition 'bordeaux-mp-condition
                      :message "Can not destroy the current thread"))))
-
-(declaim (inline make-thread current-thread threadp thread-name
-                 make-lock acquire-lock release-lock
-                 make-recursive-lock acquire-recursive-lock
-                 release-recursive-lock
-                 make-condition-variable condition-wait
-                 condition-notify thread-yield
-                 all-threads interrupt-thread
-                 destroy-thread thread-alive-p))
