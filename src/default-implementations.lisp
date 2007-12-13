@@ -267,8 +267,8 @@ support WITH-TIMEOUT natively and don't support threads either it has no effect.
          (when (thread-alive-p ,sleeper)
            (destroy-thread ,sleeper)))))
   #-thread-support
-  (progn
-    ,@body))
+  `(progn
+     ,@body))
 
 ;;; Introspection/debugging
 
