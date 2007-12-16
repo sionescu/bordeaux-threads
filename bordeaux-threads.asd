@@ -41,7 +41,7 @@ Distributed under the MIT license (see LICENSE file)
   ;; - finished conversion from generic functions
   ;; - enabled running thread-safe code in unthreaded lisps
   :licence "MIT"
-  :version "0.3.0"
+  :version "0.4.0"
   :components ((:module "src"
                         :serial t
                         :components
