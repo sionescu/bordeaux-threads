@@ -84,4 +84,7 @@ Distributed under the MIT license (see LICENSE file)
 (defun thread-alive-p (thread)
   (sb-thread:thread-alive-p thread))
 
+(defun thread-join (thread)
+  (sb-thread:join-thread thread))
+
 (mark-supported)

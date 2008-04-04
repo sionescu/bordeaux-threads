@@ -304,3 +304,9 @@ support WITH-TIMEOUT natively and don't support threads either it has no effect.
   DESTROY-THREAD has not been called on it."
   (declare (ignore thread))
   (error (make-threading-support-error)))
+
+(defdfun thread-join (thread)
+  "Wait until THREAD terminates. If THREAD
+  has already terminated, return immediately."
+  (declare (ignore thread))
+  (error (make-threading-support-error)))

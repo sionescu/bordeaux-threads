@@ -59,7 +59,8 @@ Distributed under the MIT license (see LICENSE file)
 
        #:with-timeout #:timeout
 
-	   #:all-threads #:interrupt-thread #:destroy-thread #:thread-alive-p))
+	   #:all-threads #:interrupt-thread #:destroy-thread #:thread-alive-p
+       #:join-thread))
 
 (in-package #:bordeaux-threads)
 
