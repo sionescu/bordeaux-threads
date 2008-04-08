@@ -108,9 +108,9 @@ Distributed under the MIT license (see LICENSE file)
     </table>
 
     <p>There is also some code in place for Corman Common Lisp and
-    MCL-5.1, but I don't have either installed to test with. CLISP doesn't
-    have threads, so don't even bother asking if I can get it working
-    there, because I can't. Really.</p>
+    MCL-5.1, but I don't have either installed to test with. On threadless
+    implementations, some forms(like those related to locks) are no-ops,
+    others(like the make-thread) signal an error.</p>
 
     <h3>Mailing Lists</h3>
     <ul>
