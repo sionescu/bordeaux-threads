@@ -5,8 +5,8 @@
 (defmacro defdfun (name args doc &body body)
   (let ((docstring (gensym "DOCSTRING")))
     `(progn
-       (when (not (fboundp ',name))
-         (defun ,name ,args ,@body))
+       ,(unless (fboundp name)
+          `(defun ,name ,args ,@body))
        (let ((,docstring (documentation ',name 'function)))
          (setf (documentation ',name 'function)
                (if ,docstring
@@ -16,8 +16,8 @@
 (defmacro defdmacro (name args doc &body body)
   (let ((docstring (gensym "DOCSTRING")))
     `(progn
-       (when (not (fboundp ',name))
-         (defmacro ,name ,args ,@body))
+       ,(unless (fboundp name)
+          `(defmacro ,name ,args ,@body))
        (let ((,docstring (documentation ',name 'function)))
          (setf (documentation ',name 'function)
                (if ,docstring
