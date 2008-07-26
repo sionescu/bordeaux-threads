@@ -5,7 +5,8 @@ Distributed under the MIT license (see LICENSE file)
 |#
 
 (defpackage bordeaux-threads-test
-  (:use #:cl #:bordeaux-threads #:lift))
+  (:use #:cl #:bordeaux-threads #:lift)
+  (:shadow #:with-timeout))
 
 (in-package #:bordeaux-threads-test)
 
