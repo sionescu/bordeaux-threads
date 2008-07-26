@@ -8,8 +8,9 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Thread Creation
 
-(defun make-thread (function &key name)
-  (mp:make-process function :name name))
+(defun make-thread (function &rest keys &key name)
+  (declare (ignore name))
+  (apply #'mp:make-process function keys))
 
 (defun current-thread ()
   mp:*current-process*)
