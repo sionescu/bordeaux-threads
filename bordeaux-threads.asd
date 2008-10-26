@@ -17,6 +17,7 @@ Distributed under the MIT license (see LICENSE file)
   #+(or (and allegro multiprocessing)
         armedbear
         (and cmu mp)
+        scl
         corman
         (and digitool ccl-5.1)
         (and ecl threads)
@@ -40,6 +41,8 @@ Distributed under the MIT license (see LICENSE file)
   ;; Stelian Ionescu <sionescu@common-lisp.net>
   ;; - finished conversion from generic functions
   ;; - enabled running thread-safe code in unthreaded lisps
+  ;; Douglas Crosher <dtc@scieneer.com>
+  ;; - added Scieneer Common Lisp support
   :licence "MIT"
   :version "0.5.1"
   :components ((:module "src"
@@ -49,6 +52,7 @@ Distributed under the MIT license (see LICENSE file)
                          (:file #+(and thread-support allegro)   "allegro"
                                 #+(and thread-support armedbear) "armedbear"
                                 #+(and thread-support cmu)       "cmu"
+                                #+(and thread-support scl)       "scl"
                                 #+(and thread-support corman)    "corman"
                                 #+(and thread-support digitool)  "mcl"
                                 #+(and thread-support ecl)       "ecl"
