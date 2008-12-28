@@ -11,7 +11,7 @@ Distributed under the MIT license (see LICENSE file)
 (in-package #:bordeaux-threads-test)
 
 (deftestsuite test-bordeaux-threads ()
-  ((lock :initform (make-lock))))
+  ((lock (make-lock))))
 
 (addtest should-have-current-thread
   (ensure (current-thread)))
