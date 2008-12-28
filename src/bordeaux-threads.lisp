@@ -104,7 +104,16 @@ FUNCTION."
           (loop for (nil . fun) in specials collect (funcall fun))
         (funcall function)))))
 
-(defvar *default-special-bindings* '()
+(defmacro defbindings (name docstring &body initforms)
+  (check-type docstring string)
+  `(defvar ,name
+     (list
+      ,@(loop for (special form) in initforms
+              collect `(cons ',special (load-time-value (lambda () ,form)))))
+     ,docstring))
+
+;; Forms are evaluated in the new thread or in the calling thread?
+(defbindings *default-special-bindings*
   "This variable holds an alist associating special variable symbols
   with function designators to call for binding values. Special variables
   named in this list will be locally bound in the new thread before it
@@ -115,10 +124,26 @@ FUNCTION."
   undefined, but earlier forms take precedence over later forms for
   the same symbol, so defaults may be overridden by consing to the
   head of the list."
-  ;; Forms are evaluated in the new thread or in the calling thread?
-  ;; Standard contents of this list: print/reader control, etc. Can
-  ;; borrow the franz equivalent?
-  )
+  (*print-lines*               nil)
+  (*print-miser-width*         40)
+  (*print-right-margin*        nil)
+  (*print-readably*            nil)
+  (*print-gensym*              t)
+  (*print-array*               t)
+  (*print-case*                :upcase)
+  (*print-circle*              nil)
+  (*print-length*              nil)
+  (*print-level*               nil)
+  (*print-radix*               nil)
+  (*print-base*                10)
+  (*print-pretty*              t)
+  (*print-escape*              t)
+  (*read-base*                 10)
+  (*read-default-float-format* 'single-float)
+  (*readtable*                 (copy-readtable nil))
+  (*break-on-signals*          *break-on-signals*)
+  (*random-state*              (make-random-state nil))
+  (*package*                   (find-package :cl-user)))
 
 ;;; FIXME: This test won't work if CURRENT-THREAD
 ;;;        conses a new object each time
