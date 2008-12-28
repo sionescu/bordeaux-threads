@@ -1,3 +1,5 @@
+;;; -*- Mode: Lisp; Syntax: ANSI-Common-Lisp; indent-tabs-mode: nil -*-
+
 #|
 Copyright 2006, 2007 Greg Pfeil
 
@@ -10,7 +12,7 @@ Distributed under the MIT license (see LICENSE file)
 ;;; http://openmcl.clozure.com/Doc/Programming-with-Threads.html
 
 ;;; Thread Creation
-  
+
 (defun make-thread (function &key name)
   (ccl:process-run-function name (binding-default-specials function)))
 
@@ -61,8 +63,8 @@ Distributed under the MIT license (see LICENSE file)
 (defun condition-wait (condition-variable lock)
   (unwind-protect
        (progn
-	 (release-lock lock)
-	 (ccl:wait-on-semaphore condition-variable))
+         (release-lock lock)
+         (ccl:wait-on-semaphore condition-variable))
     (acquire-lock lock t)))
 
 (defun condition-notify (condition-variable)

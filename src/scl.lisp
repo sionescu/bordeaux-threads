@@ -1,3 +1,5 @@
+;;; -*- Mode: Lisp; Syntax: ANSI-Common-Lisp; indent-tabs-mode: nil -*-
+
 #|
 Copyright 2008 Scieneer Pty Ltd
 
@@ -8,7 +10,7 @@ Distributed under the MIT license (see LICENSE file)
 
 (defun make-thread (function &key name)
   (thread:thread-create (binding-default-specials function)
-			:name (or name "Anonymous")))
+                        :name (or name "Anonymous")))
 
 (defun current-thread ()
   thread:*thread*)

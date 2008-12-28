@@ -1,3 +1,5 @@
+;;; -*- Mode: Lisp; Syntax: ANSI-Common-Lisp; indent-tabs-mode: nil -*-
+
 #|
 Copyright 2006, 2007 Greg Pfeil
 
@@ -48,19 +50,19 @@ Distributed under the MIT license (see LICENSE file)
   in other more traditionally named packages.")
   (:use #:cl)
   (:export #:make-thread #:current-thread #:threadp #:thread-name
-	   #:*default-special-bindings* #:*supports-threads-p*
+           #:*default-special-bindings* #:*supports-threads-p*
 
-	   #:make-lock #:acquire-lock #:release-lock #:with-lock-held
-	   #:make-recursive-lock #:acquire-recursive-lock
-	   #:release-recursive-lock #:with-recursive-lock-held
+           #:make-lock #:acquire-lock #:release-lock #:with-lock-held
+           #:make-recursive-lock #:acquire-recursive-lock
+           #:release-recursive-lock #:with-recursive-lock-held
 
-	   #:make-condition-variable #:condition-wait #:condition-notify
-	   #:thread-yield
+           #:make-condition-variable #:condition-wait #:condition-notify
+           #:thread-yield
 
-       #:with-timeout #:timeout
+           #:with-timeout #:timeout
 
-	   #:all-threads #:interrupt-thread #:destroy-thread #:thread-alive-p
-       #:join-thread))
+           #:all-threads #:interrupt-thread #:destroy-thread #:thread-alive-p
+           #:join-thread))
 
 (in-package #:bordeaux-threads)
 
@@ -74,7 +76,7 @@ Distributed under the MIT license (see LICENSE file)
 (define-condition bordeaux-mp-condition (error)
   ((message :initarg :message :reader message))
   (:report (lambda (condition stream)
-	     (format stream (message condition)))))
+             (format stream (message condition)))))
 
 (defgeneric make-threading-support-error ()
   (:documentation "Creates a BORDEAUX-THREADS condition which specifies
