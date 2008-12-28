@@ -9,7 +9,7 @@ Distributed under the MIT license (see LICENSE file)
 ;;; Thread Creation
 
 (defun make-thread (function &key name)
-  (ccl:process-run-function name function))
+  (ccl:process-run-function name (binding-default-specials function)))
 
 (defun current-thread ()
   ccl:*current-thread*)

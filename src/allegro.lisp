@@ -12,7 +12,7 @@ Distributed under the MIT license (see LICENSE file)
 ;;; Thread Creation
 
 (defun make-thread (function &key name)
-  (mp:process-run-function name function))
+  (mp:process-run-function name (binding-default-specials function)))
 
 (defun current-thread ()
   mp:*current-process*)

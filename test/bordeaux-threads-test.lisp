@@ -30,6 +30,34 @@ Distributed under the MIT license (see LICENSE file)
   (ensure (acquire-lock lock nil))
   (release-lock lock))
 
+(defun set-equal (set-a set-b)
+  (and (null (set-difference set-a set-b))
+       (null (set-difference set-b set-a))))
+
+(addtest default-special-bindings
+  (locally (declare (special *a* *c*))
+    (let* ((the-as 50) (the-bs 150) (*b* 42)
+	   some-a some-b some-other-a some-other-b
+	   (*default-special-bindings*
+	    (list* (cons '*a* (lambda () (incf the-as)))
+		   (cons '*b* (lambda () (incf the-bs)))
+		   *default-special-bindings*))
+	   (threads (list (make-thread
+			   (lambda ()
+			     (setf some-a *a* some-b *b*)))
+			  (make-thread
+			   (lambda ()
+			     (setf some-other-a *a*
+				   some-other-b *b*))))))
+      (declare (special *b*))
+      (thread-yield)
+      (ensure (not (boundp '*a*)))
+      (loop while (some #'thread-alive-p threads)
+	    do (thread-yield))
+      (ensure-same (list some-a some-other-a) '(51 52) :test set-equal)
+      (ensure-same (list some-b some-other-b) '(151 152) :test set-equal)
+      (ensure (not (boundp '*a*))))))
+
 (defparameter *shared* 0)
 (defparameter *lock* (make-lock))
 

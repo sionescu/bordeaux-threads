@@ -94,10 +94,20 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; See default-implementations.lisp for MAKE-THREAD.
 
+(defun binding-default-specials (function)
+  "Return a closure that binds `*DEFAULT-SPECIAL-BINDINGS*' and calls
+FUNCTION."
+  (let ((specials (remove-duplicates *default-special-bindings*
+                                     :from-end t)))
+    (lambda ()
+      (progv (mapcar #'car specials)
+          (loop for (nil . fun) in specials collect (funcall fun))
+        (funcall function)))))
+
 (defvar *default-special-bindings* '()
   "This variable holds an alist associating special variable symbols
-  with forms to evaluate for binding values. Special variables named
-  in this list will be locally bound in the new thread before it
+  with function designators to call for binding values. Special variables
+  named in this list will be locally bound in the new thread before it
   begins executing user code.
 
   This variable may be rebound around calls to MAKE-THREAD to

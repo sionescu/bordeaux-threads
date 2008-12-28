@@ -12,7 +12,7 @@ Distributed under the MIT license (see LICENSE file)
 ;;; Thread Creation
 
 (defun make-thread (function &key name)
-  (ext:make-thread function :name name))
+  (ext:make-thread (binding-default-specials function) :name name))
 
 (defun current-thread ()
   (ext:current-thread))

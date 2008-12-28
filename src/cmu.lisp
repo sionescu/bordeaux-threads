@@ -10,7 +10,7 @@ Distributed under the MIT license (see LICENSE file)
 
 (defun make-thread (function &rest keys &key name)
   (declare (ignore name))
-  (apply #'mp:make-process function keys))
+  (apply #'mp:make-process (binding-default-specials function) keys))
 
 (defun current-thread ()
   mp:*current-process*)

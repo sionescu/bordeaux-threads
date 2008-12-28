@@ -7,7 +7,8 @@ Distributed under the MIT license (see LICENSE file)
 (in-package #:bordeaux-threads)
 
 (defun make-thread (function &key name)
-  (thread:thread-create function :name (or name "Anonymous")))
+  (thread:thread-create (binding-default-specials function)
+			:name (or name "Anonymous")))
 
 (defun current-thread ()
   thread:*thread*)
