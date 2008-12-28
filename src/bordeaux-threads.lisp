@@ -96,16 +96,6 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; See default-implementations.lisp for MAKE-THREAD.
 
-(defun binding-default-specials (function)
-  "Return a closure that binds `*DEFAULT-SPECIAL-BINDINGS*' and calls
-FUNCTION."
-  (let ((specials (remove-duplicates *default-special-bindings*
-                                     :from-end t)))
-    (lambda ()
-      (progv (mapcar #'car specials)
-          (loop for (nil . fun) in specials collect (funcall fun))
-        (funcall function)))))
-
 (defmacro defbindings (name docstring &body initforms)
   (check-type docstring string)
   `(defvar ,name
@@ -149,6 +139,16 @@ FUNCTION."
   (*readtable*                 (copy-readtable nil))
   (*break-on-signals*          *break-on-signals*)
   (*random-state*              (make-random-state nil)))
+
+(defun binding-default-specials (function)
+  "Return a closure that binds `*DEFAULT-SPECIAL-BINDINGS*' and calls
+FUNCTION."
+  (let ((specials (remove-duplicates *default-special-bindings*
+                                     :from-end t)))
+    (lambda ()
+      (progv (mapcar #'car specials)
+          (loop for (nil . fun) in specials collect (funcall fun))
+        (funcall function)))))
 
 ;;; FIXME: This test won't work if CURRENT-THREAD
 ;;;        conses a new object each time
