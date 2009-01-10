@@ -151,6 +151,5 @@ FUNCTION."
 ;;;        conses a new object each time
 (defun signal-error-if-current-thread (thread)
   (when (eq thread (current-thread))
-    (error
-     (make-condition 'bordeaux-mp-condition
-                     :message "Can not destroy the current thread"))))
+    (error 'bordeaux-mp-condition
+           :message "Cannot destroy the current thread")))
