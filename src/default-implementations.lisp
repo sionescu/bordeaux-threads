@@ -5,26 +5,18 @@
 ;;; Helper macros
 
 (defmacro defdfun (name args doc &body body)
-  (let ((docstring (gensym "DOCSTRING")))
-    `(progn
-       ,(unless (fboundp name)
-          `(defun ,name ,args ,@body))
-       (let ((,docstring (documentation ',name 'function)))
-         (setf (documentation ',name 'function)
-               (if ,docstring
-                   (format nil "~a~@[~%~%~a~]" ,doc ,docstring)
-                   ,doc))))))
+  `(progn
+     ,(unless (fboundp name)
+       `(defun ,name ,args ,@body))
+     (setf (documentation ',name 'function)
+           (or (documentation ',name 'function) ,doc))))
 
 (defmacro defdmacro (name args doc &body body)
-  (let ((docstring (gensym "DOCSTRING")))
-    `(progn
-       ,(unless (fboundp name)
-          `(defmacro ,name ,args ,@body))
-       (let ((,docstring (documentation ',name 'function)))
-         (setf (documentation ',name 'function)
-               (if ,docstring
-                   (format nil "~a~@[~%~%~a~]" ,doc ,docstring)
-                   ,doc))))))
+  `(progn
+     ,(unless (fboundp name)
+       `(defmacro ,name ,args ,@body))
+     (setf (documentation ',name 'function)
+           (or (documentation ',name 'function) ,doc))))
 
 ;;; Thread Creation
 
