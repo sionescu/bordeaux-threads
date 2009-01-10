@@ -136,9 +136,7 @@ Distributed under the MIT license (see LICENSE file)
   (*read-default-float-format* 'single-float)
   (*read-eval*                 t)
   (*read-suppress*             nil)
-  (*readtable*                 (copy-readtable nil))
-  (*break-on-signals*          *break-on-signals*)
-  (*random-state*              (make-random-state nil)))
+  (*readtable*                 (copy-readtable nil)))
 
 (defun binding-default-specials (function)
   "Return a closure that binds `*DEFAULT-SPECIAL-BINDINGS*' and calls
