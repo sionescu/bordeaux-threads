@@ -13,8 +13,8 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Thread Creation
 
-(defun make-thread (function &key name)
-  (sb-thread:make-thread (binding-default-specials function) :name name))
+(defun %make-thread (function name)
+  (sb-thread:make-thread function :name name))
 
 (defun current-thread ()
   sb-thread:*current-thread*)

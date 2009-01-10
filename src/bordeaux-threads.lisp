@@ -138,11 +138,10 @@ Distributed under the MIT license (see LICENSE file)
   (*read-suppress*             nil)
   (*readtable*                 (copy-readtable nil)))
 
-(defun binding-default-specials (function)
-  "Return a closure that binds `*DEFAULT-SPECIAL-BINDINGS*' and calls
+(defun binding-default-specials (function special-bindings)
+  "Return a closure that binds the symbols in SPECIAL-BINDINGS and calls
 FUNCTION."
-  (let ((specials (remove-duplicates *default-special-bindings*
-                                     :from-end t)))
+  (let ((specials (remove-duplicates special-bindings :from-end t)))
     (lambda ()
       (progv (mapcar #'car specials)
           (loop for (nil . fun) in specials collect (funcall fun))

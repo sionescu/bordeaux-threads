@@ -10,9 +10,8 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Thread Creation
 
-(defun make-thread (function &rest keys &key name)
-  (declare (ignore name))
-  (apply #'mp:make-process (binding-default-specials function) keys))
+(defun %make-thread (function name)
+  (mp:make-process function :name name :initial-bindings nil))
 
 (defun current-thread ()
   mp:*current-process*)

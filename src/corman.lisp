@@ -10,9 +10,9 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Thread Creation
 
-(defun make-thread (function &key name)
+(defun %make-thread (function name)
   (declare (ignore name))
-  (threads:create-thread (binding-default-specials function)))
+  (threads:create-thread function))
 
 (defun current-thread ()
   threads:*current-thread*)

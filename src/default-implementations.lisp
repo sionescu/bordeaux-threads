@@ -28,7 +28,8 @@
 
 ;;; Thread Creation
 
-(defdfun make-thread (function &key name)
+(defdfun make-thread (function &key name
+                      (initial-bindings *default-special-bindings*))
   "Creates and returns a thread named NAME, which will call the
   function FUNCTION with no arguments: when FUNCTION returns, the
   thread terminates. NAME defaults to NIL if unsupplied.
@@ -47,14 +48,19 @@
     parent, and an assignment to such a variable in any thread will be
     visible to all threads in which the global binding is visible.
 
-  - Local bindings are local to the thread they are introduced in,
-    except that
+  - Local bindings, such as the ones introduced by INITIAL-BINDINGS,
+    are local to the thread they are introduced in, except that
 
   - Local bindings in the the caller of MAKE-THREAD may or may not be
     shared with the new thread that it creates: this is
     implementation-defined. Portable code should not depend on
     particular behaviour in this case, nor should it assign to such
     variables without first rebinding them in the new thread."
+  (%make-thread (binding-default-specials function initial-bindings)
+                name))
+
+(defdfun %make-thread (function name)
+  "The actual implementation-dependent function that creates threads."
   (declare (ignore function name))
   (error (make-threading-support-error)))
 
