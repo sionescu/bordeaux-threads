@@ -247,7 +247,7 @@ WITH-LOCK-HELD etc etc"
 
 ;;; Timeouts
 
-(defmacro with-timeout ((timeout) &body body)
+(defdmacro with-timeout ((timeout) &body body)
   "Execute `BODY' and signal a condition of type TIMEOUT if the execution of
 BODY does not complete within `TIMEOUT' seconds. On implementations which do not
 support WITH-TIMEOUT natively and don't support threads either it has no effect."
