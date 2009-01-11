@@ -49,7 +49,7 @@
     particular behaviour in this case, nor should it assign to such
     variables without first rebinding them in the new thread."
   (%make-thread (binding-default-specials function initial-bindings)
-                name))
+                (or name "Anonymous")))
 
 (defdfun %make-thread (function name)
   "The actual implementation-dependent function that creates threads."
