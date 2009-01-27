@@ -77,7 +77,4 @@ Distributed under the MIT license (see LICENSE file)
 (defun thread-alive-p (thread)
   (mp:process-alive-p thread))
 
-(defun join-thread (thread)
-  (error "Join-thread not implemented."))
-
 (mark-supported)
