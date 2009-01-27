@@ -7,7 +7,7 @@ Distributed under the MIT license (see LICENSE file)
 |#
 
 (defpackage bordeaux-threads
-  (:nicknames #:bt #:threads)
+  (:nicknames #:bt)
   (:documentation "BORDEAUX-THREADS is a proposed standard for a minimal
   MP/threading interface. It is similar to the CLIM-SYS threading and
   lock support, but for the following broad differences:
