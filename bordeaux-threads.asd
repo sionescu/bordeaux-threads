@@ -23,7 +23,8 @@ Distributed under the MIT license (see LICENSE file)
         (and ecl threads)
         lispworks
         (and openmcl openmcl-native-threads)
-        (and sbcl sb-thread))
+        (and sbcl sb-thread)
+        (and clisp mt))
   (pushnew :thread-support *features*))
 
 (defsystem bordeaux-threads
@@ -59,6 +60,7 @@ Distributed under the MIT license (see LICENSE file)
                                 #+(and thread-support lispworks) "lispworks"
                                 #+(and thread-support openmcl)   "openmcl"
                                 #+(and thread-support sbcl)      "sbcl"
+                                #+(and thread-support clisp)     "clisp"
                                 #-thread-support                 "unsupported")
                          (:file "default-implementations")
                          #+(and thread-support
