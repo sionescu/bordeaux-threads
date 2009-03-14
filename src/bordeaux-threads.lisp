@@ -141,7 +141,7 @@ Distributed under the MIT license (see LICENSE file)
 (defun binding-default-specials (function special-bindings)
   "Return a closure that binds the symbols in SPECIAL-BINDINGS and calls
 FUNCTION."
-  (let ((specials (remove-duplicates special-bindings :from-end t)))
+  (let ((specials (remove-duplicates special-bindings :from-end t :key #'car)))
     (lambda ()
       (progv (mapcar #'car specials)
           (loop for (nil . fun) in specials collect (funcall fun))
