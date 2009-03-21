@@ -68,19 +68,15 @@ Distributed under the MIT license (see LICENSE file)
                          (:file "condition-variables"))))
   :in-order-to ((test-op (load-op bordeaux-threads-test)))
   :perform (test-op :after (op c)
-                    (describe
-                     (funcall
-                      (intern (symbol-name (read-from-string "run-tests"))
-                              :lift)
-                      :suite (intern
-                              (symbol-name
-                               (read-from-string "test-bordeaux-threads"))
-                              :bordeaux-threads-test)))))
+             (describe
+              (funcall (intern (string '#:run-tests) :lift)
+                       :suite (intern (string '#:test-bordeaux-threads)
+                                      :bordeaux-threads-test)))))
 
 (defmethod operation-done-p ((op test-op)
                              (c (eql (find-system :bordeaux-threads))))
   (values nil))
 
 (defsystem bordeaux-threads-test
-  :depends-on (bordeaux-threads lift)
+  :depends-on (:bordeaux-threads :lift)
   :components ((:module "test" :components ((:file "bordeaux-threads-test")))))
