@@ -50,7 +50,8 @@ Distributed under the MIT license (see LICENSE file)
   in other more traditionally named packages.")
   (:use #:cl)
   (:export #:make-thread #:current-thread #:threadp #:thread-name
-           #:*default-special-bindings* #:*supports-threads-p*
+           #:*default-special-bindings* #:*standard-io-bindings*
+           #:*supports-threads-p*
 
            #:make-lock #:acquire-lock #:release-lock #:with-lock-held
            #:make-recursive-lock #:acquire-recursive-lock
@@ -96,16 +97,8 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; See default-implementations.lisp for MAKE-THREAD.
 
-(defmacro defbindings (name docstring &body initforms)
-  (check-type docstring string)
-  `(defvar ,name
-     (list
-      ,@(loop for (special form) in initforms
-              collect `(cons ',special ',form)))
-     ,docstring))
-
 ;; Forms are evaluated in the new thread or in the calling thread?
-(defbindings *default-special-bindings*
+(defvar *default-special-bindings*
   "This variable holds an alist associating special variable symbols
   to forms to evaluate. Special variables named in this list will
   be locally bound in the new thread before it begins executing user code.
@@ -115,6 +108,19 @@ Distributed under the MIT license (see LICENSE file)
   undefined, but earlier forms take precedence over later forms for
   the same symbol, so defaults may be overridden by consing to the
   head of the list."
+  nil)
+
+(defmacro defbindings (name docstring &body initforms)
+  (check-type docstring string)
+  `(defparameter ,name
+     (list
+      ,@(loop for (special form) in initforms
+              collect `(cons ',special ',form)))
+     ,docstring))
+
+;; Forms are evaluated in the new thread or in the calling thread?
+(defbindings *standard-io-bindings*
+  "Standard bindings of printer/reader control variables as per CL:WITH-STANDARD-IO-SYNTAX."
   (*package*                   (find-package :common-lisp-user))
   (*print-array*               t)
   (*print-base*                10)
