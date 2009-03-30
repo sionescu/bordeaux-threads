@@ -101,15 +101,14 @@ Distributed under the MIT license (see LICENSE file)
   `(defvar ,name
      (list
       ,@(loop for (special form) in initforms
-              collect `(cons ',special (load-time-value (lambda () ,form)))))
+              collect `(cons ',special ',form)))
      ,docstring))
 
 ;; Forms are evaluated in the new thread or in the calling thread?
 (defbindings *default-special-bindings*
   "This variable holds an alist associating special variable symbols
-  with function designators to call for binding values. Special variables
-  named in this list will be locally bound in the new thread before it
-  begins executing user code.
+  to forms to evaluate. Special variables named in this list will
+  be locally bound in the new thread before it begins executing user code.
 
   This variable may be rebound around calls to MAKE-THREAD to
   add/alter default bindings. The effect of mutating this list is
@@ -144,7 +143,7 @@ FUNCTION."
   (let ((specials (remove-duplicates special-bindings :from-end t :key #'car)))
     (lambda ()
       (progv (mapcar #'car specials)
-          (loop for (nil . fun) in specials collect (funcall fun))
+          (loop for (nil . form) in specials collect (eval form))
         (funcall function)))))
 
 ;;; FIXME: This test won't work if CURRENT-THREAD
