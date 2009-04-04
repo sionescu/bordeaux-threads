@@ -98,7 +98,7 @@ Distributed under the MIT license (see LICENSE file)
 ;;; See default-implementations.lisp for MAKE-THREAD.
 
 ;; Forms are evaluated in the new thread or in the calling thread?
-(defvar *default-special-bindings*
+(defvar *default-special-bindings* nil
   "This variable holds an alist associating special variable symbols
   to forms to evaluate. Special variables named in this list will
   be locally bound in the new thread before it begins executing user code.
@@ -107,8 +107,7 @@ Distributed under the MIT license (see LICENSE file)
   add/alter default bindings. The effect of mutating this list is
   undefined, but earlier forms take precedence over later forms for
   the same symbol, so defaults may be overridden by consing to the
-  head of the list."
-  nil)
+  head of the list.")
 
 (defmacro defbindings (name docstring &body initforms)
   (check-type docstring string)
