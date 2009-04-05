@@ -14,8 +14,8 @@ Distributed under the MIT license (see LICENSE file)
 ;;; Thread Creation
 
 (defun %make-thread (function name)
-  (ccl:process-run-function name function
-                            :use-standard-initial-bindings nil))
+  (ccl:process-run-function (list :name name :use-standard-initial-bindings nil)
+                            function))
 
 (defun current-thread ()
   ccl:*current-process*)
