@@ -11,7 +11,7 @@ Distributed under the MIT license (see LICENSE file)
 ;;; Thread Creation
 
 (defun %make-thread (function name)
-  (mp:make-process function :name name :initial-bindings nil))
+  (mp:make-process function :name name))
 
 (defun current-thread ()
   mp:*current-process*)
