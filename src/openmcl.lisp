@@ -88,4 +88,7 @@ Distributed under the MIT license (see LICENSE file)
 (defun thread-alive-p (thread)
   (ccl::process-active-p thread))
 
+(defun join-thread (thread)
+  (ccl:join-process thread))
+
 (mark-supported)
