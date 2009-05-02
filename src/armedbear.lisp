@@ -9,7 +9,7 @@ Distributed under the MIT license (see LICENSE file)
 (in-package #:bordeaux-threads)
 
 ;;; the implementation of the Armed Bear thread interface can be found in
-;;; src/org/armedbearlisp/LispThread.java
+;;; src/org/armedbear/lisp/LispThread.java
 
 ;;; Thread Creation
 
