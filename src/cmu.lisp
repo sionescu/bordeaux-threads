@@ -99,4 +99,8 @@ Distributed under the MIT license (see LICENSE file)
 (defun thread-alive-p (thread)
   (mp:process-active-p thread))
 
+(defun join-thread (thread)
+  (mp:process-wait (format nil "Waiting for thread ~A to complete" thread)
+                   (lambda () (not (mp:process-alive-p thread)))))
+
 (mark-supported)
