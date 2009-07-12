@@ -35,7 +35,7 @@ Distributed under the MIT license (see LICENSE file)
   (mt:mutex-unlock lock))
 
 (defmacro with-lock-held ((place) &body body)
-  `(mt:with-lock (,place) ,@body))
+  `(mt:with-mutex-lock (,place) ,@body))
 
 (defun make-recursive-lock (&optional name)
   (mt:make-mutex :name name :recursive-p t))
@@ -46,7 +46,7 @@ Distributed under the MIT license (see LICENSE file)
 ;;; balanced
 
 (defmacro with-recursive-lock-held ((place) &body body)
-  `(mt:with-lock (,place) ,@body))
+  `(mt:with-mutex-lock (,place) ,@body))
 
 ;;; Resource contention: condition variables
 
@@ -74,11 +74,7 @@ Distributed under the MIT license (see LICENSE file)
   (mt:list-threads))
 
 (defun interrupt-thread (thread function)
-  (mt:thread-interrupt thread function))
-
-(defun destroy-thread (thread)
-  (signal-error-if-current-thread thread)
-  (mt:thread-kill thread))
+  (mt:thread-interrupt thread :function function))
 
 (defun thread-alive-p (thread)
   (mt:thread-active-p thread))
