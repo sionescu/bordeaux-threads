@@ -20,8 +20,10 @@ Distributed under the MIT license (see LICENSE file)
 (defun thread-name (thread)
   (thread:thread-name thread))
 
+;;; Resource contention: locks and recursive locks
+
 (defun make-lock (&optional name)
-  (thread:make-lock name))
+  (thread:make-lock (or name "Anonymous lock")))
 
 (defun acquire-lock (lock &optional (wait-p t))
   (thread::acquire-lock lock nil wait-p))
@@ -33,7 +35,8 @@ Distributed under the MIT license (see LICENSE file)
   `(thread:with-lock-held (,place) ,@body))
 
 (defun make-recursive-lock (&optional name)
-  (thread:make-lock name :type :recursive))
+  (thread:make-lock (or name "Anonymous recursive lock")
+                    :type :recursive))
 
 ;;; XXX acquire-recursive-lock and release-recursive-lock are actually
 ;;; complicated because we can't use control stack tricks.  We need to

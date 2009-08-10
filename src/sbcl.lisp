@@ -28,7 +28,7 @@ Distributed under the MIT license (see LICENSE file)
 ;;; Resource contention: locks and recursive locks
 
 (defun make-lock (&optional name)
-  (sb-thread:make-mutex :name name))
+  (sb-thread:make-mutex :name (or name "Anonymous lock")))
 
 (defun acquire-lock (lock &optional (wait-p t))
   (sb-thread:get-mutex lock nil wait-p))
@@ -40,7 +40,7 @@ Distributed under the MIT license (see LICENSE file)
   `(sb-thread:with-mutex (,place) ,@body))
 
 (defun make-recursive-lock (&optional name)
-  (sb-thread:make-mutex :name name))
+  (sb-thread:make-mutex :name (or name "Anonymous recursive lock")))
 
 ;;; XXX acquire-recursive-lock and release-recursive-lock are actually
 ;;; complicated because we can't use control stack tricks.  We need to

@@ -25,7 +25,7 @@ Distributed under the MIT license (see LICENSE file)
 ;;; Resource contention: locks and recursive locks
 
 (defun make-lock (&optional name)
-  (mp:make-lock name))
+  (mp:make-lock (or name "Anonymous lock")))
 
 (defun acquire-lock (lock &optional (wait-p t))
   (if wait-p

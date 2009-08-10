@@ -30,12 +30,13 @@ Distributed under the MIT license (see LICENSE file)
 ;;; Resource contention: locks and recursive locks
 
 (defun make-lock (&optional name)
-  (mp:make-lock :name name))
+  (mp:make-lock :name (or name "Anonymous lock")))
 
 (defun acquire-lock (lock &optional (wait-p t))
-  (mp:process-lock lock nil (if wait-p
-                                (if (typep wait-p 'number) wait-p nil)
-                                0)))
+  (mp:process-lock lock nil
+                   (cond ((null wait-p)         0)
+                         ((numberp wait-p) wait-p)
+                         (t                   nil))))
 
 (defun release-lock (lock)
   (mp:process-unlock lock))

@@ -25,7 +25,7 @@ Distributed under the MIT license (see LICENSE file)
 ;;; Resource contention: locks and recursive locks
 
 (defun make-lock (&optional name)
-  (ccl:make-lock name))
+  (ccl:make-lock (or name "Anonymous lock")))
 
 (defmacro with-lock-held ((place) &body body)
   `(ccl:with-lock-grabbed (,place) ,@body))

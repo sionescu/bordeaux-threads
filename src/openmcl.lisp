@@ -28,7 +28,7 @@ Distributed under the MIT license (see LICENSE file)
 ;;; Resource contention: locks and recursive locks
 
 (defun make-lock (&optional name)
-  (ccl:make-lock name))
+  (ccl:make-lock (or name "Anonymous lock")))
 
 (defun acquire-lock (lock &optional (wait-p t))
   (if wait-p
@@ -43,7 +43,7 @@ Distributed under the MIT license (see LICENSE file)
      ,@body))
 
 (defun make-recursive-lock (&optional name)
-  (ccl:make-lock name))
+  (ccl:make-lock (or name "Anonymous recursive lock")))
 
 (defun acquire-recursive-lock (lock)
   (ccl:grab-lock lock))
