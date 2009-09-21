@@ -8,6 +8,23 @@ Distributed under the MIT license (see LICENSE file)
 
 (defpackage bordeaux-threads
   (:nicknames #:bt)
+  (:use #:cl)
+  #+sbcl (:import-from #:sb-ext #:timeout)
+  (:export #:make-thread #:current-thread #:threadp #:thread-name
+           #:*default-special-bindings* #:*standard-io-bindings*
+           #:*supports-threads-p*
+
+           #:make-lock #:acquire-lock #:release-lock #:with-lock-held
+           #:make-recursive-lock #:acquire-recursive-lock
+           #:release-recursive-lock #:with-recursive-lock-held
+
+           #:make-condition-variable #:condition-wait #:condition-notify
+           #:thread-yield
+
+           #:with-timeout #:timeout
+
+           #:all-threads #:interrupt-thread #:destroy-thread #:thread-alive-p
+           #:join-thread)
   (:documentation "BORDEAUX-THREADS is a proposed standard for a minimal
   MP/threading interface. It is similar to the CLIM-SYS threading and
   lock support, but for the following broad differences:
@@ -47,23 +64,7 @@ Distributed under the MIT license (see LICENSE file)
   To avoid conflict with existing MP/threading interfaces in
   implementations, these symbols live in the BORDEAUX-THREADS package.
   Implementations and/or users may also make them visible or exported
-  in other more traditionally named packages.")
-  (:use #:cl)
-  (:export #:make-thread #:current-thread #:threadp #:thread-name
-           #:*default-special-bindings* #:*standard-io-bindings*
-           #:*supports-threads-p*
-
-           #:make-lock #:acquire-lock #:release-lock #:with-lock-held
-           #:make-recursive-lock #:acquire-recursive-lock
-           #:release-recursive-lock #:with-recursive-lock-held
-
-           #:make-condition-variable #:condition-wait #:condition-notify
-           #:thread-yield
-
-           #:with-timeout #:timeout
-
-           #:all-threads #:interrupt-thread #:destroy-thread #:thread-alive-p
-           #:join-thread))
+  in other more traditionally named packages."))
 
 (in-package #:bordeaux-threads)
 
