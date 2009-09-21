@@ -30,6 +30,9 @@ Distributed under the MIT license (see LICENSE file)
 (defun make-lock (&optional name)
   (mp:make-process-lock :name (or name "Anonymous lock")))
 
+(defun make-recursive-lock (&optional name)
+  (mp:make-process-lock :name (or name "Anonymous recursive lock")))
+
 (defun acquire-lock (lock &optional (wait-p t))
   (mp:process-lock lock mp:*current-process* "Lock" (if wait-p nil 0)))
 
