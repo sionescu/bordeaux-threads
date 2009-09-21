@@ -57,7 +57,8 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Resource contention: condition variables
 
-(defun make-condition-variable ()
+(defun make-condition-variable (&key name)
+  (declare (ignore name))
   (ccl:make-semaphore))
 
 (defun condition-wait (condition-variable lock)

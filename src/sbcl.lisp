@@ -53,8 +53,8 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Resource contention: condition variables
 
-(defun make-condition-variable ()
-  (sb-thread:make-waitqueue))
+(defun make-condition-variable (&key name)
+  (sb-thread:make-waitqueue :name (or name "Anonymous condition variable")))
 
 (defun condition-wait (condition-variable lock)
   (sb-thread:condition-wait condition-variable lock))

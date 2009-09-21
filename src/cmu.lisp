@@ -53,11 +53,13 @@ Distributed under the MIT license (see LICENSE file)
 
 (defstruct condition-var
   "CMUCL doesn't have conditions, so we need to create our own type."
+  name
   lock
   active)
 
-(defun make-condition-variable ()
-  (make-condition-var :lock (make-lock)))
+(defun make-condition-variable (&key name)
+  (make-condition-var :lock (make-lock)
+                      :name (or name "Anonymous condition variable")))
 
 (defun condition-wait (condition-variable lock)
   (check-type condition-variable condition-var)

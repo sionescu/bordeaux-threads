@@ -49,8 +49,8 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Resource contention: condition variables
 
-(defun make-condition-variable ()
-  (thread:make-cond-var))
+(defun make-condition-variable (&key name)
+  (thread:make-cond-var (or name "Anonymous condition variable")))
 
 (defun condition-wait (condition-variable lock)
   (thread:cond-var-wait condition-variable lock))

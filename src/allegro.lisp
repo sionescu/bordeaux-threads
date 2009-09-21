@@ -46,7 +46,8 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Resource contention: condition variables
 
-(defun make-condition-variable ()
+(defun make-condition-variable (&key name)
+  (declare (ignore name))
   (mp:make-gate nil))
 
 (defun condition-wait (condition-variable lock)

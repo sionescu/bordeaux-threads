@@ -200,9 +200,10 @@ WITH-LOCK-HELD etc etc"
   multi-threading, this does nothing."
   (values))
 
-(defdfun make-condition-variable ()
+(defdfun make-condition-variable (&key name)
   "Returns a new condition-variable object for use
   with CONDITION-WAIT and CONDITION-NOTIFY."
+  (declare (ignore name))
   nil)
 
 (defdfun condition-wait (condition-variable lock)

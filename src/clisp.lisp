@@ -66,8 +66,8 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Resource contention: condition variables
 
-(defun make-condition-variable ()
-  (mt:make-exemption :name "Anonymous condition variable"))
+(defun make-condition-variable (&key name)
+  (mt:make-exemption :name (or name "Anonymous condition variable")))
 
 (defun condition-wait (condition-variable lock)
   (mt:exemption-wait condition-variable lock))

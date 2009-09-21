@@ -14,6 +14,7 @@ Distributed under the MIT license (see LICENSE file)
 ;;; the host Lisp.
 
 (defstruct condition-var
+  name
   lock
   active)
 
