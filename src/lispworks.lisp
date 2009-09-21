@@ -41,11 +41,8 @@ Distributed under the MIT license (see LICENSE file)
 (defun release-lock (lock)
   (mp:process-unlock lock))
 
-;;; Apparently this EVAL-WHEN is needed so that the macro is available
-;;; when compiling condition-variables.lisp
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (defmacro with-lock-held ((place) &body body)
-    `(mp:with-lock (,place) ,@body)))
+(defmacro with-lock-held ((place) &body body)
+  `(mp:with-lock (,place) ,@body))
 
 ;;; Resource contention: condition variables
 
