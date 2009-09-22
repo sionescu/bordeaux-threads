@@ -92,6 +92,7 @@ Distributed under the MIT license (see LICENSE file)
                   "There is no support for this method on this implementation."
                   "There is no thread support in this instance."))))
 
+#-sbcl
 (define-condition timeout (serious-condition) ())
 
 ;;; Thread Creation
