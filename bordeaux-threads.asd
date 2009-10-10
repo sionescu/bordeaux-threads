@@ -27,9 +27,7 @@ Distributed under the MIT license (see LICENSE file)
         (and clisp mt))
   (pushnew :thread-support *features*))
 
-(defsystem bordeaux-threads
-  :description ""
-  :long-description ""
+(defsystem :bordeaux-threads
   :author "Greg Pfeil <greg@technomadic.org>"
   ;; based on original Bordeaux-MP spec by Dan Barlow <dan@telent.net>
   ;; contributors:
@@ -76,7 +74,3 @@ Distributed under the MIT license (see LICENSE file)
 (defmethod operation-done-p ((op test-op)
                              (c (eql (find-system :bordeaux-threads))))
   (values nil))
-
-(defsystem bordeaux-threads-test
-  :depends-on (:bordeaux-threads :lift)
-  :components ((:module "test" :components ((:file "bordeaux-threads-test")))))
