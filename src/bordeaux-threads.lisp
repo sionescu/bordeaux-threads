@@ -8,8 +8,7 @@ Distributed under the MIT license (see LICENSE file)
 
 (defpackage bordeaux-threads
   (:nicknames #:bt)
-  (:use #:cl)
-  #+sbcl (:import-from #:sb-ext #:timeout)
+  (:use #:cl #:alexandria)
   (:export #:make-thread #:current-thread #:threadp #:thread-name
            #:*default-special-bindings* #:*standard-io-bindings*
            #:*supports-threads-p*
@@ -92,8 +91,16 @@ Distributed under the MIT license (see LICENSE file)
                   "There is no support for this method on this implementation."
                   "There is no thread support in this instance."))))
 
-#-sbcl
-(define-condition timeout (serious-condition) ())
+(define-condition timeout (serious-condition)
+  ((length :initform nil
+             :initarg :length
+             :reader timeout-length))
+  (:report (lambda (c s)
+             (if (timeout-length c)
+                 (format s "A timeout set to ~A seconds occurred."
+                         (timeout-length c))
+                 (format s "A timeout occurred.")))))
+
 
 ;;; Thread Creation
 

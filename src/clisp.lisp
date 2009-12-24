@@ -80,11 +80,10 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Timeouts
 
-;; VTZ: is there timeout-function (executed on timeout)?
-;; How to distinguish between NIL returned from body and timeout ?
 (defmacro with-timeout ((timeout) &body body)
-  `(mt:with-timeout (,timeout nil)
-     ,@body))
+  (once-only (timeout)
+    `(mt:with-timeout (,timeout (error 'timeout :length ,timeout))
+       ,@body)))
 
 ;;; Introspection/debugging
 

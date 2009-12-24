@@ -61,11 +61,6 @@ Distributed under the MIT license (see LICENSE file)
 (defun thread-yield ()
   (mp:process-yield))
 
-;;; Timeouts
-
-(defmacro with-timeout ((timeout) &body body)
-  `(error "with-timeout is not reliable and should not be used."))
-
 ;;; Introspection/debugging
 
 (defun all-threads ()

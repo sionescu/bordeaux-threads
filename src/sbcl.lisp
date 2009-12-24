@@ -67,6 +67,8 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Timeouts
 
+(deftype timeout () 'sb-ext:timeout)
+
 (defmacro with-timeout ((timeout) &body body)
   `(sb-ext:with-timeout ,timeout
      ,@body))

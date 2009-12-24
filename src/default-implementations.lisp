@@ -265,7 +265,7 @@ support WITH-TIMEOUT natively and don't support threads either it has no effect.
                                     :name (format nil "WITH-TIMEOUT thread serving: ~S."
                                                   (thread-name ,caller))))
                  (throw ',ok-tag (progn ,@body))))
-             (error 'timeout))
+             (error 'timeout :length timeout))
          (when (thread-alive-p ,sleeper)
            (destroy-thread ,sleeper)))))
   #-thread-support

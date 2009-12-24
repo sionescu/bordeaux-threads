@@ -44,6 +44,7 @@ Distributed under the MIT license (see LICENSE file)
   ;; - added Scieneer Common Lisp support
   :licence "MIT"
   :version "0.5.1"
+  :depends-on (:alexandria)
   :components ((:module "src"
                         :serial t
                         :components

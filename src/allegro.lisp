@@ -68,8 +68,9 @@ Distributed under the MIT license (see LICENSE file)
 ;;; Timeouts
 
 (defmacro with-timeout ((timeout) &body body)
-  `(mp:with-timeout (,timeout)
-     ,@body))
+  (once-only (timeout)
+    `(mp:with-timeout (,timeout (error 'timeout :length ,timeout))
+       ,@body)))
 
 ;;; Introspection/debugging
 
