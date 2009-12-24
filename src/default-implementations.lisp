@@ -250,24 +250,25 @@ support WITH-TIMEOUT natively and don't support threads either it has no effect.
         (timeout-tag (gensym "TIMEOUT"))
         (caller (gensym "CALLER"))
         (sleeper (gensym "SLEEPER")))
-    `(let (,sleeper)
-       (multiple-value-prog1
-           (catch ',ok-tag
-             (catch ',timeout-tag
-               (let ((,caller (current-thread)))
-                 (setf ,sleeper
-                       (make-thread #'(lambda ()
-                                        (sleep ,timeout)
-                                        (interrupt-thread ,caller
-                                                          #'(lambda ()
-                                                              (ignore-errors
-                                                                (throw ',timeout-tag nil)))))
-                                    :name (format nil "WITH-TIMEOUT thread serving: ~S."
-                                                  (thread-name ,caller))))
-                 (throw ',ok-tag (progn ,@body))))
-             (error 'timeout :length timeout))
-         (when (thread-alive-p ,sleeper)
-           (destroy-thread ,sleeper)))))
+    (once-only (timeout)
+      `(let (,sleeper)
+         (multiple-value-prog1
+             (catch ',ok-tag
+               (catch ',timeout-tag
+                 (let ((,caller (current-thread)))
+                   (setf ,sleeper
+                         (make-thread #'(lambda ()
+                                          (sleep ,timeout)
+                                          (interrupt-thread ,caller
+                                                            #'(lambda ()
+                                                                (ignore-errors
+                                                                  (throw ',timeout-tag nil)))))
+                                      :name (format nil "WITH-TIMEOUT thread serving: ~S."
+                                                    (thread-name ,caller))))
+                   (throw ',ok-tag (progn ,@body))))
+               (error 'timeout :length ,timeout))
+           (when (thread-alive-p ,sleeper)
+             (destroy-thread ,sleeper))))))
   #-thread-support
   `(progn
      ,@body))
