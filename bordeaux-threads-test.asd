@@ -6,4 +6,5 @@ Distributed under the MIT license (see LICENSE file)
 
 (defsystem :bordeaux-threads-test
   :depends-on (:bordeaux-threads :lift)
-  :components ((:module "test" :components ((:file "bordeaux-threads-test")))))
+  :components ((:module "test"
+                :components ((:file "bordeaux-threads-test")))))

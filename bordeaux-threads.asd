@@ -29,42 +29,29 @@ Distributed under the MIT license (see LICENSE file)
 
 (defsystem :bordeaux-threads
   :author "Greg Pfeil <greg@technomadic.org>"
-  ;; based on original Bordeaux-MP spec by Dan Barlow <dan@telent.net>
-  ;; contributors:
-  ;; Attila Lendvai <attila.lendvai@gmail.com>
-  ;; - better handling of unsupported Lisps
-  ;; Vladimir Sekissov <svg@surnet.ru>
-  ;; - fixes for CMUCL implementation
-  ;; Pierre Thierry <nowhere.man@levallois.eu.org>
-  ;; - added license information
-  ;; Stelian Ionescu <sionescu@cddr.org>
-  ;; - finished conversion from generic functions
-  ;; - enabled running thread-safe code in unthreaded lisps
-  ;; Douglas Crosher <dtc@scieneer.com>
-  ;; - added Scieneer Common Lisp support
   :licence "MIT"
-  :version "0.5.1"
+  :version "0.6.0-dev"
   :depends-on (:alexandria)
   :components ((:module "src"
-                        :serial t
-                        :components
-                        ((:file "bordeaux-threads")
-                         (:file #+(and thread-support allegro)   "allegro"
-                                #+(and thread-support armedbear) "armedbear"
-                                #+(and thread-support cmu)       "cmu"
-                                #+(and thread-support scl)       "scl"
-                                #+(and thread-support corman)    "corman"
-                                #+(and thread-support digitool)  "mcl"
-                                #+(and thread-support ecl)       "ecl"
-                                #+(and thread-support lispworks) "lispworks"
-                                #+(and thread-support openmcl)   "openmcl"
-                                #+(and thread-support sbcl)      "sbcl"
-                                #+(and thread-support clisp)     "clisp"
-                                #-thread-support                 "unsupported")
-                         (:file "default-implementations")
-                         #+(and thread-support
-                                (or armedbear ecl lispworks digitool))
-                         (:file "condition-variables"))))
+                :serial t
+                :components
+                ((:file "bordeaux-threads")
+                 (:file #+(and thread-support allegro)   "allegro"
+                        #+(and thread-support armedbear) "armedbear"
+                        #+(and thread-support cmu)       "cmu"
+                        #+(and thread-support scl)       "scl"
+                        #+(and thread-support corman)    "corman"
+                        #+(and thread-support digitool)  "mcl"
+                        #+(and thread-support ecl)       "ecl"
+                        #+(and thread-support lispworks) "lispworks"
+                        #+(and thread-support openmcl)   "openmcl"
+                        #+(and thread-support sbcl)      "sbcl"
+                        #+(and thread-support clisp)     "clisp"
+                        #-thread-support                 "unsupported")
+                 (:file "default-implementations")
+                 #+(and thread-support
+                        (or armedbear ecl lispworks digitool))
+                 (:file "condition-variables"))))
   :in-order-to ((test-op (load-op bordeaux-threads-test)))
   :perform (test-op :after (op c)
              (describe
