@@ -37,7 +37,8 @@ Distributed under the MIT license (see LICENSE file)
   :components ((:module "src"
                 :serial t
                 :components
-                ((:file "bordeaux-threads")
+                ((:file "pkgdcl")
+                 (:file "bordeaux-threads")
                  (:file #+(and thread-support armedbear) "impl-abcl"
                         #+(and thread-support allegro)   "impl-allegro"
                         #+(and thread-support clisp)     "impl-clisp"
