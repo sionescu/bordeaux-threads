@@ -30,7 +30,9 @@ Distributed under the MIT license (see LICENSE file)
 (defsystem :bordeaux-threads
   :author "Greg Pfeil <greg@technomadic.org>"
   :licence "MIT"
-  :version "0.6.0-dev"
+  :version #.(with-open-file
+                 (vers (merge-pathnames "version.lisp-expr" *load-truename*))
+               (read vers))
   :depends-on (:alexandria)
   :components ((:module "src"
                 :serial t
