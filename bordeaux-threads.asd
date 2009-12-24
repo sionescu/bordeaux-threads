@@ -36,21 +36,21 @@ Distributed under the MIT license (see LICENSE file)
                 :serial t
                 :components
                 ((:file "bordeaux-threads")
-                 (:file #+(and thread-support allegro)   "allegro"
-                        #+(and thread-support armedbear) "armedbear"
-                        #+(and thread-support cmu)       "cmu"
-                        #+(and thread-support scl)       "scl"
-                        #+(and thread-support corman)    "corman"
-                        #+(and thread-support digitool)  "mcl"
-                        #+(and thread-support ecl)       "ecl"
-                        #+(and thread-support lispworks) "lispworks"
-                        #+(and thread-support openmcl)   "openmcl"
-                        #+(and thread-support sbcl)      "sbcl"
-                        #+(and thread-support clisp)     "clisp"
+                 (:file #+(and thread-support armedbear) "impl-abcl"
+                        #+(and thread-support allegro)   "impl-allegro"
+                        #+(and thread-support clisp)     "impl-clisp"
+                        #+(and thread-support openmcl)   "impl-clozure"
+                        #+(and thread-support cmu)       "impl-cmucl"
+                        #+(and thread-support corman)    "impl-corman"
+                        #+(and thread-support ecl)       "impl-ecl"
+                        #+(and thread-support lispworks) "impl-lispworks"
+                        #+(and thread-support digitool)  "impl-mcl"
+                        #+(and thread-support sbcl)      "impl-sbcl"
+                        #+(and thread-support scl)       "impl-scl"
                         #-thread-support                 "unsupported")
                  (:file "default-implementations")
                  #+(and thread-support
-                        (or armedbear ecl lispworks digitool))
+                        (or armedbear digitool ecl lispworks))
                  (:file "condition-variables"))))
   :in-order-to ((test-op (load-op bordeaux-threads-test)))
   :perform (test-op :after (op c)
