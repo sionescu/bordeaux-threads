@@ -39,9 +39,9 @@ Distributed under the MIT license (see LICENSE file)
     (let* ((the-as 50) (the-bs 150) (*b* 42)
            some-a some-b some-other-a some-other-b
            (*default-special-bindings*
-            (list* (cons '*a* (lambda () (incf the-as)))
-                   (cons '*b* (lambda () (incf the-bs)))
-                   *default-special-bindings*))
+            `((*a* . (funcall ,(lambda () (incf the-as))))
+              (*b* . (funcall ,(lambda () (incf the-bs))))
+              ,@*default-special-bindings*))
            (threads (list (make-thread
                            (lambda ()
                              (setf some-a *a* some-b *b*)))
