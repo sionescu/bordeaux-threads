@@ -4,10 +4,7 @@ Copyright 2006,2007 Greg Pfeil
 Distributed under the MIT license (see LICENSE file)
 |#
 
-(defpackage bordeaux-threads-system
-  (:use #:cl #:asdf))
-
-(in-package :bordeaux-threads-system)
+(in-package :cl-user)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   #+allegro (require :process)
@@ -27,7 +24,7 @@ Distributed under the MIT license (see LICENSE file)
         (and clisp mt))
   (pushnew :thread-support *features*))
 
-(defsystem :bordeaux-threads
+(asdf:defsystem :bordeaux-threads
   :author "Greg Pfeil <greg@technomadic.org>"
   :licence "MIT"
   :version #.(with-open-file
@@ -55,13 +52,7 @@ Distributed under the MIT license (see LICENSE file)
                  #+(and thread-support
                         (or armedbear digitool ecl lispworks))
                  (:file "condition-variables"))))
-  :in-order-to ((test-op (load-op bordeaux-threads-test)))
-  :perform (test-op :after (op c)
-             (describe
-              (funcall (intern (string '#:run-tests) :lift)
-                       :suite (intern (string '#:test-bordeaux-threads)
-                                      :bordeaux-threads-test)))))
+  :in-order-to ((asdf:test-op (asdf:load-op bordeaux-threads-test)))
+  :perform (asdf:test-op :after (op c)
+             (asdf:oos 'asdf:test-op :bordeaux-threads-test)))
 
-(defmethod operation-done-p ((op test-op)
-                             (c (eql (find-system :bordeaux-threads))))
-  (values nil))
