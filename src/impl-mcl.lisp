@@ -41,8 +41,8 @@ Distributed under the MIT license (see LICENSE file)
 (defun all-threads ()
   ccl:*all-processes*)
 
-(defun interrupt-thread (thread function)
-  (ccl:process-interrupt thread function))
+(defun interrupt-thread (thread function &rest args)
+  (apply #'ccl:process-interrupt thread function args))
 
 (defun destroy-thread (thread)
   (signal-error-if-current-thread thread)

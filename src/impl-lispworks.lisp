@@ -57,8 +57,8 @@ Distributed under the MIT license (see LICENSE file)
 (defun all-threads ()
   (mp:list-all-processes))
 
-(defun interrupt-thread (thread function)
-  (mp:process-interrupt thread function))
+(defun interrupt-thread (thread function &rest args)
+  (apply #'mp:process-interrupt thread function args))
 
 (defun destroy-thread (thread)
   (signal-error-if-current-thread thread)

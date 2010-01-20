@@ -55,8 +55,8 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Introspection/debugging
 
-(defun interrupt-thread (thread function)
-  (ext:interrupt-thread thread function))
+(defun interrupt-thread (thread function &rest args)
+  (apply #'ext:interrupt-thread thread function args))
 
 (defun destroy-thread (thread)
   (signal-error-if-current-thread thread)

@@ -95,8 +95,13 @@ Distributed under the MIT license (see LICENSE file)
 (defun all-threads ()
   (mp:all-processes))
 
-(defun interrupt-thread (thread function)
-  (mp:process-interrupt thread function))
+(defun interrupt-thread (thread function &rest args)
+  (flet ((apply-function ()
+           (if args
+               (lambda () (apply function args))
+               function)))
+    (declare (dynamic-extent #'apply-function))
+    (mp:process-interrupt thread (apply-function))))
 
 (defun destroy-thread (thread)
   (signal-error-if-current-thread thread)

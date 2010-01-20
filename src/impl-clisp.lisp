@@ -94,8 +94,8 @@ Distributed under the MIT license (see LICENSE file)
 (defun all-threads ()
   (delete-if-not #'mt:thread-active-p (mt:list-threads)))
 
-(defun interrupt-thread (thread function)
-  (mt:thread-interrupt thread :function function))
+(defun interrupt-thread (thread function &rest args)
+  (mt:thread-interrupt thread :function function :arguments args))
 
 (defun destroy-thread (thread)
   ;;; VTZ: actually we can kill ourselelf.

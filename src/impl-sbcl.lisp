@@ -81,8 +81,13 @@ Distributed under the MIT license (see LICENSE file)
 (defun all-threads ()
   (sb-thread:list-all-threads))
 
-(defun interrupt-thread (thread function)
-  (sb-thread:interrupt-thread thread function))
+(defun interrupt-thread (thread function &rest args)
+  (flet ((apply-function ()
+           (if args
+               (lambda () (apply function args))
+               function)))
+    (declare (dynamic-extent #'apply-function))
+    (sb-thread:interrupt-thread thread (apply-function))))
 
 (defun destroy-thread (thread)
   (signal-error-if-current-thread thread)
