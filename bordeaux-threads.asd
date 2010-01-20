@@ -48,8 +48,9 @@ Distributed under the MIT license (see LICENSE file)
                         #+(and thread-support sbcl)      "impl-sbcl"
                         #+(and thread-support scl)       "impl-scl"
                         #-thread-support                 "unsupported")
-                 #+(and thread-support
-                        (or armedbear digitool ecl lispworks))
+                 #+(and thread-support lispworks (not lispworks6))
+                 (:file "impl-lispworks-condition-variables")
+                 #+(and thread-support (or armedbear digitool ecl))
                  (:file "condition-variables")
                  (:file "default-implementations"))))
   :in-order-to ((asdf:test-op (asdf:load-op bordeaux-threads-test)))
