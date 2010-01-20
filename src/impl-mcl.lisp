@@ -17,10 +17,10 @@ Distributed under the MIT license (see LICENSE file)
   (ccl:process-run-function name function))
 
 (defun current-thread ()
-  ccl:*current-thread*)
+  ccl:*current-process*)
 
 (defun threadp (object)
-  (ccl:processp object))
+  (ccl::processp object))
 
 (defun thread-name (thread)
   (ccl:process-name thread))
