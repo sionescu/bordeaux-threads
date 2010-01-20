@@ -8,6 +8,9 @@ Distributed under the MIT license (see LICENSE file)
 
 (in-package #:bordeaux-threads)
 
+(deftype thread ()
+  'mt:thread)
+
 (defvar *thread-join-mutex* nil)
 
 ;;; initialize *thread-join-mutex* for loading thread

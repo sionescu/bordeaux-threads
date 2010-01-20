@@ -8,6 +8,9 @@ Distributed under the MIT license (see LICENSE file)
 
 (in-package #:bordeaux-threads)
 
+(deftype thread ()
+  'thread:thread)
+
 (defun %make-thread (function name)
   (thread:thread-create function :name name))
 

@@ -11,6 +11,9 @@ Distributed under the MIT license (see LICENSE file)
 ;;; documentation on the SBCL Threads interface can be found at
 ;;; http://www.sbcl.org/manual/Threading.html
 
+(deftype thread ()
+  'sb-thread:thread)
+
 ;;; Thread Creation
 
 (defun %make-thread (function name)

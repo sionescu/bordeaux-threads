@@ -8,6 +8,9 @@ Distributed under the MIT license (see LICENSE file)
 
 (in-package #:bordeaux-threads)
 
+(deftype thread ()
+  'ccl:process)
+
 ;;; Thread Creation
 
 (defun %make-thread (function name)

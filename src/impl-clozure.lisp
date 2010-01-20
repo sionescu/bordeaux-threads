@@ -11,6 +11,9 @@ Distributed under the MIT license (see LICENSE file)
 ;;; documentation on the OpenMCL Threads interface can be found at
 ;;; http://openmcl.clozure.com/Doc/Programming-with-Threads.html
 
+(deftype thread ()
+  'ccl:process)
+
 ;;; Thread Creation
 
 (defun %make-thread (function name)

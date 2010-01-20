@@ -11,6 +11,9 @@ Distributed under the MIT license (see LICENSE file)
 ;;; the implementation of the Armed Bear thread interface can be found in
 ;;; src/org/armedbear/lisp/LispThread.java
 
+(deftype thread ()
+  'ext:thread)
+
 ;;; Thread Creation
 
 (defun %make-thread (function name)

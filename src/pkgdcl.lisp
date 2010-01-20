@@ -5,7 +5,7 @@
 (defpackage bordeaux-threads
   (:nicknames #:bt)
   (:use #:cl #:alexandria)
-  (:export #:make-thread #:current-thread #:threadp #:thread-name
+  (:export #:thread #:make-thread #:current-thread #:threadp #:thread-name
            #:*default-special-bindings* #:*standard-io-bindings*
            #:*supports-threads-p*
 
@@ -14,12 +14,11 @@
            #:release-recursive-lock #:with-recursive-lock-held
 
            #:make-condition-variable #:condition-wait #:condition-notify
-           #:thread-yield
 
            #:with-timeout #:timeout
 
            #:all-threads #:interrupt-thread #:destroy-thread #:thread-alive-p
-           #:join-thread)
+           #:join-thread #:thread-yield)
   (:documentation "BORDEAUX-THREADS is a proposed standard for a minimal
   MP/threading interface. It is similar to the CLIM-SYS threading and
   lock support, but for the following broad differences:

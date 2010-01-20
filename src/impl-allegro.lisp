@@ -11,6 +11,9 @@ Distributed under the MIT license (see LICENSE file)
 ;;; documentation on the Allegro Multiprocessing interface can be found at
 ;;; http://www.franz.com/support/documentation/8.1/doc/multiprocessing.htm
 
+(deftype thread ()
+  'mp:process)
+
 ;;; Thread Creation
 
 (defun %make-thread (function name)

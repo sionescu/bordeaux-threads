@@ -13,6 +13,9 @@ Distributed under the MIT license (see LICENSE file)
 
 (mp:initialize-multiprocessing)
 
+(deftype thread ()
+  'mp:process)
+
 ;;; Thread Creation
 
 (defun %make-thread (function name)
