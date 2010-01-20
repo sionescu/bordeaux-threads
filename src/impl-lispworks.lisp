@@ -49,6 +49,18 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Resource contention: condition variables
 
+#+(or lispworks6)
+(defun make-condition-variable (&key name)
+  (mp:make-condition-variable :name (or name "Anonymous condition variable")))
+
+#+(or lispworks6)
+(defun condition-wait (condition-variable lock)
+  (mp:condition-variable-wait condition-variable lock))
+
+#+(or lispworks6)
+(defun condition-notify (condition-variable)
+  (mp:condition-signal condition-variable))
+
 (defun thread-yield ()
   (mp:process-allow-scheduling))
 
