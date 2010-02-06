@@ -16,6 +16,9 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Thread Creation
 
+(defun start-multiprocessing ()
+  (mp:start-scheduler))
+
 (defun %make-thread (function name)
   (mp:process-run-function name function))
 

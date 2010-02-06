@@ -13,6 +13,9 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Thread Creation
 
+(defun start-multiprocessing ()
+  (mp::startup-idle-and-top-level-loops))
+
 (defun %make-thread (function name)
   (mp:make-process function :name name))
 

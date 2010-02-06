@@ -20,6 +20,12 @@
 
 ;;; Thread Creation
 
+(defdfun start-multiprocessing ()
+  "If the host implementation uses user-level threads, start the
+scheduler and multiprocessing, otherwise do nothing.
+It is safe to call repeatedly."
+  nil)
+
 (defdfun make-thread (function &key name
                       (initial-bindings *default-special-bindings*))
   "Creates and returns a thread named NAME, which will call the
