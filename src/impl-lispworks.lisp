@@ -33,7 +33,9 @@ Distributed under the MIT license (see LICENSE file)
 ;;; Resource contention: locks and recursive locks
 
 (defun make-lock (&optional name)
-  (mp:make-lock :name (or name "Anonymous lock")))
+  (mp:make-lock :name (or name "Anonymous lock")
+                #-(or lispworks4 lispworks5) :recursivep
+                #-(or lispworks4 lispworks5) nil))
 
 (defun acquire-lock (lock &optional (wait-p t))
   (mp:process-lock lock nil
@@ -45,6 +47,22 @@ Distributed under the MIT license (see LICENSE file)
   (mp:process-unlock lock))
 
 (defmacro with-lock-held ((place) &body body)
+  `(mp:with-lock (,place) ,@body))
+
+(defun make-recursive-lock (&optional name)
+  (mp:make-lock :name (or name "Anonymous recursive lock")
+                #-(or lispworks4 lispworks5) :recursivep
+                #-(or lispworks4 lispworks5) t))
+
+(defun acquire-recursive-lock (lock &optional (wait-p t))
+  (declare (inline acquire-lock))
+  (acquire-lock lock wait-p))
+
+(defun release-recursive-lock (lock)
+  (declare (inline release-lock))
+  (release-lock lock))
+
+(defmacro with-recursive-lock-held ((place) &body body)
   `(mp:with-lock (,place) ,@body))
 
 ;;; Resource contention: condition variables
