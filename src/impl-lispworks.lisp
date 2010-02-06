@@ -11,8 +11,6 @@ Distributed under the MIT license (see LICENSE file)
 ;;; documentation on the LispWorks Multiprocessing interface can be found at
 ;;; http://www.lispworks.com/documentation/lw445/LWUG/html/lwuser-156.htm
 
-(mp:initialize-multiprocessing)
-
 (deftype thread ()
   'mp:process)
 
