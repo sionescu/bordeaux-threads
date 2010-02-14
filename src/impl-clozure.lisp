@@ -83,6 +83,7 @@ Distributed under the MIT license (see LICENSE file)
   (ccl:all-processes))
 
 (defun interrupt-thread (thread function &rest args)
+  (declare (dynamic-extent args))
   (apply #'ccl:process-interrupt thread function args))
 
 (defun destroy-thread (thread)
