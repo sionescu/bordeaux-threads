@@ -30,6 +30,17 @@ Distributed under the MIT license (see LICENSE file)
 (defun make-lock (&optional name)
   (ccl:make-lock (or name "Anonymous lock")))
 
+(defun acquire-lock (lock &optional (wait-p t))
+  (if wait-p
+    (ccl:process-lock lock ccl:*current-process*)
+    ;; this is broken, but it's better than a no-op
+    (ccl:without-interrupts
+     (when (null (ccl::lock.value lock))
+       (ccl:process-lock lock ccl:*current-process*)))))
+
+(defun release-lock (lock)
+  (ccl:process-unlock lock))
+
 (defmacro with-lock-held ((place) &body body)
   `(ccl:with-lock-grabbed (,place) ,@body))
 
