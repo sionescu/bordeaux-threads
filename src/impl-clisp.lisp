@@ -11,31 +11,12 @@ Distributed under the MIT license (see LICENSE file)
 (deftype thread ()
   'mt:thread)
 
-(defvar *thread-join-mutex* nil)
-
-;;; initialize *thread-join-mutex* for loading thread
-;;; NB: all existing threads at time of loading(even those not created by B-T)
-;;;     will become "joinable".
-(eval-when (:load-toplevel)
-  (mapcar
-   (lambda (thr)
-     (unless (mt:symbol-value-thread '*thread-join-mutex* thr)
-       (mt:thread-interrupt
-        thr
-        :function #'mt:mutex-lock
-        :arguments (list (setf (mt:symbol-value-thread '*thread-join-mutex* T)
-                               (mt:make-mutex))))))
-   (mt:list-threads)))
-
 ;;; Thread Creation
 (defun %make-thread (function name)
-  (mt:make-thread
-   (lambda ()
-     (let ((*thread-join-mutex* (mt:make-mutex)))
-       (mt:with-mutex-lock (*thread-join-mutex*)
-         (funcall function))))
-   :name name
-   :initial-bindings mt:*default-special-bindings*))
+  (mt:make-thread function
+                  :name name
+                  :joinable-p joinable
+                  :initial-bindings mt:*default-special-bindings*))
 
 (defun current-thread ()
   (mt:current-thread))
@@ -106,15 +87,7 @@ Distributed under the MIT license (see LICENSE file)
 (defun thread-alive-p (thread)
   (mt:thread-active-p thread))
 
-;;; VTZ: the current implementation is trivial and may cause contention
-;;; if the thread is tried to be joined immediately after its creation
-;;; or if :initial-bindings argument of make-thread cause entering the debugger
-(defun thread-join (thread)
-  (loop while (mt:thread-active-p thread) do
-       (let ((jmx (mt:symbol-value-thread '*thread-join-mutex* thread)))
-         (when jmx ; mutex may have not been created
-           (mt:mutex-lock jmx) ; wait
-           ; give chance other threads to wait/join as well
-           (mt:mutex-unlock jmx)))))
+(defun join-thread (thread)
+  (mt:thread-join thread))
 
 (mark-supported)
