@@ -30,7 +30,7 @@ It is safe to call repeatedly."
                       (initial-bindings *default-special-bindings*))
   "Creates and returns a thread named NAME, which will call the
   function FUNCTION with no arguments: when FUNCTION returns, the
-  thread terminates. NAME defaults to NIL if unsupplied.
+  thread terminates. NAME defaults to \"Anonymous thread\" if unsupplied.
 
   On systems that do not support multi-threading, MAKE-THREAD will
   signal an error.
