@@ -15,7 +15,7 @@ Distributed under the MIT license (see LICENSE file)
 (defun %make-thread (function name)
   (mt:make-thread function
                   :name name
-                  :joinable-p joinable
+                  :joinable-p t
                   :initial-bindings mt:*default-special-bindings*))
 
 (defun current-thread ()
