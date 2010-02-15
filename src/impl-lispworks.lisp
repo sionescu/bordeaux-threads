@@ -100,6 +100,7 @@ Distributed under the MIT license (see LICENSE file)
 
 (defun join-thread (thread)
   (mp:process-wait (format nil "Waiting for thread ~A to complete" thread)
-                   (complement #'mp:process-alive-p) thread))
+                   (complement #'mp:process-alive-p)
+                   thread))
 
 (mark-supported)
