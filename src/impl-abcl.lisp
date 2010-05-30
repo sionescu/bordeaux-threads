@@ -17,23 +17,19 @@ Distributed under the MIT license (see LICENSE file)
 ;;; Thread Creation
 
 (defun %make-thread (function name)
-  (ext:make-thread function :name name))
+  (threads:make-thread function :name name))
 
 (defun current-thread ()
-  (ext:current-thread))
+  (threads:current-thread))
 
 (defun thread-name (thread)
-  (ext:thread-name thread))
+  (threads:thread-name thread))
 
-;;; Yes, this is nasty
 (defun threadp (object)
-  (handler-case (progn (thread-name object) t)
-    (type-error () nil)))
+  (typep object 'thread))
 
 ;;; Resource contention: locks and recursive locks
 
-;;; Don't know what the arguments to MAKE-THREAD-LOCK are, but it
-;;; doesn't mind being a thunk
 (defun make-lock (&optional name)
   (declare (ignore name))
   (ext:make-thread-lock))
@@ -56,13 +52,16 @@ Distributed under the MIT license (see LICENSE file)
 ;;; Introspection/debugging
 
 (defun interrupt-thread (thread function &rest args)
-  (apply #'ext:interrupt-thread thread function args))
+  (apply #'threads:interrupt-thread thread function args))
 
 (defun destroy-thread (thread)
   (signal-error-if-current-thread thread)
-  (ext:destroy-thread thread))
+  (threads:destroy-thread thread))
 
 (defun thread-alive-p (thread)
-  (ext:thread-alive-p thread))
+  (threads:thread-alive-p thread))
+
+(defun join-thread (thread)
+  (threads:thread-join thread))
 
 (mark-supported)
