@@ -5,36 +5,40 @@ Distributed under the MIT license (see LICENSE file)
 |#
 
 (defpackage bordeaux-threads-test
-  (:use #:cl #:bordeaux-threads #:lift)
+  (:use #:cl #:bordeaux-threads #:fiveam)
   (:shadow #:with-timeout))
 
 (in-package #:bordeaux-threads-test)
 
-(deftestsuite test-bordeaux-threads ()
-  ((lock (make-lock))))
+(def-suite :bordeaux-threads)
+(def-fixture using-lock () 
+  (let ((lock (make-lock)))
+    (&body)))
+(in-suite :bordeaux-threads)
 
-(addtest should-have-current-thread
-  (ensure (current-thread)))
+(test should-have-current-thread
+  (is (current-thread)))
 
-(addtest should-identify-threads-correctly
-  (ensure (threadp (current-thread)))
-  (ensure (threadp (make-thread (lambda () t) :name "foo")))
-  (ensure (not (threadp (make-lock)))))
+(test should-identify-threads-correctly
+  (is (threadp (current-thread)))
+  (is (threadp (make-thread (lambda () t) :name "foo")))
+  (is (not (threadp (make-lock)))))
 
-(addtest should-retrieve-thread-name
-  (ensure-same (thread-name (make-thread (lambda () t) :name "foo")) "foo"))
+(test should-retrieve-thread-name
+  (is (equal (thread-name (make-thread (lambda () t) :name "foo")) "foo")))
 
-(addtest should-lock-without-contention
-  (ensure (acquire-lock lock t))
-  (release-lock lock)
-  (ensure (acquire-lock lock nil))
-  (release-lock lock))
+(test should-lock-without-contention
+  (with-fixture using-lock ()
+    (is (acquire-lock lock t))
+    (release-lock lock)
+    (is (acquire-lock lock nil))
+    (release-lock lock)))
 
 (defun set-equal (set-a set-b)
   (and (null (set-difference set-a set-b))
        (null (set-difference set-b set-a))))
 
-(addtest default-special-bindings
+(test default-special-bindings
   (locally (declare (special *a* *c*))
     (let* ((the-as 50) (the-bs 150) (*b* 42)
            some-a some-b some-other-a some-other-b
@@ -51,17 +55,18 @@ Distributed under the MIT license (see LICENSE file)
                                    some-other-b *b*))))))
       (declare (special *b*))
       (thread-yield)
-      (ensure (not (boundp '*a*)))
+      (is (not (boundp '*a*)))
       (loop while (some #'thread-alive-p threads)
             do (thread-yield))
-      (ensure-same (list some-a some-other-a) '(51 52) :test set-equal)
-      (ensure-same (list some-b some-other-b) '(151 152) :test set-equal)
-      (ensure (not (boundp '*a*))))))
+      (is (set-equal (list some-a some-other-a) '(51 52)))
+      (is (set-equal (list some-b some-other-b) '(151 152)))
+      (is (not (boundp '*a*))))))
+
 
 (defparameter *shared* 0)
 (defparameter *lock* (make-lock))
 
-(addtest should-have-thread-interaction
+(test should-have-thread-interaction
   ;; this simple test generates N process. Each process grabs and
   ;; releases the lock until SHARED has some value, it then
   ;; increments SHARED. the outer code first sets shared 1 which
@@ -88,11 +93,12 @@ Distributed under the MIT license (see LICENSE file)
            until (with-lock-held (*lock*)
                    (= (1+ (length procs)) *shared*))
            do (with-lock-held (*lock*)
-                (ensure (>= (1+ (length procs)) *shared*))))))))
+                (is (>= (1+ (length procs)) *shared*))))))))
+
 
 (defparameter *condition-variable* (make-condition-variable))
 
-(addtest condition-variable
+(test condition-variable
   (setf *shared* 0)
   (let ((num-procs 100))
     (dotimes (i num-procs)
@@ -109,11 +115,11 @@ Distributed under the MIT license (see LICENSE file)
       (loop
          until (= num-procs *shared*)
          do (condition-wait *condition-variable* *lock*)))
-    (ensure-same num-procs *shared*)))
+    (is (equal num-procs *shared*))))
 
 ;; Generally safe sanity check for the locks and single-notify
 #+(and lispworks (not lispworks6))
-(addtest condition-variable-lw
+(test condition-variable-lw
   (let ((condition-variable (make-condition-variable :name "Test"))
         (test-lock (make-lock))
         (completed nil))
