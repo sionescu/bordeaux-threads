@@ -78,7 +78,7 @@ Distributed under the MIT license (see LICENSE file)
 
 #+(or lispworks6)
 (defun condition-notify (condition-variable)
-  (mp:condition-signal condition-variable))
+  (mp:condition-variable-signal condition-variable))
 
 (defun thread-yield ()
   (mp:process-allow-scheduling))
