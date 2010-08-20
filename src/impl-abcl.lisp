@@ -32,17 +32,17 @@ Distributed under the MIT license (see LICENSE file)
 
 (defun make-lock (&optional name)
   (declare (ignore name))
-  (ext:make-thread-lock))
+  (threads:make-thread-lock))
 
 (defun acquire-lock (lock &optional (wait-p t))
   (declare (ignore wait-p))
-  (ext:thread-lock lock))
+  (threads:thread-lock lock))
 
 (defun release-lock (lock)
-  (ext:thread-unlock lock))
+  (threads:thread-unlock lock))
 
 (defmacro with-lock-held ((place) &body body)
-  `(ext:with-thread-lock (,place) ,@body))
+  `(threads:with-thread-lock (,place) ,@body))
 
 ;;; Resource contention: condition variables
 
@@ -50,6 +50,12 @@ Distributed under the MIT license (see LICENSE file)
   (sleep 0))
 
 ;;; Introspection/debugging
+
+(defun all-threads ()
+  (let ((threads ()))
+    (threads:mapcar-threads (lambda (th)
+			      (push th threads)))
+    (reverse threads)))
 
 (defun interrupt-thread (thread function &rest args)
   (apply #'threads:interrupt-thread thread function args))
