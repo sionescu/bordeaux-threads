@@ -42,16 +42,32 @@ Distributed under the MIT license (see LICENSE file)
 (defmacro with-lock-held ((place) &body body)
   `(mp:with-lock (,place) ,@body))
 
-;; FIXME: Missing:
-;;        * make-recursive-lock
-;;        * acquire-recursive-lock
-;;        * release-recursive-lock
+(defun make-recursive-lock (&optional name)
+  (mp:make-lock :name (or name "Anonymous recursive lock") :recursive t))
+
+(defun acquire-recursive-lock (lock &optional (wait-p t))
+  (mp:get-lock lock wait-p))
+
+(defun release-recursive-lock (lock)
+  (mp:giveup-lock lock))
+
+(defmacro with-recursive-lock-held ((place) &body body)
+  `(mp:with-lock (,place) ,@body))
 
 ;;; Resource contention: condition variables
 
+(defun make-condition-variable (&key name)
+  (declare (ignore name))
+  (mp:make-condition-variable))
+
+(defun condition-wait (condition-variable lock)
+  (mp:condition-variable-wait condition-variable lock))
+
+(defun condition-notify (condition-variable)
+  (mp:condition-variable-signal condition-variable))
+
 (defun thread-yield ()
-  ;; (mp:yield)
-  (sleep 0))
+  (mp:process-yield))
 
 ;;; Introspection/debugging
 
@@ -72,5 +88,8 @@ Distributed under the MIT license (see LICENSE file)
 
 (defun thread-alive-p (thread)
   (mp:process-active-p thread))
+
+(defun join-thread (thread)
+  (mp:process-join thread))
 
 (mark-supported)
