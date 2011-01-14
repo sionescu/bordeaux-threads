@@ -46,7 +46,8 @@ Distributed under the MIT license (see LICENSE file)
                         #+(and thread-support lispworks) "impl-lispworks"
                         #+(and thread-support digitool)  "impl-mcl"
                         #+(and thread-support sbcl)      "impl-sbcl"
-                        #+(and thread-support scl)       "impl-scl")
+                        #+(and thread-support scl)       "impl-scl"
+                        #-thread-support                 "impl-null")
                  #+(and thread-support lispworks (not lispworks6))
                  (:file "impl-lispworks-condition-variables")
                  #+(and thread-support (or armedbear digitool))
