@@ -11,17 +11,17 @@ Distributed under the MIT license (see LICENSE file)
   #+corman  (require :threads))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  #+(or (and allegro multiprocessing)
-        armedbear
+  #+(or armedbear
+        (and allegro multiprocessing)
+        (and clisp mt)
+        (and openmcl openmcl-native-threads)
         (and cmu mp)
-        scl
         corman
-        (and digitool ccl-5.1)
         (and ecl threads)
         lispworks
-        (and openmcl openmcl-native-threads)
+        (and digitool ccl-5.1)
         (and sbcl sb-thread)
-        (and clisp mt))
+        scl)
   (pushnew :thread-support *features*))
 
 (asdf:defsystem :bordeaux-threads
