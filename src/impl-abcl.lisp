@@ -47,7 +47,7 @@ Distributed under the MIT license (see LICENSE file)
 ;;; Resource contention: condition variables
 
 (defun thread-yield ()
-  (sleep 0))
+  (sleep 0.01))
 
 ;;; Introspection/debugging
 
