@@ -12,7 +12,7 @@ Distributed under the MIT license (see LICENSE file)
 ;;; src/org/armedbear/lisp/LispThread.java
 
 (deftype thread ()
-  'ext:thread)
+  'threads:thread)
 
 ;;; Thread Creation
 
