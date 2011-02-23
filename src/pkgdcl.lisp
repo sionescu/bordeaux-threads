@@ -5,6 +5,8 @@
 (defpackage bordeaux-threads
   (:nicknames #:bt)
   (:use #:cl #:alexandria)
+  #+abcl
+  (:import-from :java #:jnew #:jcall #:jmethod)
   (:export #:thread #:make-thread #:current-thread #:threadp #:thread-name
            #:start-multiprocessing
            #:*default-special-bindings* #:*standard-io-bindings*
