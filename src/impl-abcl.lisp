@@ -53,8 +53,8 @@ Distributed under the MIT license (see LICENSE file)
 
 (defun all-threads ()
   (let ((threads ()))
-    (threads:mapcar-threads (lambda (th)
-			      (push th threads)))
+    (threads:mapcar-threads (lambda (thread)
+			      (push thread threads)))
     (reverse threads)))
 
 (defun interrupt-thread (thread function &rest args)
