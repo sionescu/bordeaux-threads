@@ -95,6 +95,19 @@ Distributed under the MIT license (see LICENSE file)
 (defun thread-yield ()
   (sleep 0.01))
 
+(defstruct condition-variable
+  (name "Anonymous condition variable"))
+
+(defun condition-wait (condition lock)
+  (threads:synchronized-on condition
+    (release-lock lock)
+    (threads:object-wait condition))
+  (acquire-lock lock))
+
+(defun condition-notify (condition)
+  (threads:synchronized-on condition
+     (threads:object-notify condition)))
+
 ;;; Introspection/debugging
 
 (defun all-threads ()
