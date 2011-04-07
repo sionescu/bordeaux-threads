@@ -3,6 +3,8 @@
 #|
 Copyright 2006, 2007 Greg Pfeil
 
+Reimplemented with java.util.concurrent.locks.ReentrantLock by Mark Evenson 2011.
+
 Distributed under the MIT license (see LICENSE file)
 |#
 
@@ -30,19 +32,63 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Resource contention: locks and recursive locks
 
+(defstruct mutex name lock)
+(defstruct (mutex-recursive (:include mutex)))
+
+;; Making methods constants in this manner avoids the runtime expense of
+;; introspection involved in JCALL with string arguments.
+(defconstant +lock+ 
+  (jmethod "java.util.concurrent.locks.ReentrantLock" "lock"))
+(defconstant +try-lock+ 
+  (jmethod "java.util.concurrent.locks.ReentrantLock" "tryLock"))
+(defconstant +is-held-by-current-thread+ 
+  (jmethod "java.util.concurrent.locks.ReentrantLock" "isHeldByCurrentThread"))
+(defconstant +unlock+ 
+  (jmethod "java.util.concurrent.locks.ReentrantLock" "unlock"))
+(defconstant +get-hold-count+ 
+  (jmethod "java.util.concurrent.locks.ReentrantLock" "getHoldCount"))
+
 (defun make-lock (&optional name)
-  (declare (ignore name))
-  (threads:make-thread-lock))
+  (make-mutex 
+   :name (or name "Anonymous lock")
+   :lock (jnew "java.util.concurrent.locks.ReentrantLock")))
 
 (defun acquire-lock (lock &optional (wait-p t))
-  (declare (ignore wait-p))
-  (threads:thread-lock lock))
+  (check-type lock mutex)
+  (when (jcall +is-held-by-current-thread+ (mutex-lock lock))
+    (error "Non-recursive lock being reacquired by owner."))
+  (cond
+    (wait-p
+     (jcall +lock+ (mutex-lock lock))
+     t)
+    (t (jcall +try-lock+ (mutex-lock lock)))))
 
 (defun release-lock (lock)
-  (threads:thread-unlock lock))
+  (check-type lock mutex)
+  (unless (jcall +is-held-by-current-thread+ (mutex-lock lock))
+    (error "Attempt to release lock not held by calling thread."))
+  (jcall +unlock+ (mutex-lock lock))
+  (values))
 
-(defmacro with-lock-held ((place) &body body)
-  `(threads:with-thread-lock (,place) ,@body))
+(defun make-recursive-lock (&optional name)
+  (make-mutex-recursive
+   :name (or name "Anonymous lock")
+   :lock (jnew "java.util.concurrent.locks.ReentrantLock")))
+
+(defun acquire-recursive-lock (lock &optional (wait-p t))
+  (check-type lock mutex-recursive)
+  (cond
+    (wait-p
+     (jcall +lock+ (mutex-recursive-lock lock))
+     t)
+    (t (jcall +try-lock+ (mutex-recursive-lock lock)))))
+
+(defun release-recursive-lock (lock)
+  (check-type lock mutex-recursive)
+  (unless (jcall +is-held-by-current-thread+ (mutex-lock lock))
+    (error "Attempt to release lock not held by calling thread."))
+  (jcall +unlock+ (mutex-lock lock))
+  (values))
 
 ;;; Resource contention: condition variables
 
