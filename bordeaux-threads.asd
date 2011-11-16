@@ -27,6 +27,7 @@ Distributed under the MIT license (see LICENSE file)
 (asdf:defsystem :bordeaux-threads
   :author "Greg Pfeil <greg@technomadic.org>"
   :licence "MIT"
+  :description "Bordeaux Threads makes writing portable multi-threaded apps simple"
   :version #.(with-open-file
                  (vers (merge-pathnames "version.lisp-expr" *load-truename*))
                (read vers))
