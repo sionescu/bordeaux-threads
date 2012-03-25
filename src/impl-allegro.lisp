@@ -19,8 +19,18 @@ Distributed under the MIT license (see LICENSE file)
 (defun start-multiprocessing ()
   (mp:start-scheduler))
 
+(defvar *thread-results* (make-hash-table :weak-keys t))
+
+(defvar *thread-join-lock* (make-lock :name "Bordeaux threads join lock"))
+
 (defun %make-thread (function name)
-  (mp:process-run-function name function))
+  (mp:process-run-function
+   name
+   (lambda ()
+     (let ((result (funcall function)))
+       (with-lock-held (*thread-join-lock*)
+         (setf (gethash (current-thread) *thread-results*)
+               result))))))
 
 (defun current-thread ()
   mp:*current-process*)
@@ -96,6 +106,10 @@ Distributed under the MIT license (see LICENSE file)
 (defun join-thread (thread)
   (mp:process-wait (format nil "Waiting for thread ~A to complete" thread)
                    (complement #'mp:process-alive-p)
-                   thread))
+                   thread)
+  (with-lock-held (*thread-join-lock*)
+    (prog1
+        (gethash thread *thread-results*)
+      (remhash thread *thread-results*))))
 
 (mark-supported)
