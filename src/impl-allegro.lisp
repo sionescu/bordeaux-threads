@@ -11,36 +11,6 @@ Distributed under the MIT license (see LICENSE file)
 ;;; documentation on the Allegro Multiprocessing interface can be found at
 ;;; http://www.franz.com/support/documentation/8.1/doc/multiprocessing.htm
 
-(deftype thread ()
-  'mp:process)
-
-;;; Thread Creation
-
-(defun start-multiprocessing ()
-  (mp:start-scheduler))
-
-(defvar *thread-results* (make-hash-table :weak-keys t))
-
-(defvar *thread-join-lock* (make-lock :name "Bordeaux threads join lock"))
-
-(defun %make-thread (function name)
-  (mp:process-run-function
-   name
-   (lambda ()
-     (let ((result (funcall function)))
-       (with-lock-held (*thread-join-lock*)
-         (setf (gethash (current-thread) *thread-results*)
-               result))))))
-
-(defun current-thread ()
-  mp:*current-process*)
-
-(defun threadp (object)
-  (typep object 'mp:process))
-
-(defun thread-name (thread)
-  (mp:process-name thread))
-
 ;;; Resource contention: locks and recursive locks
 
 (defun make-lock (&optional name)
@@ -80,6 +50,36 @@ Distributed under the MIT license (see LICENSE file)
 
 (defun thread-yield ()
   (mp:process-allow-schedule))
+
+(deftype thread ()
+  'mp:process)
+
+;;; Thread Creation
+
+(defun start-multiprocessing ()
+  (mp:start-scheduler))
+
+(defvar *thread-results* (make-hash-table :weak-keys t))
+
+(defvar *thread-join-lock* (make-lock :name "Bordeaux threads join lock"))
+
+(defun %make-thread (function name)
+  (mp:process-run-function
+   name
+   (lambda ()
+     (let ((result (funcall function)))
+       (with-lock-held (*thread-join-lock*)
+         (setf (gethash (current-thread) *thread-results*)
+               result))))))
+
+(defun current-thread ()
+  mp:*current-process*)
+
+(defun threadp (object)
+  (typep object 'mp:process))
+
+(defun thread-name (thread)
+  (mp:process-name thread))
 
 ;;; Timeouts
 
