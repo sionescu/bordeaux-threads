@@ -61,7 +61,7 @@ Distributed under the MIT license (see LICENSE file)
 
 (defvar *thread-results* (make-hash-table :weak-keys t))
 
-(defvar *thread-join-lock* (make-lock :name "Bordeaux threads join lock"))
+(defvar *thread-join-lock* (make-lock "Bordeaux threads join lock"))
 
 (defun %make-thread (function name)
   (mp:process-run-function
