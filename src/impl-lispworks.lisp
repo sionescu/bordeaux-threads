@@ -23,10 +23,17 @@ Distributed under the MIT license (see LICENSE file)
   (mp:process-run-function name nil function))
 
 (defun current-thread ()
-  mp:*current-process*)
+  #-#.(cl:if (cl:find-symbol (cl:string '#:get-current-process) :mp) '(and) '(or))
+  mp:*current-process*
+  ;; introduced in LispWorks 5.1
+  #+#.(cl:if (cl:find-symbol (cl:string '#:get-current-process) :mp) '(and) '(or))
+  (mp:get-current-process))
 
 (defun threadp (object)
-  (typep object 'mp:process))
+  (or (mp:process-p object)
+      ;; removed in LispWorks 6.1
+      #+#.(cl:if (cl:find-symbol (cl:string '#:simple-process-p) :mp) '(and) '(or))
+      (mp:simple-process-p object)))
 
 (defun thread-name (thread)
   (mp:process-name thread))
@@ -56,11 +63,9 @@ Distributed under the MIT license (see LICENSE file)
                 #-(or lispworks4 lispworks5) t))
 
 (defun acquire-recursive-lock (lock &optional (wait-p t))
-  (declare (inline acquire-lock))
   (acquire-lock lock wait-p))
 
 (defun release-recursive-lock (lock)
-  (declare (inline release-lock))
   (release-lock lock))
 
 (defmacro with-recursive-lock-held ((place) &body body)
@@ -99,8 +104,11 @@ Distributed under the MIT license (see LICENSE file)
   (mp:process-alive-p thread))
 
 (defun join-thread (thread)
+  #-#.(cl:if (cl:find-symbol (cl:string '#:process-join) :mp) '(and) '(or))
   (mp:process-wait (format nil "Waiting for thread ~A to complete" thread)
                    (complement #'mp:process-alive-p)
-                   thread))
+                   thread)
+  #+#.(cl:if (cl:find-symbol (cl:string '#:process-join) :mp) '(and) '(or))
+  (mp:process-join thread))
 
 (mark-supported)
