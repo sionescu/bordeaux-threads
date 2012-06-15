@@ -30,10 +30,7 @@ Distributed under the MIT license (see LICENSE file)
   (mp:get-current-process))
 
 (defun threadp (object)
-  (or (mp:process-p object)
-      ;; removed in LispWorks 6.1
-      #+#.(cl:if (cl:find-symbol (cl:string '#:simple-process-p) :mp) '(and) '(or))
-      (mp:simple-process-p object)))
+  (mp:process-p object))
 
 (defun thread-name (thread)
   (mp:process-name thread))
