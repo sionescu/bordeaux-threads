@@ -65,10 +65,9 @@ Distributed under the MIT license (see LICENSE file)
   (ccl:make-semaphore))
 
 (defun condition-wait (condition-variable lock)
+  (release-lock lock)
   (unwind-protect
-       (progn
-         (release-lock lock)
-         (ccl:wait-on-semaphore condition-variable))
+       (ccl:wait-on-semaphore condition-variable)
     (acquire-lock lock t)))
 
 (defun condition-notify (condition-variable)
