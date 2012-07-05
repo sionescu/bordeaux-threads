@@ -7,7 +7,7 @@ Distributed under the MIT license (see LICENSE file)
 (in-package :cl-user)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  #+allegro (require :process)
+  #+allegro (require :smputil)
   #+corman  (require :threads))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
