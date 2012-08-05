@@ -1,4 +1,4 @@
-;;; -*- Mode: Lisp; Syntax: ANSI-Common-Lisp; indent-tabs-mode: nil -*-
+;;;; -*- indent-tabs-mode: nil -*-
 
 #|
 Copyright 2008 Scieneer Pty Ltd

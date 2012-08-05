@@ -1,4 +1,4 @@
-;;;; -*- Mode: Lisp; Syntax: ANSI-Common-Lisp; indent-tabs-mode: nil -*-
+;;;; -*- indent-tabs-mode: nil -*-
 
 ;; Lispworks condition support is simulated, albeit via a lightweight wrapper over
 ;; its own polling-based wait primitive.  Waiters register with the condition variable,
