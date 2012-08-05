@@ -4,13 +4,7 @@ Copyright 2006,2007 Greg Pfeil
 Distributed under the MIT license (see LICENSE file)
 |#
 
-(in-package :cl-user)
-
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  #+allegro (require :smputil)
-  #+corman  (require :threads))
-
-(eval-when (:compile-toplevel :load-toplevel :execute)
+(cl:eval-when (:compile-toplevel :load-toplevel :execute)
   #+(or armedbear
         (and allegro multiprocessing)
         (and clisp mt)
@@ -56,6 +50,15 @@ Distributed under the MIT license (see LICENSE file)
                  #+(and thread-support digitool)
                  (:file "condition-variables")
                  (:file "default-implementations"))))
+  :perform (asdf:compile-op :before (o c)
+             #+allegro (require :smputil)
+             #+corman  (require :threads))
+  :perform (asdf:load-op :before (o c)
+             #+allegro (require :smputil)
+             #+corman  (require :threads))
+  :perform (asdf:load-source-op :before (o c)
+             #+allegro (require :smputil)
+             #+corman  (require :threads))
   :in-order-to ((asdf:test-op (asdf:load-op bordeaux-threads-test)))
   :perform (asdf:test-op :after (op c)
              (asdf:oos 'asdf:test-op :bordeaux-threads-test)))
