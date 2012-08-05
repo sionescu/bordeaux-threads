@@ -1,8 +1,6 @@
 ;;; -*- Mode: Lisp; Syntax: ANSI-Common-Lisp; indent-tabs-mode: nil -*-
 
-(in-package :common-lisp-user)
-
-(defpackage bordeaux-threads
+(cl:defpackage bordeaux-threads
   (:nicknames #:bt)
   (:use #:cl #:alexandria)
   #+abcl
