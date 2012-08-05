@@ -18,6 +18,7 @@ Distributed under the MIT license (see LICENSE file)
         (and cmu mp)
         corman
         (and ecl threads)
+        mkcl
         lispworks
         (and digitool ccl-5.1)
         (and sbcl sb-thread)
@@ -44,6 +45,7 @@ Distributed under the MIT license (see LICENSE file)
                         #+(and thread-support cmu)       "impl-cmucl"
                         #+(and thread-support corman)    "impl-corman"
                         #+(and thread-support ecl)       "impl-ecl"
+                        #+(and thread-support mkcl)      "impl-mkcl"
                         #+(and thread-support lispworks) "impl-lispworks"
                         #+(and thread-support digitool)  "impl-mcl"
                         #+(and thread-support sbcl)      "impl-sbcl"
