@@ -6,8 +6,6 @@ Copyright 2006,2007 Greg Pfeil
 Distributed under the MIT license (see LICENSE file)
 |#
 
-(in-package :cl-user)
-
 (eval-when (:compile-toplevel :load-toplevel :execute)
   #+allegro (require :smputil)
   #+corman  (require :threads))
