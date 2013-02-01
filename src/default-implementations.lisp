@@ -6,15 +6,15 @@
 
 (defmacro defdfun (name args doc &body body)
   `(progn
-     ,(unless (fboundp name)
-       `(defun ,name ,args ,@body))
+     (unless (fboundp ',name)
+       (defun ,name ,args ,@body))
      (setf (documentation ',name 'function)
            (or (documentation ',name 'function) ,doc))))
 
 (defmacro defdmacro (name args doc &body body)
   `(progn
-     ,(unless (fboundp name)
-       `(defmacro ,name ,args ,@body))
+     (unless (fboundp ',name)
+       (defmacro ,name ,args ,@body))
      (setf (documentation ',name 'function)
            (or (documentation ',name 'function) ,doc))))
 
