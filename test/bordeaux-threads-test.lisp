@@ -25,7 +25,7 @@ Distributed under the MIT license (see LICENSE file)
   (is (not (threadp (make-lock)))))
 
 (test should-retrieve-thread-name
-  (is (equal (thread-name (make-thread (lambda () t) :name "foo")) "foo")))
+  (is (equal "foo" (thread-name (make-thread (lambda () t) :name "foo")))))
 
 (test should-lock-without-contention
   (with-fixture using-lock ()
