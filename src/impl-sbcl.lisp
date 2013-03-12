@@ -34,6 +34,9 @@ Distributed under the MIT license (see LICENSE file)
   (sb-thread:make-mutex :name (or name "Anonymous lock")))
 
 (defun acquire-lock (lock &optional (wait-p t))
+  #+#.(cl:if (cl:find-symbol (cl:string '#:grab-mutex) :sb-thread) '(and) '(or))
+  (sb-thread:grab-mutex lock :waitp wait-p)
+  #-#.(cl:if (cl:find-symbol (cl:string '#:grab-mutex) :sb-thread) '(and) '(or))
   (sb-thread:get-mutex lock nil wait-p))
 
 (defun release-lock (lock)
