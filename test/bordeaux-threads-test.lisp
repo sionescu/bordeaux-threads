@@ -73,27 +73,28 @@ Distributed under the MIT license (see LICENSE file)
   ;; gets the thing running and then waits for SHARED to reach some
   ;; value. this should, i think, stress test locks.
   (setf *shared* 0)
-  (dotimes (i 1)
+  (flet ((worker (i)
+           (loop
+             do (with-lock-held (*lock*)
+                  (when (= i *shared*)
+                    (incf *shared*)
+                    (return)))
+                (sleep 0.001))))
     (let* ((procs (loop
-                     for i from 1 upto 2
-                     collect (make-thread
-                              (compile nil
-                                       `(lambda ()
-                                          (loop
-                                             named wait
-                                             do (with-lock-held (*lock*)
-                                                  (when (= ,i *shared*)
-                                                    (incf *shared*)
-                                                    (return-from wait))))))
-                              :name (format nil "Proc #~D" i)))))
+                    for n from 1 upto 2
+                    collect (let ((i n))
+                              (make-thread (lambda ()
+                                             (funcall #'worker i))
+                                           :name (format nil "Proc #~D" i))))))
       (with-lock-held (*lock*)
         (incf *shared*))
       (block test
         (loop
-           until (with-lock-held (*lock*)
-                   (= (1+ (length procs)) *shared*))
-           do (with-lock-held (*lock*)
-                (is (>= (1+ (length procs)) *shared*))))))))
+          until (with-lock-held (*lock*)
+                  (= (1+ (length procs)) *shared*))
+          do (with-lock-held (*lock*)
+               (is (>= (1+ (length procs)) *shared*)))
+             (sleep 0.001))))))
 
 
 (defparameter *condition-variable* (make-condition-variable))
