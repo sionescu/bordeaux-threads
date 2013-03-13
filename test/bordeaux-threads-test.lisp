@@ -101,22 +101,24 @@ Distributed under the MIT license (see LICENSE file)
 
 (test condition-variable
   (setf *shared* 0)
-  (let ((num-procs 100))
-    (dotimes (i num-procs)
-      (make-thread
-       (compile nil
-                `(lambda ()
-                   (with-lock-held (*lock*)
-                     (loop
-                        until (= ,i *shared*)
-                        do (condition-wait *condition-variable* *lock*))
-                     (incf *shared*))
-                   (condition-notify *condition-variable*)))))
-    (with-lock-held (*lock*)
-      (loop
-         until (= num-procs *shared*)
-         do (condition-wait *condition-variable* *lock*)))
-    (is (equal num-procs *shared*))))
+  (flet ((worker (i)
+           (with-lock-held (*lock*)
+             (loop
+               until (= i *shared*)
+               do (condition-wait *condition-variable* *lock*))
+             (incf *shared*))
+           (condition-notify *condition-variable*)))
+    (let ((num-procs 100))
+      (dotimes (i num-procs)
+        (let ((i i))
+          (make-thread (lambda ()
+                         (funcall #'worker i))
+                       :name (format nil "Proc #~D" i))))
+      (with-lock-held (*lock*)
+        (loop
+          until (= num-procs *shared*)
+          do (condition-wait *condition-variable* *lock*)))
+      (is (equal num-procs *shared*)))))
 
 ;; Generally safe sanity check for the locks and single-notify
 #+(and lispworks (not lispworks6))
