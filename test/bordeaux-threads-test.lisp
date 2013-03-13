@@ -81,8 +81,10 @@ Distributed under the MIT license (see LICENSE file)
                     (return)))
                 (sleep 0.001))))
     (let* ((procs (loop
-                    for n from 1 upto 2
-                    collect (let ((i n))
+                    for i from 1 upto 2
+                    ;; create a new binding to protect against implementations that
+                    ;; mutate instead of binding the loop variable
+                    collect (let ((i i))
                               (make-thread (lambda ()
                                              (funcall #'worker i))
                                            :name (format nil "Proc #~D" i))))))
@@ -110,6 +112,8 @@ Distributed under the MIT license (see LICENSE file)
            (condition-notify *condition-variable*)))
     (let ((num-procs 100))
       (dotimes (i num-procs)
+        ;; create a new binding to protect against implementations that
+        ;; mutate instead of binding the loop variable
         (let ((i i))
           (make-thread (lambda ()
                          (funcall #'worker i))
