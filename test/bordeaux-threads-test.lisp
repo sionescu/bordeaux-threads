@@ -19,6 +19,16 @@ Distributed under the MIT license (see LICENSE file)
 (test should-have-current-thread
   (is (current-thread)))
 
+(test current-thread-identity
+  (let* ((box (list nil))
+         (thread (make-thread (lambda ()
+                                (setf (car box) (current-thread))))))
+    (join-thread thread)
+    (is (eql (car box) thread))))
+
+(test join-thread-return-value
+  (is (eql 0 (join-thread (make-thread (lambda () 0))))))
+
 (test should-identify-threads-correctly
   (is (threadp (current-thread)))
   (is (threadp (make-thread (lambda () t) :name "foo")))
@@ -26,6 +36,19 @@ Distributed under the MIT license (see LICENSE file)
 
 (test should-retrieve-thread-name
   (is (equal "foo" (thread-name (make-thread (lambda () t) :name "foo")))))
+
+(test interrupt-thread
+  (let* ((box (list nil))
+         (thread (make-thread (lambda ()
+                                (setf (car box)
+                                      (catch 'new-thread
+                                        (sleep 60)
+                                        0))))))
+    (sleep 1)
+    (interrupt-thread thread (lambda ()
+                               (throw 'new-thread 1)))
+    (join-thread thread)
+    (is (eql 1 (car box)))))
 
 (test should-lock-without-contention
   (with-fixture using-lock ()
