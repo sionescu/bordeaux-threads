@@ -24,7 +24,7 @@ Distributed under the MIT license (see LICENSE file)
    name nil
    (let ((return-values
            (multiple-value-list (funcall function))))
-     (setf (mp:process-property 'return-values (current-thread))
+     (setf (mp:process-private-property 'return-values (current-thread))
            return-values)
      (values-list return-values))))
 
@@ -118,7 +118,7 @@ Distributed under the MIT license (see LICENSE file)
 (defun join-thread (thread)
   (%join-thread thread)
   (let ((return-values
-          (mp:process-property 'return-values thread)))
+          (mp:process-private-property 'return-values thread)))
     (values-list return-values)))
 
 (mark-supported)
