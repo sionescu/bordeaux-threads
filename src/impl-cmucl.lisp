@@ -17,7 +17,14 @@ Distributed under the MIT license (see LICENSE file)
   (mp::startup-idle-and-top-level-loops))
 
 (defun %make-thread (function name)
-  (mp:make-process function :name name))
+  (mp:make-process (lambda ()
+                     (let ((return-values
+                             (multiple-value-list (funcall function))))
+                       (setf (getf (mp:process-property-list mp:*current-process*)
+                                   'return-values)
+                             return-values)
+                       (values-list return-values)))
+                   :name name))
 
 (defun current-thread ()
   mp:*current-process*)
@@ -115,6 +122,9 @@ Distributed under the MIT license (see LICENSE file)
 
 (defun join-thread (thread)
   (mp:process-wait (format nil "Waiting for thread ~A to complete" thread)
-                   (lambda () (not (mp:process-alive-p thread)))))
+                   (lambda () (not (mp:process-alive-p thread))))
+  (let ((return-values
+          (getf (mp:process-property-list thread) 'return-values)))
+    (values-list return-values)))
 
 (mark-supported)
