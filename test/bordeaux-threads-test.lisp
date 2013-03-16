@@ -43,12 +43,12 @@ Distributed under the MIT license (see LICENSE file)
                                 (setf (car box)
                                       (catch 'new-thread
                                         (sleep 60)
-                                        0))))))
+                                        'not-interrupted))))))
     (sleep 1)
     (interrupt-thread thread (lambda ()
-                               (throw 'new-thread 1)))
+                               (throw 'new-thread 'interrupted)))
     (join-thread thread)
-    (is (eql 1 (car box)))))
+    (is (eql 'interrupted (car box)))))
 
 (test should-lock-without-contention
   (with-fixture using-lock ()
