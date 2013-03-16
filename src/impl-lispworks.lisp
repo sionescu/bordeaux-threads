@@ -20,7 +20,13 @@ Distributed under the MIT license (see LICENSE file)
   (mp:initialize-multiprocessing))
 
 (defun %make-thread (function name)
-  (mp:process-run-function name nil function))
+  (mp:process-run-function
+   name nil
+   (let ((return-values
+           (multiple-value-list (funcall function))))
+     (setf (mp:process-property 'return-values (current-thread))
+           return-values)
+     (values-list return-values))))
 
 (defun current-thread ()
   #-#.(cl:if (cl:find-symbol (cl:string '#:get-current-process) :mp) '(and) '(or))
@@ -100,12 +106,19 @@ Distributed under the MIT license (see LICENSE file)
 (defun thread-alive-p (thread)
   (mp:process-alive-p thread))
 
-(defun join-thread (thread)
+(declaim (inline %join-thread))
+(defun %join-thread (thread)
   #-#.(cl:if (cl:find-symbol (cl:string '#:process-join) :mp) '(and) '(or))
   (mp:process-wait (format nil "Waiting for thread ~A to complete" thread)
                    (complement #'mp:process-alive-p)
                    thread)
   #+#.(cl:if (cl:find-symbol (cl:string '#:process-join) :mp) '(and) '(or))
   (mp:process-join thread))
+
+(defun join-thread (thread)
+  (%join-thread thread)
+  (let ((return-values
+          (mp:process-property 'return-values thread)))
+    (values-list return-values)))
 
 (mark-supported)
