@@ -22,11 +22,12 @@ Distributed under the MIT license (see LICENSE file)
 (defun %make-thread (function name)
   (mp:process-run-function
    name nil
-   (let ((return-values
-           (multiple-value-list (funcall function))))
-     (setf (mp:process-private-property 'return-values (current-thread))
-           return-values)
-     (values-list return-values))))
+   (lambda ()
+     (let ((return-values
+             (multiple-value-list (funcall function))))
+       (setf (mp:process-private-property 'return-values (current-thread))
+             return-values)
+       (values-list return-values)))))
 
 (defun current-thread ()
   #-#.(cl:if (cl:find-symbol (cl:string '#:get-current-process) :mp) '(and) '(or))
