@@ -55,18 +55,19 @@ Distributed under the MIT license (see LICENSE file)
 (defun start-multiprocessing ()
   (mp:start-scheduler))
 
-(defvar *thread-results* (make-hash-table :weak-keys t))
-
-(defvar *thread-join-lock* (make-lock "Bordeaux threads join lock"))
-
 (defun %make-thread (function name)
+  #+smp
+  (mp:process-run-function name function)
+  #-smp
   (mp:process-run-function
    name
    (lambda ()
-     (let ((result (funcall function)))
-       (with-lock-held (*thread-join-lock*)
-         (setf (gethash (current-thread) *thread-results*)
-               result))))))
+     (let ((return-values
+             (multiple-value-list (funcall function))))
+       (setf (getf (mp:process-property-list mp:*current-process*)
+                   'return-values)
+             return-values)
+       (values-list return-values)))))
 
 (defun current-thread ()
   mp:*current-process*)
@@ -100,12 +101,15 @@ Distributed under the MIT license (see LICENSE file)
   (mp:process-alive-p thread))
 
 (defun join-thread (thread)
-  (mp:process-wait (format nil "Waiting for thread ~A to complete" thread)
-                   (complement #'mp:process-alive-p)
-                   thread)
-  (with-lock-held (*thread-join-lock*)
-    (prog1
-        (gethash thread *thread-results*)
-      (remhash thread *thread-results*))))
+  #+smp
+  (mp:process-join thread)
+  #-smp
+  (progn
+    (mp:process-wait (format nil "Waiting for thread ~A to complete" thread)
+                     (complement #'mp:process-alive-p)
+                     thread)
+    (let ((return-values
+            (getf (mp:process-property-list thread) 'return-values)))
+      (values-list return-values))))
 
 (mark-supported)
