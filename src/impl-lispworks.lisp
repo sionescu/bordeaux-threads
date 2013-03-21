@@ -25,7 +25,7 @@ Distributed under the MIT license (see LICENSE file)
    (lambda ()
      (let ((return-values
              (multiple-value-list (funcall function))))
-       (setf (mp:process-private-property 'return-values (current-thread))
+       (setf (mp:process-property 'return-values)
              return-values)
        (values-list return-values)))))
 
@@ -119,7 +119,7 @@ Distributed under the MIT license (see LICENSE file)
 (defun join-thread (thread)
   (%join-thread thread)
   (let ((return-values
-          (mp:process-private-property 'return-values thread)))
+          (mp:process-property 'return-values thread)))
     (values-list return-values)))
 
 (mark-supported)
