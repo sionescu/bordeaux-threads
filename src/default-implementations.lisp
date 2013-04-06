@@ -5,14 +5,14 @@
 ;;; Helper macros
 
 (defmacro defdfun (name args doc &body body)
-  `(progn
+  `(eval-when (:compile-toplevel :load-toplevel :execute)
      (unless (fboundp ',name)
        (defun ,name ,args ,@body))
      (setf (documentation ',name 'function)
            (or (documentation ',name 'function) ,doc))))
 
 (defmacro defdmacro (name args doc &body body)
-  `(progn
+  `(eval-when (:compile-toplevel :load-toplevel :execute)
      (unless (fboundp ',name)
        (defmacro ,name ,args ,@body))
      (setf (documentation ',name 'function)
