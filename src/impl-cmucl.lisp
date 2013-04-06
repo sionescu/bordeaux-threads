@@ -17,6 +17,9 @@ Distributed under the MIT license (see LICENSE file)
   (mp::startup-idle-and-top-level-loops))
 
 (defun %make-thread (function name)
+  #+#.(cl:if (cl:find-symbol (cl:string '#:process-join) :mp) '(and) '(or))
+  (mp:make-process function :name name)
+  #-#.(cl:if (cl:find-symbol (cl:string '#:process-join) :mp) '(and) '(or))
   (mp:make-process (lambda ()
                      (let ((return-values
                              (multiple-value-list (funcall function))))
@@ -121,10 +124,14 @@ Distributed under the MIT license (see LICENSE file)
   (mp:process-active-p thread))
 
 (defun join-thread (thread)
-  (mp:process-wait (format nil "Waiting for thread ~A to complete" thread)
-                   (lambda () (not (mp:process-alive-p thread))))
-  (let ((return-values
-          (getf (mp:process-property-list thread) 'return-values)))
-    (values-list return-values)))
+  #+#.(cl:if (cl:find-symbol (cl:string '#:process-join) :mp) '(and) '(or))
+  (mp:process-join thread)
+  #-#.(cl:if (cl:find-symbol (cl:string '#:process-join) :mp) '(and) '(or))
+  (progn
+    (mp:process-wait (format nil "Waiting for thread ~A to complete" thread)
+                     (lambda () (not (mp:process-alive-p thread))))
+    (let ((return-values
+            (getf (mp:process-property-list thread) 'return-values)))
+      (values-list return-values))))
 
 (mark-supported)
