@@ -36,13 +36,22 @@ Distributed under the MIT license (see LICENSE file)
 ;;; Resource contention: condition variables
 
 (defun make-condition-variable (&key name)
-  (mp:make-condition-variable :name name))
+  #-(version>= 9)(declare (ignore name))
+  #-(version>= 9)(mp:make-gate nil)
+  #+(version>= 9)(mp:make-condition-variable :name name))
 
 (defun condition-wait (condition-variable lock)
-  (mp:condition-variable-wait condition-variable lock))
+  #-(version>= 9)
+  (progn
+    (release-lock lock)
+    (mp:process-wait "wait for message" #'mp:gate-open-p condition-variable)
+    (acquire-lock lock)
+    (mp:close-gate condition-variable))
+  #+(version>= 9)(mp:condition-variable-wait condition-variable lock))
 
 (defun condition-notify (condition-variable)
-  (mp:condition-variable-signal condition-variable))
+  #-(version>= 9)(mp:open-gate condition-variable)
+  #+(version>= 9)(mp:condition-variable-signal condition-variable))
 
 (defun thread-yield ()
   (mp:process-allow-schedule))

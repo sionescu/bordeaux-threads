@@ -7,7 +7,8 @@ Distributed under the MIT license (see LICENSE file)
 |#
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  #+allegro (require :smputil)
+  #+(and allegro (version>= 9)) (require :smputil)
+  #+(and allegro (not (version>= 9))) (require :process)
   #+corman  (require :threads))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
