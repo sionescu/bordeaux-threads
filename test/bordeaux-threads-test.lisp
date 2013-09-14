@@ -102,6 +102,7 @@ Distributed under the MIT license (see LICENSE file)
                   (when (= i *shared*)
                     (incf *shared*)
                     (return)))
+                (thread-yield)
                 (sleep 0.001))))
     (let* ((procs (loop
                     for i from 1 upto 2
@@ -119,6 +120,7 @@ Distributed under the MIT license (see LICENSE file)
                   (= (1+ (length procs)) *shared*))
           do (with-lock-held (*lock*)
                (is (>= (1+ (length procs)) *shared*)))
+             (thread-yield)
              (sleep 0.001))))))
 
 
