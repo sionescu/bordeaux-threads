@@ -99,7 +99,8 @@
       (setf (car tlist) new-link)
       (setf (cdr tlist) new-link)))))
 
-(defcvfun condition-wait (condition-variable lock-)
+(defcvfun condition-wait (condition-variable lock- &key timeout)
+  (signal-error-if-condition-wait-timeout timeout)
   (mp:process-unlock lock-)
   (unwind-protect ; for the re-taking of the lock.  Guarding all of the code
       (let ((wakeup-allowed-to-proceed nil)
@@ -136,3 +137,5 @@
                  (remhash id unconsumed-notifications) ; Have to pass on the notification to an eligible waiter
                  (do-notify-single condition-variable)))))))
     (mp:process-lock lock-)))
+
+(define-condition-wait-compiler-macro)

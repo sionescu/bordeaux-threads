@@ -98,10 +98,12 @@ Distributed under the MIT license (see LICENSE file)
 (defstruct condition-variable
   (name "Anonymous condition variable"))
 
-(defun condition-wait (condition lock)
+(defun condition-wait (condition lock &key timeout)
   (threads:synchronized-on condition
     (release-lock lock)
-    (threads:object-wait condition))
+    (if timeout
+        (threads:object-wait condition timeout)
+        (threads:object-wait condition)))
   (acquire-lock lock))
 
 (defun condition-notify (condition)

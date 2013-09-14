@@ -62,8 +62,8 @@ Distributed under the MIT license (see LICENSE file)
 (defun make-condition-variable (&key name)
   (sb-thread:make-waitqueue :name (or name "Anonymous condition variable")))
 
-(defun condition-wait (condition-variable lock)
-  (sb-thread:condition-wait condition-variable lock))
+(defun condition-wait (condition-variable lock &key timeout)
+  (sb-thread:condition-wait condition-variable lock :timeout timeout))
 
 (defun condition-notify (condition-variable)
   (sb-thread:condition-notify condition-variable))
