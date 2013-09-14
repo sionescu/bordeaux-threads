@@ -64,10 +64,12 @@ Distributed under the MIT license (see LICENSE file)
   (declare (ignore name))
   (ccl:make-semaphore))
 
-(defun condition-wait (condition-variable lock)
+(defun condition-wait (condition-variable lock &key timeout)
   (release-lock lock)
   (unwind-protect
-       (ccl:wait-on-semaphore condition-variable)
+       (if timeout
+           (ccl:timed-wait-on-semaphore condition-variable timeout)
+           (ccl:wait-on-semaphore condition-variable))
     (acquire-lock lock t)))
 
 (defun condition-notify (condition-variable)

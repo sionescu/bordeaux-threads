@@ -60,8 +60,10 @@ Distributed under the MIT license (see LICENSE file)
   (declare (ignore name))
   (mp:make-condition-variable))
 
-(defun condition-wait (condition-variable lock)
-  (mp:condition-variable-wait condition-variable lock))
+(defun condition-wait (condition-variable lock &key timeout)
+  (if timeout
+      (mp:condition-variable-timedwait condition-variable lock timeout)
+      (mp:condition-variable-wait condition-variable lock)))
 
 (defun condition-notify (condition-variable)
   (mp:condition-variable-signal condition-variable))

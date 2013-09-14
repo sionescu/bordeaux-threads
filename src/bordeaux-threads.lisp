@@ -108,3 +108,19 @@ FUNCTION."
   (when (eq thread (current-thread))
     (error 'bordeaux-mp-condition
            :message "Cannot destroy the current thread")))
+
+(defparameter *no-condition-wait-timeout-message*
+  "CONDITION-WAIT with :TIMEOUT is not available for this Lisp implementation.")
+
+(defun signal-error-if-condition-wait-timeout (timeout)
+  (when timeout
+    (error 'bordeaux-mp-condition
+           :message *no-condition-wait-timeout-message*)))
+
+(defmacro define-condition-wait-compiler-macro ()
+  `(define-compiler-macro condition-wait
+       (&whole whole condition-variable lock &key timeout)
+    (declare (ignore condition-variable lock))
+    (when timeout
+      (simple-style-warning *no-condition-wait-timeout-message*))
+    whole))

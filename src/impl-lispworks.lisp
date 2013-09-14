@@ -82,8 +82,8 @@ Distributed under the MIT license (see LICENSE file)
   (mp:make-condition-variable :name (or name "Anonymous condition variable")))
 
 #+(or lispworks6)
-(defun condition-wait (condition-variable lock)
-  (mp:condition-variable-wait condition-variable lock))
+(defun condition-wait (condition-variable lock &key timeout)
+  (mp:condition-variable-wait condition-variable lock :timeout timeout))
 
 #+(or lispworks6)
 (defun condition-notify (condition-variable)

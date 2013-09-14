@@ -55,8 +55,10 @@ Distributed under the MIT license (see LICENSE file)
 (defun make-condition-variable (&key name)
   (thread:make-cond-var (or name "Anonymous condition variable")))
 
-(defun condition-wait (condition-variable lock)
-  (thread:cond-var-wait condition-variable lock))
+(defun condition-wait (condition-variable lock &key timeout)
+  (if timeout
+      (thread:cond-var-timedwait condition-variable lock timeout)
+      (thread:cond-var-wait condition-variable lock)))
 
 (defun condition-notify (condition-variable)
   (thread:cond-var-broadcast condition-variable))

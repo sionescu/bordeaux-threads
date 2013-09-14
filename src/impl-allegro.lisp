@@ -42,15 +42,18 @@ Distributed under the MIT license (see LICENSE file)
   #+(version>= 9)
   (mp:make-condition-variable :name name))
 
-(defun condition-wait (condition-variable lock)
+(defun condition-wait (condition-variable lock &key timeout)
   #-(version>= 9)
   (progn
     (release-lock lock)
-    (mp:process-wait "wait for message" #'mp:gate-open-p condition-variable)
+    (if timeout
+        (mp:process-wait-with-timeout "wait for message" timeout
+                                      #'mp:gate-open-p condition-variable)
+        (mp:process-wait "wait for message" #'mp:gate-open-p condition-variable))
     (acquire-lock lock)
     (mp:close-gate condition-variable))
   #+(version>= 9)
-  (mp:condition-variable-wait condition-variable lock))
+  (mp:condition-variable-wait condition-variable lock :timeout timeout))
 
 (defun condition-notify (condition-variable)
   #-(version>= 9)
