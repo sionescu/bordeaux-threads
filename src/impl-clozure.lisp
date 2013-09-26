@@ -90,7 +90,7 @@ Distributed under the MIT license (see LICENSE file)
   (ccl:process-kill thread))
 
 (defun thread-alive-p (thread)
-  (ccl::process-active-p thread))
+  (not (ccl:process-exhausted-p thread)))
 
 (defun join-thread (thread)
   (ccl:join-process thread))
