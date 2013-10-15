@@ -77,7 +77,8 @@ Distributed under the MIT license (see LICENSE file)
   (make-condition-var :lock (make-lock)
                       :name (or name "Anonymous condition variable")))
 
-(defun condition-wait (condition-variable lock)
+(defun condition-wait (condition-variable lock &key timeout)
+  (signal-error-if-condition-wait-timeout timeout)
   (check-type condition-variable condition-var)
   (with-lock-held ((condition-var-lock condition-variable))
     (setf (condition-var-active condition-variable) nil))
@@ -86,6 +87,8 @@ Distributed under the MIT license (see LICENSE file)
                    #'(lambda () (condition-var-active condition-variable)))
   (acquire-lock lock)
   t)
+
+(define-condition-wait-compiler-macro)
 
 (defun condition-notify (condition-variable)
   (check-type condition-variable condition-var)

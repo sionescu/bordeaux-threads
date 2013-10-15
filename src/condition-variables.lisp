@@ -18,7 +18,8 @@ Distributed under the MIT license (see LICENSE file)
   lock
   active)
 
-(defun condition-wait (condition-variable lock)
+(defun condition-wait (condition-variable lock &key timeout)
+  (signal-error-if-condition-wait-timeout timeout)
   (check-type condition-variable condition-var)
   (setf (condition-var-active condition-variable) nil)
   (release-lock lock)
@@ -27,6 +28,8 @@ Distributed under the MIT license (see LICENSE file)
          (acquire-lock lock)
          t))
     (thread-yield)))
+
+(define-condition-wait-compiler-macro)
 
 (defun condition-notify (condition-variable)
   (check-type condition-variable condition-var)

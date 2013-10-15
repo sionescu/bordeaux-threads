@@ -38,8 +38,8 @@ Distributed under the MIT license (see LICENSE file)
 (defun make-condition-variable (&key name)
   (mp:make-condition-variable :name name))
 
-(defun condition-wait (condition-variable lock)
-  (mp:condition-variable-wait condition-variable lock))
+(defun condition-wait (condition-variable lock &key timeout)
+  (mp:condition-variable-wait condition-variable lock :timeout timeout))
 
 (defun condition-notify (condition-variable)
   (mp:condition-variable-signal condition-variable))

@@ -212,7 +212,7 @@ WITH-LOCK-HELD etc etc"
   (declare (ignore name))
   nil)
 
-(defdfun condition-wait (condition-variable lock)
+(defdfun condition-wait (condition-variable lock &key timeout)
   "Atomically release LOCK and enqueue the calling
   thread waiting for CONDITION-VARIABLE. The thread will resume when
   another thread has notified it using CONDITION-NOTIFY; it may also
@@ -225,9 +225,12 @@ WITH-LOCK-HELD etc etc"
   always reacquires LOCK before returning to the caller. It is an
   error to call this unless from the thread that holds LOCK.
 
+  If TIMEOUT is non-nil, the call will return after at most TIMEOUT
+  seconds, whether or not a notification has occurred.
+
   In an implementation that does not support multiple threads, this
   function signals an error."
-  (declare (ignore condition-variable lock))
+  (declare (ignore condition-variable lock timeout))
   (error (make-threading-support-error)))
 
 (defdfun condition-notify (condition-variable)

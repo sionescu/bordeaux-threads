@@ -102,6 +102,7 @@ Distributed under the MIT license (see LICENSE file)
                   (when (= i *shared*)
                     (incf *shared*)
                     (return)))
+                (thread-yield)
                 (sleep 0.001))))
     (let* ((procs (loop
                     for i from 1 upto 2
@@ -119,6 +120,7 @@ Distributed under the MIT license (see LICENSE file)
                   (= (1+ (length procs)) *shared*))
           do (with-lock-held (*lock*)
                (is (>= (1+ (length procs)) *shared*)))
+             (thread-yield)
              (sleep 0.001))))))
 
 
@@ -200,3 +202,15 @@ Distributed under the MIT license (see LICENSE file)
     (loop for i from 0 to 5 do (condition-notify condition-variable))
     (print "Note:  In the case of any failures, assume there are outstanding waiting threads")
     (values)))
+
+#+(or abcl allegro clisp clozure ecl lispworks6 sbcl scl)
+(test condition-wait-timeout
+  (let ((lock (make-lock))
+        (cvar (make-condition-variable))
+        (flag nil))
+    (make-thread (lambda () (sleep 0.4) (setf flag t)))
+    (with-lock-held (lock)
+      (condition-wait cvar lock :timeout 0.2)
+      (is (null flag))
+      (sleep 0.4)
+      (is (eq t flag)))))
