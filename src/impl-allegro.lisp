@@ -111,7 +111,7 @@ Distributed under the MIT license (see LICENSE file)
 
 (defun join-thread (thread)
   #+smp
-  (mp:process-join thread)
+  (values-list (mp:process-join thread))
   #-smp
   (progn
     (mp:process-wait (format nil "Waiting for thread ~A to complete" thread)
