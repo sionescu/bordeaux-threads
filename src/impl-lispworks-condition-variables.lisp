@@ -136,6 +136,7 @@
                (when (gethash id unconsumed-notifications) ; Must have exited for reasons unrelated to notification
                  (remhash id unconsumed-notifications) ; Have to pass on the notification to an eligible waiter
                  (do-notify-single condition-variable)))))))
-    (mp:process-lock lock-)))
+    (mp:process-lock lock-))
+  t)
 
 (define-condition-wait-compiler-macro)

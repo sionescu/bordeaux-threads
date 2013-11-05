@@ -70,7 +70,8 @@ Distributed under the MIT license (see LICENSE file)
        (if timeout
            (ccl:timed-wait-on-semaphore condition-variable timeout)
            (ccl:wait-on-semaphore condition-variable))
-    (acquire-lock lock t)))
+    (acquire-lock lock t))
+  t)
 
 (defun condition-notify (condition-variable)
   (ccl:signal-semaphore condition-variable))
