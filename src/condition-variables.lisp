@@ -27,7 +27,8 @@ Distributed under the MIT license (see LICENSE file)
       ((when (condition-var-active condition-variable)
          (acquire-lock lock)
          t))
-    (thread-yield)))
+    (thread-yield))
+  t)
 
 (define-condition-wait-compiler-macro)
 

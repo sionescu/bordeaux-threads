@@ -104,7 +104,8 @@ Distributed under the MIT license (see LICENSE file)
     (if timeout
         (threads:object-wait condition timeout)
         (threads:object-wait condition)))
-  (acquire-lock lock))
+  (acquire-lock lock)
+  t)
 
 (defun condition-notify (condition)
   (threads:synchronized-on condition

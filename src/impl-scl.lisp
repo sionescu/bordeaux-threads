@@ -58,7 +58,8 @@ Distributed under the MIT license (see LICENSE file)
 (defun condition-wait (condition-variable lock &key timeout)
   (if timeout
       (thread:cond-var-timedwait condition-variable lock timeout)
-      (thread:cond-var-wait condition-variable lock)))
+      (thread:cond-var-wait condition-variable lock))
+  t)
 
 (defun condition-notify (condition-variable)
   (thread:cond-var-broadcast condition-variable))
