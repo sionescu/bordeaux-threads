@@ -83,7 +83,8 @@ Distributed under the MIT license (see LICENSE file)
 
 #+(or lispworks6)
 (defun condition-wait (condition-variable lock &key timeout)
-  (mp:condition-variable-wait condition-variable lock :timeout timeout))
+  (mp:condition-variable-wait condition-variable lock :timeout timeout)
+  t)
 
 #+(or lispworks6)
 (defun condition-notify (condition-variable)

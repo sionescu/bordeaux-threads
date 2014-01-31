@@ -60,7 +60,8 @@ Distributed under the MIT license (see LICENSE file)
 
 (defun condition-wait (condition-variable lock &key timeout)
   (signal-error-if-condition-wait-timeout timeout)
-  (mt:condition-wait condition-variable lock))
+  (mt:condition-wait condition-variable lock)
+  t)
 
 (define-condition-wait-compiler-macro)
 

@@ -53,7 +53,8 @@ Distributed under the MIT license (see LICENSE file)
   (mt:make-exemption :name (or name "Anonymous condition variable")))
 
 (defun condition-wait (condition-variable lock &key timeout)
-  (mt:exemption-wait condition-variable lock :timeout timeout))
+  (mt:exemption-wait condition-variable lock :timeout timeout)
+  t)
 
 (defun condition-notify (condition-variable)
   (mt:exemption-signal condition-variable))
