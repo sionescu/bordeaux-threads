@@ -93,7 +93,7 @@ Distributed under the MIT license (see LICENSE file)
 ;;; Resource contention: condition variables
 
 (defun thread-yield ()
-  (sleep 0.01))
+  (sleep 0))
 
 (defstruct condition-variable
   (name "Anonymous condition variable"))
@@ -102,7 +102,12 @@ Distributed under the MIT license (see LICENSE file)
   (threads:synchronized-on condition
     (release-lock lock)
     (if timeout
-        (threads:object-wait condition timeout)
+        ;; Since giving a zero time value to threads:object-wait means
+        ;; an indefinite wait, use some arbitrary small number.
+        (threads:object-wait condition
+                             (if (zerop timeout)
+                                 least-positive-single-float
+                                 timeout))
         (threads:object-wait condition)))
   (acquire-lock lock)
   t)
