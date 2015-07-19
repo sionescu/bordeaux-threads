@@ -4,11 +4,11 @@ Copyright 2006,2007 Greg Pfeil
 Distributed under the MIT license (see LICENSE file)
 |#
 
-(defpackage bordeaux-threads-test
+(defpackage bordeaux-threads/test
   (:use #:cl #:bordeaux-threads #:fiveam)
   (:shadow #:with-timeout))
 
-(in-package #:bordeaux-threads-test)
+(in-package #:bordeaux-threads/test)
 
 (def-suite :bordeaux-threads)
 (def-fixture using-lock () 

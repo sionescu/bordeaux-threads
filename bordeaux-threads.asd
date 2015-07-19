@@ -7,11 +7,6 @@ Distributed under the MIT license (see LICENSE file)
 |#
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  #+(and allegro (version>= 9)) (require :smputil)
-  #+(and allegro (not (version>= 9))) (require :process)
-  #+corman  (require :threads))
-
-(eval-when (:compile-toplevel :load-toplevel :execute)
   #+(or armedbear
         (and allegro multiprocessing)
         (and clisp mt)
@@ -26,14 +21,15 @@ Distributed under the MIT license (see LICENSE file)
         scl)
   (pushnew :thread-support *features*))
 
-(asdf:defsystem :bordeaux-threads
+(defsystem :bordeaux-threads
   :author "Greg Pfeil <greg@technomadic.org>"
   :licence "MIT"
-  :description "Bordeaux Threads makes writing portable multi-threaded apps simple"
-  :version #.(with-open-file
-                 (vers (merge-pathnames "version.lisp-expr" *load-truename*))
-               (read vers))
-  :depends-on (:alexandria)
+  :description "Bordeaux Threads makes writing portable multi-threaded apps simple."
+  :version (:read-file-form "version.sexp")
+  :depends-on (:alexandria
+               #+(and allegro (version>= 9))       (:require "smputil")
+               #+(and allegro (not (version>= 9))) (:require "process")
+               #+corman                            (:require "threads"))
   :components ((:module "src"
                 :serial t
                 :components
@@ -56,7 +52,17 @@ Distributed under the MIT license (see LICENSE file)
                  (:file "impl-lispworks-condition-variables")
                  #+(and thread-support digitool)
                  (:file "condition-variables")
-                 (:file "default-implementations"))))
-  :in-order-to ((asdf:test-op (asdf:load-op bordeaux-threads-test)))
-  :perform (asdf:test-op :after (op c)
-             (asdf:oos 'asdf:test-op :bordeaux-threads-test)))
+                 (:file "default-implementations")))))
+
+(defsystem :bordeaux-threads/test
+  :author "Greg Pfeil <greg@technomadic.org>"
+  :description "Bordeaux Threads test suite."
+  :licence "MIT"
+  :version (:read-file-form "version.sexp")
+  :depends-on (:bordeaux-threads :fiveam)
+  :components ((:module "test"
+                :components ((:file "bordeaux-threads-test")))))
+
+(defmethod perform ((o test-op) (c (eql (find-system :bordeaux-threads))))
+  (load-system :bordeaux-threads/test :force '(:bordeaux-threads/test))
+  (uiop:symbol-call :5am :run! :bordeaux-threads))
