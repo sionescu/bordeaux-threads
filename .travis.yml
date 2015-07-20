@@ -7,7 +7,7 @@ env:
     - LISP=ccl32
     - LISP=sbcl
     - LISP=sbcl32
-    - LISP=abcl
+    # - LISP=abcl # disabled since test hang
     - LISP=cmucl
     - LISP=ecl
 
