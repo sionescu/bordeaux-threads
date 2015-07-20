@@ -17,6 +17,19 @@ matrix:
     - env: LISP=cmucl
     - env: LISP=ecl
 
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+  irc:
+    channels:
+      - "chat.freenode.net#iolib"
+    template:
+      - "%{repository} (%{commit}) : %{message}"
+      - "Build details: %{build_url}"
+    on_success: always
+    on_failure: always
+
 install:
   - curl -L https://github.com/luismbo/cl-travis/raw/master/install.sh | sh
   - cl -e "(cl:in-package :cl-user)
