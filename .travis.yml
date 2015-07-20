@@ -24,11 +24,10 @@ notifications:
   irc:
     channels:
       - "chat.freenode.net#iolib"
-    template:
-      - "%{repository} (%{commit}) : %{message}"
-      - "Build details: %{build_url}"
-    on_success: always
+    on_success: change
     on_failure: always
+    use_notice: true
+    skip_join: true
 
 install:
   - curl -L https://github.com/luismbo/cl-travis/raw/master/install.sh | sh
