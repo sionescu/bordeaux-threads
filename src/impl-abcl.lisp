@@ -93,7 +93,7 @@ Distributed under the MIT license (see LICENSE file)
 ;;; Resource contention: condition variables
 
 (defun thread-yield ()
-  (sleep 0))
+  (java:jstatic "yield" "java.lang.Thread"))
 
 (defstruct condition-variable
   (name "Anonymous condition variable"))
