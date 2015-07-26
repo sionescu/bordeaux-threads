@@ -1,6 +1,6 @@
 ;;;; -*- indent-tabs-mode: nil -*-
 
-(cl:defpackage bordeaux-threads
+(cl:defpackage :bordeaux-threads
   (:nicknames #:bt)
   (:use #:cl #:alexandria)
   #+abcl
