@@ -48,7 +48,7 @@ Distributed under the MIT license (see LICENSE file)
                         #+(and thread-support sbcl)      "impl-sbcl"
                         #+(and thread-support scl)       "impl-scl"
                         #-thread-support                 "impl-null")
-                 #+(and thread-support lispworks (not lispworks6))
+                 #+(and thread-support lispworks (not (or lispworks6 lispworks7)))
                  (:file "impl-lispworks-condition-variables")
                  #+(and thread-support digitool)
                  (:file "condition-variables")
