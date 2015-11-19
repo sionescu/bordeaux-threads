@@ -6,6 +6,9 @@ Copyright 2006,2007 Greg Pfeil
 Distributed under the MIT license (see LICENSE file)
 |#
 
+#.(unless (or #+asdf3.1 (version<= "3.1" (asdf-version)))
+    (error "You need ASDF >= 3.1 to load this system correctly."))
+
 (eval-when (:compile-toplevel :load-toplevel :execute)
   #+(or armedbear
         (and allegro multiprocessing)
@@ -65,4 +68,4 @@ Distributed under the MIT license (see LICENSE file)
 
 (defmethod perform ((o test-op) (c (eql (find-system :bordeaux-threads))))
   (load-system :bordeaux-threads/test :force '(:bordeaux-threads/test))
-  (uiop:symbol-call :5am :run! :bordeaux-threads))
+  (symbol-call :5am :run! :bordeaux-threads))
