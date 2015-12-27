@@ -53,6 +53,15 @@ Distributed under the MIT license (see LICENSE file)
 
 (defmacro with-lock-held ((place) &body body)
   `(mp:with-lock-held (,place) ,@body))
+  
+(defun make-recursive-lock (&optional name)
+  (make-lock name))
+
+(defun acquire-recursive-lock (lock)
+  (acquire-lock lock))
+
+(defun release-recursive-lock (lock)
+  (release-lock lock))
 
 (defmacro with-recursive-lock-held ((place &key timeout) &body body)
   `(mp:with-lock-held (,place "Lock Wait" :timeout ,timeout) ,@body))
