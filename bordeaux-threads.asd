@@ -6,9 +6,6 @@ Copyright 2006,2007 Greg Pfeil
 Distributed under the MIT license (see LICENSE file)
 |#
 
-#.(unless (or #+asdf3.1 (version<= "3.1" (asdf-version)))
-    (error "You need ASDF >= 3.1 to load this system correctly."))
-
 (eval-when (:compile-toplevel :load-toplevel :execute)
   #+(or armedbear
         (and allegro multiprocessing)
@@ -28,7 +25,9 @@ Distributed under the MIT license (see LICENSE file)
   :author "Greg Pfeil <greg@technomadic.org>"
   :licence "MIT"
   :description "Bordeaux Threads makes writing portable multi-threaded apps simple."
-  :version (:read-file-form "version.sexp")
+  :version #.(with-open-file
+                 (vers (merge-pathnames "version.sexp" *load-truename*))
+               (read vers))
   :depends-on (:alexandria
                #+(and allegro (version>= 9))       (:require "smputil")
                #+(and allegro (not (version>= 9))) (:require "process")
@@ -68,4 +67,4 @@ Distributed under the MIT license (see LICENSE file)
 
 (defmethod perform ((o test-op) (c (eql (find-system :bordeaux-threads))))
   (load-system :bordeaux-threads/test :force '(:bordeaux-threads/test))
-  (symbol-call :5am :run! :bordeaux-threads))
+  (funcall (find-symbol (string :run!) :5am) :bordeaux-threads))
