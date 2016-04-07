@@ -48,6 +48,23 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; See default-implementations.lisp for MAKE-THREAD.
 
+(defvar *default-wrappers* nil
+  "This variable holds a list of functions to transform the thread
+  function when a new thread is created via MAKE-THREAD.
+
+  The last function is called with the thread function as its argument
+  and must return a new thread function, usually wrapping the original
+  one. The result is passed to the remaining functions (in reverse
+  order) until the first function returns a function that becomes the
+  effective thread function.")
+
+(declaim (ftype (function (function list) (values function &optional))
+                apply-wrappers))
+(defun apply-wrappers (function wrappers)
+  (if wrappers
+      (reduce #'funcall wrappers :initial-value function :from-end t)
+      function))
+
 ;; Forms are evaluated in the new thread or in the calling thread?
 (defvar *default-special-bindings* nil
   "This variable holds an alist associating special variable symbols
@@ -93,14 +110,16 @@ Distributed under the MIT license (see LICENSE file)
   (*read-suppress*             nil)
   (*readtable*                 (copy-readtable nil)))
 
-(defun binding-default-specials (function special-bindings)
-  "Return a closure that binds the symbols in SPECIAL-BINDINGS and calls
+(defun binding-default-specials (special-bindings)
+  "TODO Return a closure that binds the symbols in SPECIAL-BINDINGS and calls
 FUNCTION."
-  (let ((specials (remove-duplicates special-bindings :from-end t :key #'car)))
-    (lambda ()
-      (progv (mapcar #'car specials)
-          (loop for (nil . form) in specials collect (eval form))
-        (funcall function)))))
+  (lambda (next)
+    (declare (function next))
+    (let ((specials (remove-duplicates special-bindings :from-end t :key #'car)))
+      (lambda ()
+        (progv (mapcar #'car specials)
+            (loop for (nil . form) in specials collect (eval form))
+          (funcall next))))))
 
 ;;; FIXME: This test won't work if CURRENT-THREAD
 ;;;        conses a new object each time

@@ -11,7 +11,7 @@ Distributed under the MIT license (see LICENSE file)
 (in-package #:bordeaux-threads/test)
 
 (def-suite :bordeaux-threads)
-(def-fixture using-lock () 
+(def-fixture using-lock ()
   (let ((lock (make-lock)))
     (&body)))
 (in-suite :bordeaux-threads)
@@ -60,6 +60,20 @@ Distributed under the MIT license (see LICENSE file)
 (defun set-equal (set-a set-b)
   (and (null (set-difference set-a set-b))
        (null (set-difference set-b set-a))))
+
+(test wrappers
+  (let* ((bordeaux-threads:*default-wrappers*
+          (list* (lambda (next)
+                   (let ((thread (bt:current-thread)))
+                     (lambda ()
+                       (list 1 thread (funcall next)))))
+                 (lambda (next)
+                   (lambda ()
+                     (list 2 (bt:current-thread) (funcall next))))
+                 bordeaux-threads:*default-wrappers*))
+         (thread (bt:make-thread (lambda () :function))))
+    (is (equal `(1 ,(bt:current-thread) (2 ,thread :function))
+               (bt:join-thread thread)))))
 
 (test default-special-bindings
   (locally (declare (special *a* *c*))

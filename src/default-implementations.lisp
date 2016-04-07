@@ -27,7 +27,8 @@ It is safe to call repeatedly."
   nil)
 
 (defdfun make-thread (function &key name
-                      (initial-bindings *default-special-bindings*))
+                      (initial-bindings *default-special-bindings*)
+                      (wrappers         *default-wrappers*))
   "Creates and returns a thread named NAME, which will call the
   function FUNCTION with no arguments: when FUNCTION returns, the
   thread terminates. NAME defaults to \"Anonymous thread\" if unsupplied.
@@ -53,9 +54,41 @@ It is safe to call repeatedly."
     shared with the new thread that it creates: this is
     implementation-defined. Portable code should not depend on
     particular behaviour in this case, nor should it assign to such
-    variables without first rebinding them in the new thread."
-  (%make-thread (binding-default-specials function initial-bindings)
-                (or name "Anonymous thread")))
+    variables without first rebinding them in the new thread.
+
+  WRAPPERS is a list of functions, defaulting to *DEFAULT-WRAPPERS* if
+  not supplied, to transform FUNCTION. The last function is called
+  with FUNCTION as its argument and must return a new thread function,
+  usually wrapping the original one. The result is passed to the
+  remaining functions (in reverse order) until the first function
+  returns a function that becomes the effective thread function.
+
+  Example:
+
+    (let ((bordeaux-threads:*default-wrappers*
+           (list (lambda (next)
+                   ;;            v parent thread
+                   (let ((thread (bt:current-thread)))
+                     (lambda ()
+                       (list 1 thread (funcall next)))))
+                 (lambda (next)
+                   (lambda ()
+                     ;;      v child thread
+                     (list 2 (bt:current-thread) (funcall next)))))))
+      (bt:join-thread (bt:make-thread (lambda () :function))))
+    => (1 <parent thread> (2 <child thread> :function))
+
+  where <parent thread> is the thread calling BT:MAKE-THREAD and
+  <child thread> is the thread created by the BT:MAKE-THREAD call."
+  (let ((effective-wrappers
+         (if initial-bindings
+             (list* (binding-default-specials initial-bindings)
+                    wrappers)
+             wrappers)))
+    (%make-thread (if effective-wrappers
+                      (apply-wrappers function effective-wrappers)
+                      function)
+                  (or name "Anonymous thread"))))
 
 (defdfun %make-thread (function name)
   "The actual implementation-dependent function that creates threads."

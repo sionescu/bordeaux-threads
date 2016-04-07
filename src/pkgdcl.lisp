@@ -7,6 +7,7 @@
   (:import-from :java #:jnew #:jcall #:jmethod)
   (:export #:thread #:make-thread #:current-thread #:threadp #:thread-name
            #:start-multiprocessing
+           #:*default-wrappers*
            #:*default-special-bindings* #:*standard-io-bindings*
            #:*supports-threads-p*
 
