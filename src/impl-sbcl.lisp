@@ -42,8 +42,8 @@ Distributed under the MIT license (see LICENSE file)
 (defun release-lock (lock)
   (sb-thread:release-mutex lock))
 
-(defmacro with-lock-held ((place) &body body)
-  `(sb-thread:with-mutex (,place) ,@body))
+(defmacro with-lock-held ((place &key timeout) &body body)
+  `(sb-thread:with-mutex (,place :timeout ,timeout) ,@body))
 
 (defun make-recursive-lock (&optional name)
   (sb-thread:make-mutex :name (or name "Anonymous recursive lock")))
@@ -53,8 +53,8 @@ Distributed under the MIT license (see LICENSE file)
 ;;; actually count something to check that the acquire/releases are
 ;;; balanced
 
-(defmacro with-recursive-lock-held ((place) &body body)
-  `(sb-thread:with-recursive-lock (,place)
+(defmacro with-recursive-lock-held ((place &key timeout) &body body)
+  `(sb-thread:with-recursive-lock (,place :timeout ,timeout)
      ,@body))
 
 ;;; Resource contention: condition variables
