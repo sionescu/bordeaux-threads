@@ -30,6 +30,16 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Resource contention: locks and recursive locks
 
+(deftype lock () 'sb-thread:mutex)
+
+(deftype recursive-lock () 'sb-thread:mutex)
+
+(defun lock-p (object)
+  (typep object 'sb-thread:mutex))
+
+(defun recursive-lock-p (object)
+  (typep object 'sb-thread:mutex))
+
 (defun make-lock (&optional name)
   (sb-thread:make-mutex :name (or name "Anonymous lock")))
 

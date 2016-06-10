@@ -27,6 +27,11 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Resource contention: locks and recursive locks
 
+(deftype lock () 'ccl:lock)
+
+(defun lock-p (object)
+  (typep object 'ccl:lock))
+
 (defun make-lock (&optional name)
   (ccl:make-lock (or name "Anonymous lock")))
 

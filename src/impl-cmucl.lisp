@@ -40,6 +40,16 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Resource contention: locks and recursive locks
 
+(deftype lock () 'mp:error-check-lock)
+
+(deftype recursive-lock () 'mp:recursive-lock)
+
+(defun lock-p (object)
+  (typep object 'mp:error-check-lock))
+
+(defun recursive-lock-p (object)
+  (typep object 'mp:recursive-lock))
+
 (defun make-lock (&optional name)
   (mp:make-lock (or name "Anonymous lock")))
 
