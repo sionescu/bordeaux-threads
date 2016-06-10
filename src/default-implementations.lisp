@@ -80,6 +80,16 @@ It is safe to call repeatedly."
 
 ;;; Resource contention: locks and recursive locks
 
+(defdfun lock-p (object)
+  "Returns T if OBJECT is a lock; returns NIL otherwise."
+  (declare (ignore object))
+  (values))
+
+(defdfun recursive-lock-p (object)
+  "Returns T if OBJECT is a recursive lock; returns NIL otherwise."
+  (declare (ignore object))
+  (values))
+
 (defdfun make-lock (&optional name)
   "Creates a lock (a mutex) whose name is NAME. If the system does not
   support multiple threads this will still return some object, but it

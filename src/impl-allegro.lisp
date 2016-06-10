@@ -13,6 +13,16 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Resource contention: locks and recursive locks
 
+(deftype lock () 'mp:process-lock)
+
+(deftype recursive-lock () 'mp:process-lock)
+
+(defun lock-p (object)
+  (typep object 'mp:process-lock))
+
+(defun recursive-lock-p (object)
+  (typep object 'mp:process-lock))
+
 (defun make-lock (&optional name)
   (mp:make-process-lock :name (or name "Anonymous lock")))
 

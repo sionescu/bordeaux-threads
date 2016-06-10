@@ -10,9 +10,11 @@
            #:*default-special-bindings* #:*standard-io-bindings*
            #:*supports-threads-p*
 
-           #:make-lock #:acquire-lock #:release-lock #:with-lock-held
-           #:make-recursive-lock #:acquire-recursive-lock
-           #:release-recursive-lock #:with-recursive-lock-held
+           #:lock #:make-lock #:lock-p
+           #:acquire-lock #:release-lock #:with-lock-held
+
+           #:recursive-lock #:make-recursive-lock #:recursive-lock-p
+           #:acquire-recursive-lock #:release-recursive-lock #:with-recursive-lock-held
 
            #:make-condition-variable #:condition-wait #:condition-notify
 
