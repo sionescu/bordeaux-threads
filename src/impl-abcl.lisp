@@ -48,6 +48,16 @@ Distributed under the MIT license (see LICENSE file)
 (defconstant +get-hold-count+ 
   (jmethod "java.util.concurrent.locks.ReentrantLock" "getHoldCount"))
 
+(deftype lock () 'mutex)
+
+(deftype recursive-lock () 'mutex-recursive)
+
+(defun lock-p (object)
+  (typep object 'mutex))
+
+(defun recursive-lock-p (object)
+  (typep object 'mutex-recursive))
+
 (defun make-lock (&optional name)
   (make-mutex 
    :name (or name "Anonymous lock")
