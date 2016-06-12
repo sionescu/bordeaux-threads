@@ -83,12 +83,12 @@ It is safe to call repeatedly."
 (defdfun lock-p (object)
   "Returns T if OBJECT is a lock; returns NIL otherwise."
   (declare (ignore object))
-  (values))
+  nil)
 
 (defdfun recursive-lock-p (object)
   "Returns T if OBJECT is a recursive lock; returns NIL otherwise."
   (declare (ignore object))
-  (values))
+  nil)
 
 (defdfun make-lock (&optional name)
   "Creates a lock (a mutex) whose name is NAME. If the system does not
