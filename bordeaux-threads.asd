@@ -33,7 +33,8 @@ Distributed under the MIT license (see LICENSE file)
                #+(and allegro (version>= 9))       (:require "smputil")
                #+(and allegro (not (version>= 9))) (:require "process")
                #+corman                            (:require "threads"))
-  :components ((:module "src"
+  :components ((:static-file "version.sexp")
+               (:module "src"
                 :serial t
                 :components
                 ((:file "pkgdcl")
