@@ -226,7 +226,7 @@ Distributed under the MIT license (see LICENSE file)
     (print "Note:  In the case of any failures, assume there are outstanding waiting threads")
     (values)))
 
-#+(or abcl allegro clisp clozure ecl lispworks6 sbcl scl)
+#+(or abcl allegro clisp clozure ecl lispworks6 mezzano sbcl scl)
 (test condition-wait-timeout
   (let ((lock (make-lock))
         (cvar (make-condition-variable))
