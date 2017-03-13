@@ -12,6 +12,7 @@ Distributed under the MIT license (see LICENSE file)
 (eval-when (:compile-toplevel :load-toplevel :execute)
   #+(or armedbear
         (and allegro multiprocessing)
+        (and clasp threads)
         (and clisp mt)
         (and openmcl openmcl-native-threads)
         (and cmu mp)
@@ -42,6 +43,7 @@ Distributed under the MIT license (see LICENSE file)
                  (:file "bordeaux-threads")
                  (:file #+(and thread-support armedbear) "impl-abcl"
                         #+(and thread-support allegro)   "impl-allegro"
+                        #+(and thread-support clasp)     "impl-clasp"
                         #+(and thread-support clisp)     "impl-clisp"
                         #+(and thread-support openmcl)   "impl-clozure"
                         #+(and thread-support cmu)       "impl-cmucl"
