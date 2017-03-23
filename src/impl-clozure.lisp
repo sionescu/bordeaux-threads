@@ -69,22 +69,61 @@ Distributed under the MIT license (see LICENSE file)
      ,@body))
 
 ;;; Resource contention: condition variables
+;;
+;; Implementation of the condition variables with semaphores.
+;;
+;; The condition variables on top of semaphores implementation
+;; strategies (both correct and incorrect ones) are described
+;; in great detail in the following paper:
+;;
+;; Implementing Condition Variables with Semaphores, Andrew Birrell (Microsoft Research)
+;; (https://www.microsoft.com/en-us/research/publication/implementing-condition-variables-with-semaphores/)
+;; 
+
+(defclass condition-variable ()
+  ((waiters :type 'fixnum
+            :initform 0)
+   (waiters-lock :type 'lock
+                 :initform (make-lock))
+   (handshake-semaphore :type 'ccl:semaphore
+                        :initform (ccl:make-semaphore))
+   (signal-semaphore :type 'ccl:semaphore
+                     :initform (ccl:make-semaphore))))
 
 (defun make-condition-variable (&key name)
   (declare (ignore name))
-  (ccl:make-semaphore))
+  (make-instance 'condition-variable))
 
 (defun condition-wait (condition-variable lock &key timeout)
-  (release-lock lock)
-  (unwind-protect
-       (if timeout
-           (ccl:timed-wait-on-semaphore condition-variable timeout)
-           (ccl:wait-on-semaphore condition-variable))
-    (acquire-lock lock t))
-  t)
+  (with-slots (waiters
+               waiters-lock
+               handshake-semaphore
+               signal-semaphore) condition-variable
+    (with-lock-held (waiters-lock)
+      (incf waiters))
+    (release-lock lock)
+    (unwind-protect
+         (cond
+           (timeout (if (ccl:timed-wait-on-semaphore signal-semaphore timeout)
+                        ;; successful - wake handshake semaphore
+                        (ccl:signal-semaphore handshake-semaphore)
+                        ;; unsuccessful wait - decrement counter
+                        (with-lock-held (waiters-lock)
+                          (decf waiters))))
+           (t (ccl:wait-on-semaphore signal-semaphore)
+              (ccl:signal-semaphore handshake-semaphore)))
+      (acquire-lock lock t))))
 
 (defun condition-notify (condition-variable)
-  (ccl:signal-semaphore condition-variable))
+  (with-slots (waiters
+               waiters-lock
+               handshake-semaphore
+               signal-semaphore) condition-variable
+    (with-lock-held (waiters-lock)
+      (when (plusp waiters)
+        (decf waiters)
+        (ccl:signal-semaphore signal-semaphore)
+        (ccl:wait-on-semaphore handshake-semaphore)))))
 
 (defun thread-yield ()
   (ccl:process-allow-schedule))
