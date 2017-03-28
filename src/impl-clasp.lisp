@@ -17,9 +17,7 @@ Distributed under the MIT license (see LICENSE file)
 ;;; Thread Creation
 
 (defun %make-thread (function name)
-  (let ((p (mp:make-process name function)))
-    (mp:process-enable p)
-    p))
+  (mp:process-run-function name function bordeaux-threads:*default-special-bindings*))
 
 (defun current-thread ()
   mp:*current-process*)
