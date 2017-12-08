@@ -74,9 +74,12 @@ Distributed under the MIT license (see LICENSE file)
 
 (defun condition-wait (condition-variable lock &key timeout)
   (if timeout
-      (mp:condition-variable-timedwait condition-variable lock timeout)
-      (mp:condition-variable-wait condition-variable lock))
-  t)
+      #.(if (<= ext:+ecl-version-number+ 160103)
+            `(handler-case (with-timeout (timeout)
+                             (mp:condition-variable-wait condition-variable lock))
+               (bt:timeout () nil))
+            `(mp:condition-variable-timedwait condition-variable lock timeout))
+      (mp:condition-variable-wait condition-variable lock)))
 
 (defun condition-notify (condition-variable)
   (mp:condition-variable-signal condition-variable))
