@@ -162,11 +162,10 @@ It is safe to call repeatedly."
   (declare (ignore lock))
   (values))
 
-(defdmacro with-recursive-lock-held ((place &key timeout) &body body)
+(defdmacro with-recursive-lock-held ((place) &body body)
   "Evaluates BODY with the recursive lock named by PLACE, which is a
 reference to a recursive lock created by MAKE-RECURSIVE-LOCK. See
 WITH-LOCK-HELD etc etc"
-  (declare (ignore timeout))
   `(when (acquire-recursive-lock ,place)
      (unwind-protect
           (locally ,@body)
