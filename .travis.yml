@@ -42,3 +42,5 @@ script:
            (uiop:quit (if (some (lambda (x) (typep x '5am::test-failure))
                                 (5am:run :bordeaux-threads))
                           1 0))"
+
+sudo: required
