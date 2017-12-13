@@ -68,5 +68,5 @@ Distributed under the MIT license (see LICENSE file)
                 :components ((:file "bordeaux-threads-test")))))
 
 (defmethod perform ((o test-op) (c (eql (find-system :bordeaux-threads))))
-  (load-system :bordeaux-threads/test :force '(:bordeaux-threads/test))
+  (load-system :bordeaux-threads/test)
   (symbol-call :5am :run! :bordeaux-threads))
