@@ -43,6 +43,19 @@ Distributed under the MIT license (see LICENSE file)
                          (timeout-length c))
                  (format s "A timeout occurred.")))))
 
+;;; Semaphores
+
+;;; We provide this structure definition unconditionally regardless of the fact
+;;; it may not be used not to prevent warnings from compiling default functions
+;;; for semaphore in default-implementations.lisp.
+(defstruct %semaphore
+  lock
+  condition-variable
+  counter)
+
+#-(or ccl sbcl)
+(deftype semaphore ()
+  '%semaphore)
 
 ;;; Thread Creation
 
