@@ -89,6 +89,25 @@ Distributed under the MIT license (see LICENSE file)
 (defun thread-yield ()
   (ccl:process-allow-schedule))
 
+;;; Semaphores
+
+(deftype semaphore ()
+  'ccl:semaphore)
+
+(defun make-semaphore (&key name (count 0))
+  (declare (ignore name))
+  (let ((semaphore (ccl:make-semaphore)))
+    (dotimes (c count) (ccl:signal-semaphore semaphore))
+    semaphore))
+
+(defun signal-semaphore (semaphore &key (count 1))
+  (dotimes (c count) (ccl:signal-semaphore semaphore)))
+
+(defun wait-on-semaphore (semaphore &key timeout)
+  (if timeout
+      (ccl:timed-wait-on-semaphore semaphore timeout)
+      (ccl:wait-on-semaphore semaphore)))
+
 ;;; Introspection/debugging
 
 (defun all-threads ()

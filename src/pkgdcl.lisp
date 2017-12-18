@@ -18,6 +18,8 @@
 
            #:make-condition-variable #:condition-wait #:condition-notify
 
+           #:make-semaphore #:signal-semaphore #:wait-on-semaphore #:semaphore
+
            #:with-timeout #:timeout
 
            #:all-threads #:interrupt-thread #:destroy-thread #:thread-alive-p

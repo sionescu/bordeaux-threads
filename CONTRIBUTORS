@@ -15,3 +15,5 @@ Contributors:
   - enabled running thread-safe code in unthreaded lisps
 * Douglas Crosher <dtc@scieneer.com>
   - added Scieneer Common Lisp support
+* Daniel Kochmański <daniel@turtleware.eu>
+  - semaphores implementation

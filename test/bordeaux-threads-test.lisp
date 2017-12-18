@@ -214,3 +214,36 @@ Distributed under the MIT license (see LICENSE file)
       (is (null flag))
       (sleep 0.4)
       (is (eq t flag)))))
+
+(test semaphore-signal
+  (let ((sem (make-semaphore)))
+    (make-thread (lambda () (sleep 0.4) (signal-semaphore sem)))
+    (is (not (null (wait-on-semaphore sem))))))
+
+(test semaphore-signal-n-of-m
+  (let* ((sem (make-semaphore :count 1))
+         (lock (make-lock))
+         (count 0)
+         (waiter (lambda ()
+                   (wait-on-semaphore sem)
+                   (with-lock-held (lock) (incf count)))))
+    (make-thread (lambda () (sleep 0.2) (signal-semaphore sem :count 3)))
+    (dotimes (v 5) (make-thread waiter))
+    (sleep 0.3)
+    (is (= count 4))
+    ;; release other waiters
+    (signal-semaphore sem :count 10)
+    (sleep 0.1)
+    (is (= count 5))))
+
+(test semaphore-wait-timeout
+  (let ((sem (make-semaphore))
+        (flag nil))
+    (make-thread (lambda () (sleep 0.4) (setf flag t)))
+    (is (null (wait-on-semaphore sem :timeout 0.2)))
+    (is (null flag))
+    (sleep 0.4)
+    (is (eq t flag))))
+
+(test semaphore-typed
+  (is (typep (make-semaphore) 'bt:semaphore)))
