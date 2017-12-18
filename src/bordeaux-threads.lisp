@@ -32,6 +32,8 @@ Distributed under the MIT license (see LICENSE file)
                   "There is no support for this method on this implementation."
                   "There is no thread support in this instance."))))
 
+;;; Timeouts
+
 #-sbcl
 (define-condition timeout (serious-condition)
   ((length :initform nil
@@ -42,6 +44,40 @@ Distributed under the MIT license (see LICENSE file)
                  (format s "A timeout set to ~A seconds occurred."
                          (timeout-length c))
                  (format s "A timeout occurred.")))))
+
+#-sbcl
+(defmacro with-timeout ((timeout) &body body)
+  "Execute `BODY' and signal a condition of type TIMEOUT if the execution of
+BODY does not complete within `TIMEOUT' seconds. On implementations which do not
+support WITH-TIMEOUT natively and don't support threads either it has no effect."
+  (declare (ignorable timeout))
+  #+thread-support
+  (let ((ok-tag (gensym "OK"))
+        (timeout-tag (gensym "TIMEOUT"))
+        (caller (gensym "CALLER"))
+        (sleeper (gensym "SLEEPER")))
+    (once-only (timeout)
+      `(let (,sleeper)
+         (multiple-value-prog1
+             (catch ',ok-tag
+               (catch ',timeout-tag
+                 (let ((,caller (current-thread)))
+                   (setf ,sleeper
+                         (make-thread #'(lambda ()
+                                          (sleep ,timeout)
+                                          (interrupt-thread ,caller
+                                                            #'(lambda ()
+                                                                (ignore-errors
+                                                                  (throw ',timeout-tag nil)))))
+                                      :name (format nil "WITH-TIMEOUT thread serving: ~S."
+                                                    (thread-name ,caller))))
+                   (throw ',ok-tag (progn ,@body))))
+               (error 'timeout :length ,timeout))
+           (when (thread-alive-p ,sleeper)
+             (destroy-thread ,sleeper))))))
+  #-thread-support
+  `(progn
+     ,@body))
 
 ;;; Semaphores
 
