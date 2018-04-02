@@ -18,7 +18,7 @@
 
            #:make-condition-variable #:condition-wait #:condition-notify
 
-           #:make-semaphore #:signal-semaphore #:wait-on-semaphore #:semaphore
+           #:make-semaphore #:signal-semaphore #:wait-on-semaphore #:semaphore #:semaphore-p
 
            #:with-timeout #:timeout
 

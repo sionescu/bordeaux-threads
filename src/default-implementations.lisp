@@ -314,6 +314,10 @@ cannot be decremented in that time, returns NIL without decrementing the count."
                                     internal-time-units-per-second)))))
           (decf (%semaphore-counter semaphore))))))
 
+(defdfun semaphore-p (object)
+  "Returns T if OBJECT is a semaphore; returns NIL otherwise."
+  (typep object 'semaphore))
+
 ;;; Introspection/debugging
 
 ;;; The following functions may be provided for debugging purposes,

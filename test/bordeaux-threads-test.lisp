@@ -246,4 +246,6 @@ Distributed under the MIT license (see LICENSE file)
     (is (eq t flag))))
 
 (test semaphore-typed
-  (is (typep (make-semaphore) 'bt:semaphore)))
+  (is (typep (bt:make-semaphore) 'bt:semaphore))
+  (is (bt:semaphore-p (bt:make-semaphore)))
+  (is (null (bt:semaphore-p (bt:make-lock)))))
