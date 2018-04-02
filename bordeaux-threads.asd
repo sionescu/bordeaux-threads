@@ -10,16 +10,17 @@ Distributed under the MIT license (see LICENSE file)
     (error "You need ASDF >= 3.1 to load this system correctly."))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  #+(or armedbear
-        (and allegro multiprocessing)
+  #+(or (and allegro multiprocessing)
+        armedbear
         (and clisp mt)
-        (and openmcl openmcl-native-threads)
         (and cmu mp)
         corman
+        (and digitool ccl-5.1)                
         (and ecl threads)
-        mkcl
+        genera
         lispworks
-        (and digitool ccl-5.1)
+        mkcl        
+        (and openmcl openmcl-native-threads)
         (and sbcl sb-thread)
         scl)
   (pushnew :thread-support *features*))
@@ -46,6 +47,7 @@ Distributed under the MIT license (see LICENSE file)
                         #+(and thread-support cmu)       "impl-cmucl"
                         #+(and thread-support corman)    "impl-corman"
                         #+(and thread-support ecl)       "impl-ecl"
+                        #+(and thread-support genera)    "impl-genera"
                         #+(and thread-support mkcl)      "impl-mkcl"
                         #+(and thread-support lispworks) "impl-lispworks"
                         #+(and thread-support digitool)  "impl-mcl"
