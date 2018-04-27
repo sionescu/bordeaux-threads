@@ -74,9 +74,10 @@ Distributed under the MIT license (see LICENSE file)
 
 (defun condition-wait (condition-variable lock &key timeout)
   (if timeout
-      (mp:condition-variable-timedwait condition-variable lock timeout)
-      (mp:condition-variable-wait condition-variable lock))
-  t)
+      (handler-case (with-timeout (timeout)
+                      (mp:condition-variable-wait condition-variable lock))
+        (timeout () nil))
+      (mp:condition-variable-wait condition-variable lock)))
 
 (defun condition-notify (condition-variable)
   (mp:condition-variable-signal condition-variable))
