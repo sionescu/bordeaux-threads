@@ -50,7 +50,7 @@ Distributed under the MIT license (see LICENSE file)
   "Execute `BODY' and signal a condition of type TIMEOUT if the execution of
 BODY does not complete within `TIMEOUT' seconds. On implementations which do not
 support WITH-TIMEOUT natively and don't support threads either it has no effect."
-  (declare (ignorable timeout))
+  (declare (ignorable timeout body))
   #+thread-support
   (let ((ok-tag (gensym "OK"))
         (timeout-tag (gensym "TIMEOUT"))
@@ -76,14 +76,13 @@ support WITH-TIMEOUT natively and don't support threads either it has no effect.
            (when (thread-alive-p ,sleeper)
              (destroy-thread ,sleeper))))))
   #-thread-support
-  `(progn
-     ,@body))
+  `(error (make-threading-support-error)))
 
 ;;; Semaphores
 
-;;; We provide this structure definition unconditionally regardless the fact it
-;;; may not be used not to prevent warnings from compiling default functions for
-;;; semaphore in default-implementations.lisp.
+;;; We provide this structure definition unconditionally regardless of the fact
+;;; it may not be used not to prevent warnings from compiling default functions
+;;; for semaphore in default-implementations.lisp.
 (defstruct %semaphore
   lock
   condition-variable

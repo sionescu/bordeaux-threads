@@ -271,14 +271,14 @@ WITH-LOCK-HELD etc etc"
 ;;; Resource contention: semaphores
 
 (defdfun make-semaphore (&key name (count 0))
-    "Create a semaphore with the supplied NAME with initial counter value COUNT."
+    "Create a semaphore with the supplied NAME and initial counter value COUNT."
   (make-%semaphore :lock (make-lock name)
                    :condition-variable (make-condition-variable :name name)
                    :counter count))
 
 (defdfun signal-semaphore (semaphore &key (count 1))
-    "Increment the count of SEMAPHORE by COUNT. If there are threads waiting on
-this semaphore, then COUNT of them is woken up."
+    "Increment SEMAPHORE by COUNT. If there are threads waiting on this
+semaphore, then COUNT of them are woken up."
   (with-lock-held ((%semaphore-lock semaphore))
     (incf (%semaphore-counter semaphore) count)
     (dotimes (v count)
