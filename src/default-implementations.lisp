@@ -354,7 +354,8 @@ cannot be decremented in that time, returns NIL without decrementing the count."
   (error (make-threading-support-error)))
 
 (defdfun join-thread (thread)
-  "Wait until THREAD terminates. If THREAD
-  has already terminated, return immediately."
+  "Wait until THREAD terminates. If THREAD has already terminated,
+  return immediately. The return values of the thread function are
+  returned."
   (declare (ignore thread))
   (error (make-threading-support-error)))
