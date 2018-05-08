@@ -130,6 +130,7 @@ support WITH-TIMEOUT natively and don't support threads either it has no effect.
   (*print-radix*               nil)
   (*print-readably*            t)
   (*print-right-margin*        nil)
+  (*random-state*              (make-random-state t))
   (*read-base*                 10)
   (*read-default-float-format* 'single-float)
   (*read-eval*                 t)
