@@ -56,6 +56,12 @@ Distributed under the MIT license (see LICENSE file)
   (mt:make-mutex :name (or name "Anonymous recursive lock")
                  :recursive-p t))
 
+(defun acquire-recursive-lock (lock &optional (wait-p t))
+  (acquire-lock lock wait-p))
+
+(defun release-recursive-lock (lock)
+  (release-lock lock))
+
 (defmacro with-recursive-lock-held ((place) &body body)
   `(mt:with-mutex-lock (,place) ,@body))
 
