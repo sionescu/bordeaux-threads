@@ -54,6 +54,7 @@ It is safe to call repeatedly."
     implementation-defined. Portable code should not depend on
     particular behaviour in this case, nor should it assign to such
     variables without first rebinding them in the new thread."
+  (declare (notinline %make-thread))
   (%make-thread (binding-default-specials function initial-bindings)
                 (or name "Anonymous thread")))
 
@@ -136,10 +137,12 @@ It is safe to call repeatedly."
   Note that if the debugger is entered, it is unspecified whether the
   lock is released at debugger entry or at debugger exit when execution
   is restarted."
-  `(when (acquire-lock ,place t)
-     (unwind-protect
-          (locally ,@body)
-       (release-lock ,place))))
+  `(locally
+     (declare (notinline acquire-lock release-lock))
+     (when (acquire-lock ,place t)
+       (unwind-protect
+            (locally ,@body)
+         (release-lock ,place)))))
 
 (defdfun make-recursive-lock (&optional name)
   "Create and return a recursive lock whose name is NAME. A recursive
@@ -167,10 +170,12 @@ It is safe to call repeatedly."
 reference to a recursive lock created by MAKE-RECURSIVE-LOCK. See
 WITH-LOCK-HELD etc etc"
   (declare (ignore timeout))
-  `(when (acquire-recursive-lock ,place)
-     (unwind-protect
-          (locally ,@body)
-       (release-recursive-lock ,place))))
+  `(locally
+     (declare (notinline acquire-recursive-lock release-recursive-lock))
+     (when (acquire-recursive-lock ,place)
+       (unwind-protect
+            (locally ,@body)
+         (release-recursive-lock ,place)))))
 
 ;;; Resource contention: condition variables
 
@@ -272,6 +277,7 @@ WITH-LOCK-HELD etc etc"
 
 (defdfun make-semaphore (&key name (count 0))
     "Create a semaphore with the supplied NAME and initial counter value COUNT."
+  (declare (notinline make-lock make-condition-variable))
   (make-%semaphore :lock (make-lock name)
                    :condition-variable (make-condition-variable :name name)
                    :counter count))
@@ -280,6 +286,7 @@ WITH-LOCK-HELD etc etc"
     "Increment SEMAPHORE by COUNT. If there are threads waiting on this
 semaphore, then COUNT of them are woken up."
   (with-lock-held ((%semaphore-lock semaphore))
+    (declare (notinline condition-notify))
     (incf (%semaphore-counter semaphore) count)
     (dotimes (v count)
       (condition-notify (%semaphore-condition-variable semaphore))))
@@ -294,6 +301,7 @@ T on success.
 If TIMEOUT is given, it is the maximum number of seconds to wait. If the count
 cannot be decremented in that time, returns NIL without decrementing the count."
   (with-lock-held ((%semaphore-lock semaphore))
+    (declare (notinline condition-wait))
     (if (>= (%semaphore-counter semaphore) 1)
         (decf (%semaphore-counter semaphore))
         (let ((deadline (when timeout
