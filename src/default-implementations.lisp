@@ -285,8 +285,8 @@ WITH-LOCK-HELD etc etc"
 (defdfun signal-semaphore (semaphore &key (count 1))
     "Increment SEMAPHORE by COUNT. If there are threads waiting on this
 semaphore, then COUNT of them are woken up."
+  (declare (notinline condition-notify))
   (with-lock-held ((%semaphore-lock semaphore))
-    (declare (notinline condition-notify))
     (incf (%semaphore-counter semaphore) count)
     (dotimes (v count)
       (condition-notify (%semaphore-condition-variable semaphore))))
@@ -300,8 +300,8 @@ T on success.
 
 If TIMEOUT is given, it is the maximum number of seconds to wait. If the count
 cannot be decremented in that time, returns NIL without decrementing the count."
+  (declare (notinline condition-wait))
   (with-lock-held ((%semaphore-lock semaphore))
-    (declare (notinline condition-wait))
     (if (>= (%semaphore-counter semaphore) 1)
         (decf (%semaphore-counter semaphore))
         (let ((deadline (when timeout
