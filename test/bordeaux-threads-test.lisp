@@ -57,6 +57,28 @@ Distributed under the MIT license (see LICENSE file)
     (is (acquire-lock lock nil))
     (release-lock lock)))
 
+(def-test acquire-recursive-lock ()
+  (let ((test-lock (make-recursive-lock))
+        (results (make-array 4 :adjustable t :fill-pointer 0))
+        (results-lock (make-lock))
+        (threads ()))
+    (flet ((add-result (r)
+             (with-lock-held (results-lock)
+               (vector-push-extend r results))))
+      (dotimes (i 2)
+        (push (make-thread
+               #'(lambda ()
+                   (when (acquire-recursive-lock test-lock)
+                     (unwind-protect
+                          (progn
+                            (add-result :enter)
+                            (sleep 1)
+                            (add-result :leave))
+                       (release-recursive-lock test-lock)))))
+              threads)))
+    (map 'nil #'join-thread threads)
+    (is (equalp results #(:enter :leave :enter :leave)))))
+
 (defun set-equal (set-a set-b)
   (and (null (set-difference set-a set-b))
        (null (set-difference set-b set-a))))
