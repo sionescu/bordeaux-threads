@@ -47,6 +47,7 @@ Distributed under the MIT license (see LICENSE file)
 
 (deftype lock () 'mp:lock)
 
+#-(or lispworks4 lispworks5)
 (deftype recursive-lock ()
   '(and mp:lock (satisfies mp:lock-recursive-p)))
 
@@ -54,6 +55,9 @@ Distributed under the MIT license (see LICENSE file)
   (typep object 'mp:lock))
 
 (defun recursive-lock-p (object)
+  #+(or lispworks4 lispworks5)
+  nil
+  #-(or lispworks4 lispworks5) ; version 6+
   (and (typep object 'mp:lock)
        (mp:lock-recursive-p object)))
 

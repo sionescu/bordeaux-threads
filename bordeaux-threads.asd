@@ -18,6 +18,7 @@ Distributed under the MIT license (see LICENSE file)
         corman
         (and ecl threads)
         (and clasp threads)
+        genera
         mkcl
         lispworks
         (and digitool ccl-5.1)
@@ -48,13 +49,14 @@ Distributed under the MIT license (see LICENSE file)
                         #+(and thread-support corman)    "impl-corman"
                         #+(and thread-support ecl)       "impl-ecl"
                         #+(and thread-support clasp)     "impl-clasp"
+                        #+(and thread-support genera)    "impl-genera"
                         #+(and thread-support mkcl)      "impl-mkcl"
                         #+(and thread-support lispworks) "impl-lispworks"
                         #+(and thread-support digitool)  "impl-mcl"
                         #+(and thread-support sbcl)      "impl-sbcl"
                         #+(and thread-support scl)       "impl-scl"
                         #-thread-support                 "impl-null")
-                 #+(and thread-support lispworks (not (or lispworks6 lispworks7)))
+                 #+(and thread-support lispworks (or lispworks4 lispworks5))
                  (:file "impl-lispworks-condition-variables")
                  #+(and thread-support digitool)
                  (:file "condition-variables")
@@ -70,5 +72,5 @@ Distributed under the MIT license (see LICENSE file)
                 :components ((:file "bordeaux-threads-test")))))
 
 (defmethod perform ((o test-op) (c (eql (find-system :bordeaux-threads))))
-  (load-system :bordeaux-threads/test :force '(:bordeaux-threads/test))
+  (load-system :bordeaux-threads/test)
   (symbol-call :5am :run! :bordeaux-threads))

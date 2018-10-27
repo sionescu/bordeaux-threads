@@ -90,6 +90,20 @@ Distributed under the MIT license (see LICENSE file)
   `(sb-ext:with-timeout ,timeout
      ,@body))
 
+;;; Semaphores
+
+(deftype semaphore ()
+  'sb-thread:semaphore)
+
+(defun make-semaphore (&key name (count 0))
+  (sb-thread:make-semaphore :name name :count count))
+
+(defun signal-semaphore (semaphore &key (count 1))
+  (sb-thread:signal-semaphore semaphore count))
+
+(defun wait-on-semaphore (semaphore &key timeout)
+  (sb-thread:wait-on-semaphore semaphore :timeout timeout))
+
 ;;; Introspection/debugging
 
 (defun all-threads ()
