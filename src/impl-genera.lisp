@@ -38,18 +38,17 @@ Distributed under the MIT license (see LICENSE file)
   (check-type lock lock)
   (setf (lock-lock-argument lock) (process:make-lock-argument (lock-lock lock)))
   (if wait-p
-      (process:lock (lock-lock lock) (lock-lock-argument lock))
+      (progn
+	(process:lock (lock-lock lock) (lock-lock-argument lock))
+	t)
       (process:with-no-other-processes
 	(when (process:lock-lockable-p (lock-lock lock))
-	  (process:lock (lock-lock lock) (lock-lock-argument lock))))))
+	  (process:lock (lock-lock lock) (lock-lock-argument lock))
+	  t))))
 
 (defun release-lock (lock)
   (check-type lock lock)
   (process:unlock (lock-lock lock) (scl:shiftf (lock-lock-argument lock) nil)))
-
-(defmacro with-lock-held ((place) &body body)
-  `(process:with-lock ((lock-lock ,place))
-     ,@body))
 
 (defstruct (recursive-lock (:constructor make-recursive-lock-internal))
   lock
@@ -64,15 +63,12 @@ Distributed under the MIT license (see LICENSE file)
   (check-type lock recursive-lock)
   (process:lock (recursive-lock-lock lock)
 		(car (push (process:make-lock-argument (recursive-lock-lock lock))
-			   (recursive-lock-lock-arguments lock)))))
+			   (recursive-lock-lock-arguments lock))))
+  t)
 
 (defun release-recursive-lock (lock)
   (check-type lock recursive-lock)
   (process:unlock (recursive-lock-lock lock) (pop (recursive-lock-lock-arguments lock))))
-
-(defmacro with-recursive-lock-held ((place) &body body)
-  `(process:with-lock ((recursive-lock-lock ,place))
-     ,@body))
 
 ;;; Resource contention: condition variables
 
@@ -85,7 +81,7 @@ Distributed under the MIT license (see LICENSE file)
 (defun make-condition-variable (&key name)
   (%make-condition-variable :name name))
 
-(defun condition-wait (condition-variable lock)
+(defun condition-wait (condition-variable lock &key timeout)
   (check-type condition-variable condition-variable)
   (check-type lock lock)
   (process:with-no-other-processes
@@ -93,12 +89,21 @@ Distributed under the MIT license (see LICENSE file)
       (process:atomic-updatef (condition-variable-waiters condition-variable)
 			      #'(lambda (waiters)
 				  (append waiters (scl:ncons waiter))))
-      (process:without-lock ((lock-lock lock))
-	  (process:process-block (format nil "Waiting~@[ on ~A~]"
-					 (condition-variable-name condition-variable))
-				 #'(lambda (waiter)
-				     (not (null (cdr waiter))))
-				 waiter)))))
+      (let ((expired? t))
+	(unwind-protect
+	    (progn
+	      (release-lock lock)
+	      (process:block-with-timeout timeout
+					  (format nil "Waiting~@[ on ~A~]"
+						  (condition-variable-name condition-variable))
+					  #'(lambda (waiter expired?-loc)
+					      (when (not (null (cdr waiter)))
+						(setf (sys:location-contents expired?-loc) nil)
+						t))
+					  waiter (sys:value-cell-location 'expired?))
+	      expired?)
+	  (unless expired?
+	    (acquire-lock lock)))))))
 
 (defun condition-notify (condition-variable)
   (check-type condition-variable condition-variable)
