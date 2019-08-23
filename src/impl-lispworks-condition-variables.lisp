@@ -1,5 +1,7 @@
 ;;;; -*- indent-tabs-mode: nil -*-
 
+(in-package #:bordeaux-threads)
+
 ;; Lispworks condition support is simulated, albeit via a lightweight wrapper over
 ;; its own polling-based wait primitive.  Waiters register with the condition variable,
 ;; and use MP:process-wait which queries for permission to proceed at its own (usspecified) interval.

@@ -17,10 +17,10 @@ Distributed under the MIT license (see LICENSE file)
 ;;; Thread Creation
 
 (defun %make-thread (function name)
-  (mp:process-run-function name function))
+  (mp:process-run-function name function bordeaux-threads:*default-special-bindings*))
 
 (defun current-thread ()
-  mp::*current-process*)
+  mp:*current-process*)
 
 (defun threadp (object)
   (typep object 'mp:process))
@@ -30,20 +30,20 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Resource contention: locks and recursive locks
 
-(deftype lock () 'mp:lock)
+(deftype lock () 'mp:mutex)
 
 (deftype recursive-lock ()
-  '(and mp:lock (satisfies mp:recursive-lock-p)))
+  '(and mp:mutex (satisfies mp:recursive-lock-p)))
 
 (defun lock-p (object)
-  (typep object 'mp:lock))
+  (typep object 'mp:mutex))
 
 (defun recursive-lock-p (object)
   (and (typep object 'mp:lock)
        (mp:recursive-lock-p object)))
 
 (defun make-lock (&optional name)
-  (mp:make-lock :name (or name "Anonymous lock")))
+  (mp:make-lock :name (or name :anonymous)))
 
 (defun acquire-lock (lock &optional (wait-p t))
   (mp:get-lock lock wait-p))
@@ -51,11 +51,12 @@ Distributed under the MIT license (see LICENSE file)
 (defun release-lock (lock)
   (mp:giveup-lock lock))
 
+
 (defmacro with-lock-held ((place) &body body)
   `(mp:with-lock (,place) ,@body))
 
 (defun make-recursive-lock (&optional name)
-  (mp:make-lock :name (or name "Anonymous recursive lock") :recursive t))
+  (mp:make-recursive-mutex (or name :anonymous-recursive-lock)))
 
 (defun acquire-recursive-lock (lock &optional (wait-p t))
   (mp:get-lock lock wait-p))
@@ -74,10 +75,9 @@ Distributed under the MIT license (see LICENSE file)
 
 (defun condition-wait (condition-variable lock &key timeout)
   (if timeout
-      (handler-case (with-timeout (timeout)
-                      (mp:condition-variable-wait condition-variable lock))
-        (timeout () nil))
-      (mp:condition-variable-wait condition-variable lock)))
+      (mp:condition-variable-timedwait condition-variable lock timeout)
+      (mp:condition-variable-wait condition-variable lock))
+  t)
 
 (defun condition-notify (condition-variable)
   (mp:condition-variable-signal condition-variable))

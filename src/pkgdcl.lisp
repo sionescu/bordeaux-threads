@@ -1,4 +1,4 @@
-;;;; -*- indent-tabs-mode: nil -*-
+;;;; -*- Mode: LISP; Base: 10; Syntax: ANSI-Common-lisp; Package: CL-USER -*-
 
 (cl:defpackage :bordeaux-threads
   (:nicknames #:bt)
@@ -17,6 +17,8 @@
            #:acquire-recursive-lock #:release-recursive-lock #:with-recursive-lock-held
 
            #:make-condition-variable #:condition-wait #:condition-notify
+
+           #:make-semaphore #:signal-semaphore #:wait-on-semaphore #:semaphore #:semaphore-p
 
            #:with-timeout #:timeout
 

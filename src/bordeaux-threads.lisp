@@ -1,4 +1,4 @@
-;;;; -*- indent-tabs-mode: nil -*-
+;;;; -*- Mode: LISP; Base: 10; Syntax: ANSI-Common-lisp; Package: BORDEAUX-THREADS -*-
 
 #|
 Copyright 2006, 2007 Greg Pfeil
@@ -32,6 +32,8 @@ Distributed under the MIT license (see LICENSE file)
                   "There is no support for this method on this implementation."
                   "There is no thread support in this instance."))))
 
+;;; Timeouts
+
 #-sbcl
 (define-condition timeout (serious-condition)
   ((length :initform nil
@@ -43,6 +45,47 @@ Distributed under the MIT license (see LICENSE file)
                          (timeout-length c))
                  (format s "A timeout occurred.")))))
 
+#-sbcl
+(defmacro with-timeout ((timeout) &body body)
+  "Execute `BODY' and signal a condition of type TIMEOUT if the execution of
+BODY does not complete within `TIMEOUT' seconds. On implementations which do not
+support WITH-TIMEOUT natively and don't support threads either it has no effect."
+  (declare (ignorable timeout body))
+  #+thread-support
+  (let ((ok-tag (gensym "OK"))
+        (timeout-tag (gensym "TIMEOUT"))
+        (caller (gensym "CALLER")))
+    (once-only (timeout)
+      `(multiple-value-prog1
+           (catch ',ok-tag
+             (catch ',timeout-tag
+               (let ((,caller (current-thread)))
+                 (make-thread #'(lambda ()
+                                  (sleep ,timeout)
+                                  (interrupt-thread ,caller
+                                                    #'(lambda ()
+                                                        (ignore-errors
+                                                         (throw ',timeout-tag nil)))))
+                              :name (format nil "WITH-TIMEOUT thread serving: ~S."
+                                            (thread-name ,caller)))
+                 (throw ',ok-tag (progn ,@body))))
+             (error 'timeout :length ,timeout)))))
+  #-thread-support
+  `(error (make-threading-support-error)))
+
+;;; Semaphores
+
+;;; We provide this structure definition unconditionally regardless of the fact
+;;; it may not be used not to prevent warnings from compiling default functions
+;;; for semaphore in default-implementations.lisp.
+(defstruct %semaphore
+  lock
+  condition-variable
+  counter)
+
+#-(or ccl sbcl)
+(deftype semaphore ()
+  '%semaphore)
 
 ;;; Thread Creation
 
@@ -87,6 +130,7 @@ Distributed under the MIT license (see LICENSE file)
   (*print-radix*               nil)
   (*print-readably*            t)
   (*print-right-margin*        nil)
+  (*random-state*              (make-random-state t))
   (*read-base*                 10)
   (*read-default-float-format* 'single-float)
   (*read-eval*                 t)

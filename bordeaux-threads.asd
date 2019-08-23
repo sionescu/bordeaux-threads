@@ -1,4 +1,4 @@
-;;;; -*- Mode: Lisp; indent-tabs-mode: nil -*-
+;;;; -*- Mode: LISP; Base: 10; Syntax: ANSI-Common-lisp -*-
 
 #|
 Copyright 2006,2007 Greg Pfeil
@@ -10,17 +10,18 @@ Distributed under the MIT license (see LICENSE file)
     (error "You need ASDF >= 3.1 to load this system correctly."))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  #+(or (and allegro multiprocessing)
-        armedbear
+  #+(or armedbear
+        (and allegro multiprocessing)
+        (and clasp threads)
         (and clisp mt)
+        (and openmcl openmcl-native-threads)
         (and cmu mp)
         corman
-        (and digitool ccl-5.1)                
         (and ecl threads)
         genera
+        mkcl
         lispworks
-        mkcl        
-        (and openmcl openmcl-native-threads)
+        (and digitool ccl-5.1)
         (and sbcl sb-thread)
         scl)
   (pushnew :thread-support *features*))
@@ -42,6 +43,7 @@ Distributed under the MIT license (see LICENSE file)
                  (:file "bordeaux-threads")
                  (:file #+(and thread-support armedbear) "impl-abcl"
                         #+(and thread-support allegro)   "impl-allegro"
+                        #+(and thread-support clasp)     "impl-clasp"
                         #+(and thread-support clisp)     "impl-clisp"
                         #+(and thread-support openmcl)   "impl-clozure"
                         #+(and thread-support cmu)       "impl-cmucl"
@@ -54,7 +56,7 @@ Distributed under the MIT license (see LICENSE file)
                         #+(and thread-support sbcl)      "impl-sbcl"
                         #+(and thread-support scl)       "impl-scl"
                         #-thread-support                 "impl-null")
-                 #+(and thread-support lispworks (not (or lispworks6 lispworks7)))
+                 #+(and thread-support lispworks (or lispworks4 lispworks5))
                  (:file "impl-lispworks-condition-variables")
                  #+(and thread-support digitool)
                  (:file "condition-variables")
