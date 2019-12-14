@@ -250,6 +250,9 @@ Distributed under the MIT license (see LICENSE file)
   (is (bt:semaphore-p (bt:make-semaphore)))
   (is (null (bt:semaphore-p (bt:make-lock)))))
 
+(test with-timeout-return-value
+  (is (eql :foo (bt:with-timeout (5) :foo))))
+
 (test with-timeout-signals
   (signals timeout (bt:with-timeout (1) (sleep 5))))
 
