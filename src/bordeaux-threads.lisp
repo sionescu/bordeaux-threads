@@ -58,23 +58,31 @@ support WITH-TIMEOUT natively and don't support threads either it has no effect.
   #+thread-support
   (once-only (timeout)
     (with-gensyms (ok-tag interrupt-tag caller interrupt-thread c)
-      `(catch ',ok-tag
-         (let* ((,interrupt-tag (gensym "INTERRUPT-TAG-"))
-                (,caller (current-thread))
-                (,interrupt-thread
-                  (make-thread
-                   #'(lambda ()
-                       (sleep ,timeout)
-                       (interrupt-thread
-                        ,caller
-                        #'(lambda () (signal 'interrupt :tag ,interrupt-tag))))
-                   :name (format nil "WITH-TIMEOUT thread serving: ~S."
-                                             (thread-name ,caller)))))
-           (handler-bind
-               ((interrupt #'(lambda (,c)
-                               (when (eql ,interrupt-tag (interrupt-tag ,c))
-                                 (error 'timeout :length ,timeout)))))
-             (throw ',ok-tag (progn ,@body)))))))
+      `(let (,interrupt-thread)
+         (unwind-protect-case ()
+            (catch ',ok-tag
+              (let* ((,interrupt-tag (gensym "INTERRUPT-TAG-"))
+                     (,caller (current-thread)))
+                (setf ,interrupt-thread
+                       (make-thread
+                        #'(lambda ()
+                            (sleep ,timeout)
+                            (interrupt-thread
+                             ,caller
+                             #'(lambda () (signal 'interrupt :tag ,interrupt-tag))))
+                        :name (format nil "WITH-TIMEOUT thread serving: ~S."
+                                      (thread-name ,caller))))
+                (handler-bind
+                    ((interrupt #'(lambda (,c)
+                                    (when (eql ,interrupt-tag (interrupt-tag ,c))
+                                      (error 'timeout :length ,timeout)))))
+                  (throw ',ok-tag (progn ,@body)))))
+           (:normal
+            (when (and ,interrupt-thread (thread-alive-p ,interrupt-thread))
+              ;; There's a potential race condition between THREAD-ALIVE-P
+              ;; and DESTROY-THREAD but calling the latter when a thread already
+              ;; terminated should not be a grave matter.
+              (ignore-errors (destroy-thread ,interrupt-thread))))))))
   #-thread-support
   `(error (make-threading-support-error)))
 
