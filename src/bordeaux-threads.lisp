@@ -46,30 +46,35 @@ Distributed under the MIT license (see LICENSE file)
                  (format s "A timeout occurred.")))))
 
 #-sbcl
+(define-condition interrupt ()
+  ((tag :initarg :tag :reader interrupt-tag)))
+
+#-sbcl
 (defmacro with-timeout ((timeout) &body body)
   "Execute `BODY' and signal a condition of type TIMEOUT if the execution of
 BODY does not complete within `TIMEOUT' seconds. On implementations which do not
 support WITH-TIMEOUT natively and don't support threads either it has no effect."
   (declare (ignorable timeout body))
   #+thread-support
-  (let ((ok-tag (gensym "OK"))
-        (timeout-tag (gensym "TIMEOUT"))
-        (caller (gensym "CALLER")))
-    (once-only (timeout)
-      `(multiple-value-prog1
-           (catch ',ok-tag
-             (catch ',timeout-tag
-               (let ((,caller (current-thread)))
-                 (make-thread #'(lambda ()
-                                  (sleep ,timeout)
-                                  (interrupt-thread ,caller
-                                                    #'(lambda ()
-                                                        (ignore-errors
-                                                         (throw ',timeout-tag nil)))))
-                              :name (format nil "WITH-TIMEOUT thread serving: ~S."
-                                            (thread-name ,caller)))
-                 (throw ',ok-tag (progn ,@body))))
-             (error 'timeout :length ,timeout)))))
+  (once-only (timeout)
+    (with-gensyms (ok-tag interrupt-tag caller interrupt-thread c)
+      `(catch ',ok-tag
+         (let* ((,interrupt-tag (gensym "INTERRUPT-TAG-"))
+                (,caller (current-thread))
+                (,interrupt-thread
+                  (make-thread
+                   #'(lambda ()
+                       (sleep ,timeout)
+                       (interrupt-thread
+                        ,caller
+                        #'(lambda () (signal 'interrupt :tag ,interrupt-tag))))
+                   :name (format nil "WITH-TIMEOUT thread serving: ~S."
+                                             (thread-name ,caller)))))
+           (handler-bind
+               ((interrupt #'(lambda (,c)
+                               (when (eql ,interrupt-tag (interrupt-tag ,c))
+                                 (error 'timeout :length ,timeout)))))
+             (throw ',ok-tag (progn ,@body)))))))
   #-thread-support
   `(error (make-threading-support-error)))
 
