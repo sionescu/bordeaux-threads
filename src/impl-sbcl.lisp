@@ -79,7 +79,7 @@ Distributed under the MIT license (see LICENSE file)
   (sb-thread:condition-notify condition-variable))
 
 (defun thread-yield ()
-  (sb-thread:release-foreground))
+  (sb-thread:thread-yield))
 
 ;;; Timeouts
 
