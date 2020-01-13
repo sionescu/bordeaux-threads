@@ -83,12 +83,8 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Timeouts
 
-(deftype timeout ()
-  'sb-ext:timeout)
-
-(defmacro with-timeout ((timeout) &body body)
-  `(sb-ext:with-timeout ,timeout
-     ,@body))
+;;; SBCL timeouts do not depend on SB-THREAD support, and hence are implemented alongside the
+;;; generic default versions in bordeaux-threads.lisp
 
 ;;; Semaphores
 

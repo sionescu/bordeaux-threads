@@ -34,6 +34,18 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Timeouts
 
+;;; SBCL timeouts apparently do not require threading support. Provide definitions here, rather than
+;;; in impl-sbcl.lisp to ensure that TIMEOUT and WITH-TIMEOUT are defined, even if threading support
+;;; is not present.
+#+sbcl
+(deftype timeout ()
+  'sb-ext:timeout)
+
+#+sbcl
+(defmacro with-timeout ((timeout) &body body)
+  `(sb-ext:with-timeout ,timeout
+     ,@body))
+
 #-sbcl
 (define-condition timeout (serious-condition)
   ((length :initform nil
