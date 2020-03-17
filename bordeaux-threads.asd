@@ -60,7 +60,8 @@ Distributed under the MIT license (see LICENSE file)
                  (:file "impl-lispworks-condition-variables")
                  #+(and thread-support digitool)
                  (:file "condition-variables")
-                 (:file "default-implementations")))))
+                 (:file "default-implementations"))))
+  :in-order-to ((test-op (test-op :bordeaux-threads/test))))
 
 (defsystem :bordeaux-threads/test
   :author "Greg Pfeil <greg@technomadic.org>"
@@ -69,8 +70,5 @@ Distributed under the MIT license (see LICENSE file)
   :version (:read-file-form "version.sexp")
   :depends-on (:bordeaux-threads :fiveam)
   :components ((:module "test"
-                :components ((:file "bordeaux-threads-test")))))
-
-(defmethod perform ((o test-op) (c (eql (find-system :bordeaux-threads))))
-  (load-system :bordeaux-threads/test)
-  (symbol-call :5am :run! :bordeaux-threads))
+                :components ((:file "bordeaux-threads-test"))))
+  :perform (test-op (o c) (symbol-call :5am :run! :bordeaux-threads)))

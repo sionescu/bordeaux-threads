@@ -249,3 +249,17 @@ Distributed under the MIT license (see LICENSE file)
   (is (typep (bt:make-semaphore) 'bt:semaphore))
   (is (bt:semaphore-p (bt:make-semaphore)))
   (is (null (bt:semaphore-p (bt:make-lock)))))
+
+(test with-timeout-return-value
+  (is (eql :foo (bt:with-timeout (5) :foo))))
+
+(test with-timeout-signals
+  (signals timeout (bt:with-timeout (1) (sleep 5))))
+
+(test with-timeout-non-interference
+  (flet ((sleep-with-timeout (s)
+           (bt:with-timeout (4) (sleep s))))
+    (finishes
+      (progn
+        (sleep-with-timeout 3)
+        (sleep-with-timeout 3)))))
