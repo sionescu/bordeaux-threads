@@ -12,7 +12,13 @@ Distributed under the MIT license (see LICENSE file)
 ;;; Thread Creation
 
 (defun %make-thread (function name)
-  (process:process-run-function name function))
+  (flet ((top-level ()
+	   (let ((return-values
+		   (multiple-value-list (funcall function))))
+	     (setf (si:process-spare-slot-4 scl:*current-process*) return-values)
+	     (values-list return-values))))
+    (declare (dynamic-extent #'top-level))
+    (process:process-run-function name #'top-level)))
 
 (defun current-thread ()
   scl:*current-process*)
@@ -136,6 +142,7 @@ Distributed under the MIT license (see LICENSE file)
   (process:process-wait (format nil "Join ~S" thread)
 			#'(lambda (thread)
 			    (not (process:process-active-p thread)))
-			thread))
+			thread)
+  (values-list (si:process-spare-slot-4 thread)))
 
 (mark-supported)
