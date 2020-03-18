@@ -9,12 +9,15 @@ Distributed under the MIT license (see LICENSE file)
 (deftype thread ()
   'process:process)
 
+(defvar *thread-recursive-lock-key* 0)
+
 ;;; Thread Creation
 
 (defun %make-thread (function name)
   (flet ((top-level ()
-	   (let ((return-values
-		   (multiple-value-list (funcall function))))
+	   (let* ((*thread-recursive-lock-key* 0)
+		  (return-values
+		    (multiple-value-list (funcall function))))
 	     (setf (si:process-spare-slot-4 scl:*current-process*) return-values)
 	     (values-list return-values))))
     (declare (dynamic-extent #'top-level))
@@ -63,18 +66,37 @@ Distributed under the MIT license (see LICENSE file)
 (defun make-recursive-lock (&optional name)
   (make-recursive-lock-internal :lock (process:make-lock (or name "Anonymous recursive lock")
 							 :recursive t)
-				:lock-arguments nil))
+				:lock-arguments (make-hash-table :test #'equal)))
 
 (defun acquire-recursive-lock (lock)
   (check-type lock recursive-lock)
-  (process:lock (recursive-lock-lock lock)
-		(car (push (process:make-lock-argument (recursive-lock-lock lock))
-			   (recursive-lock-lock-arguments lock))))
-  t)
+  (let ((key (cons (incf *thread-recursive-lock-key*) scl:*current-process*))
+	(lock-argument (process:make-lock-argument (recursive-lock-lock lock))))
+    (setf (gethash key (recursive-lock-lock-arguments lock)) lock-argument)
+    (process:lock (recursive-lock-lock lock) lock-argument)
+    t))
 
 (defun release-recursive-lock (lock)
   (check-type lock recursive-lock)
-  (process:unlock (recursive-lock-lock lock) (pop (recursive-lock-lock-arguments lock))))
+  (let* ((key (cons *thread-recursive-lock-key* scl:*current-process*))
+	 (lock-argument (gethash key (recursive-lock-lock-arguments lock))))
+    (prog1
+        (process:unlock (recursive-lock-lock lock) lock-argument)
+      (decf *thread-recursive-lock-key*)
+      (remhash key (recursive-lock-lock-arguments lock)))))
+
+(defmacro with-recursive-lock-held ((place &key timeout) &body body)
+  `(with-recursive-lock-held-internal ,place ,timeout #'(lambda () ,@body)))
+
+(defun with-recursive-lock-held-internal (lock timeout function)
+  (check-type lock recursive-lock)
+  (check-type timeout (or null (satisfies zerop)) "Unsupported :TIMEOUT value")
+  (when (or (null timeout)
+	    (process:lock-lockable-p (recursive-lock-lock lock)))
+    (when (acquire-recursive-lock lock)
+      (unwind-protect
+	  (funcall function)
+	(release-recursive-lock lock)))))
 
 ;;; Resource contention: condition variables
 
