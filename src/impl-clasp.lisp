@@ -39,7 +39,7 @@ Distributed under the MIT license (see LICENSE file)
   (typep object 'mp:mutex))
 
 (defun recursive-lock-p (object)
-  (and (typep object 'mp:lock)
+  (and (typep object 'mp:mutex)
        (mp:recursive-lock-p object)))
 
 (defun make-lock (&optional name)
