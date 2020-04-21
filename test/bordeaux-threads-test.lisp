@@ -57,6 +57,7 @@ Distributed under the MIT license (see LICENSE file)
     (is (acquire-lock lock nil))
     (release-lock lock)))
 
+#-(or allegro sbcl)
 (def-test acquire-recursive-lock ()
   (let ((test-lock (make-recursive-lock))
         (results (make-array 4 :adjustable t :fill-pointer 0))
