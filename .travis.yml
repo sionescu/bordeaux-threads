@@ -9,16 +9,15 @@ env:
     - LISP=ccl
     - LISP=ccl32
     - LISP=ecl
-    # - LISP=abcl
     - LISP=allegro
     - LISP=cmucl
+    # - LISP=abcl
 
 jobs:
   allow_failures:
     - env: LISP=abcl
     - env: LISP=ccl32
     - env: LISP=cmucl
-    - env: LISP=ecl
 
 notifications:
   email:
