@@ -173,7 +173,7 @@ Distributed under the MIT license (see LICENSE file)
       (is (equal num-procs *shared*)))))
 
 ;; Generally safe sanity check for the locks and single-notify
-#+(and lispworks (not lispworks6))
+#+(and lispworks (or lispworks4 lispworks5))
 (test condition-variable-lw
   (let ((condition-variable (make-condition-variable :name "Test"))
         (test-lock (make-lock))

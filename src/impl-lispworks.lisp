@@ -94,16 +94,16 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Resource contention: condition variables
 
-#+(or lispworks6 lispworks7)
+#-(or lispworks4 lispworks5)
 (defun make-condition-variable (&key name)
   (mp:make-condition-variable :name (or name "Anonymous condition variable")))
 
-#+(or lispworks6 lispworks7)
+#-(or lispworks4 lispworks5)
 (defun condition-wait (condition-variable lock &key timeout)
   (mp:condition-variable-wait condition-variable lock :timeout timeout)
   t)
 
-#+(or lispworks6 lispworks7)
+#-(or lispworks4 lispworks5)
 (defun condition-notify (condition-variable)
   (mp:condition-variable-signal condition-variable))
 
