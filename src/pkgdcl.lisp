@@ -20,6 +20,11 @@
 
            #:make-semaphore #:signal-semaphore #:wait-on-semaphore #:semaphore #:semaphore-p
 
+           #:mailbox #:make-mailbox #:mailbox-p
+           #:mailbox-name #:mailbox-count #:mailbox-empty-p
+           #:send-message #:list-mailbox-messages
+           #:receive-message #:receive-message-no-hang #:receive-pending-messages
+
            #:with-timeout #:timeout
 
            #:all-threads #:interrupt-thread #:destroy-thread #:thread-alive-p

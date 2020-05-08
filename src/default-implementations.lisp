@@ -318,6 +318,111 @@ cannot be decremented in that time, returns NIL without decrementing the count."
   "Returns T if OBJECT is a semaphore; returns NIL otherwise."
   (typep object 'semaphore))
 
+;;; Mailboxes
+
+(defdfun make-mailbox (&key name initial-contents)
+  "Returns a new MAILBOX with messages in INITIAL-CONTENTS enqueued."
+  (check-type name (or null string))
+  (check-type initial-contents list)
+  (let ((locative (list nil)))
+    (make-%mailbox :name name
+                   :lock (make-lock name)
+                   :cvar (make-condition-variable :name name)
+                   :count (length initial-contents)
+                   :messages (append initial-contents locative)
+                   :messages-tail locative)))
+
+(defdfun mailbox-name (mailbox)
+  "Name of a MAILBOX. SETFable."
+  (%mailbox-name mailbox))
+
+(defdfun (setf mailbox-name) (name mailbox)
+  "Sets a MAILBOX name."
+  (setf (%mailbox-name mailbox) name))
+
+(defdfun list-mailbox-messages (mailbox)
+  "Returns a fresh list containing all the messages in the
+mailbox. Does not remove messages from the mailbox."
+  (with-lock-held ((%mailbox-lock mailbox))
+    (loop
+      for (i . j) on (%mailbox-messages mailbox)
+      until (null j) collect i)))
+
+(defdfun mailbox-count (mailbox)
+  "Returns the number of messages currently in the mailbox."
+  (with-lock-held ((%mailbox-lock mailbox))
+    (%mailbox-count mailbox)))
+
+(defdfun mailbox-empty-p (mailbox)
+  "Returns true if MAILBOX is currently empty, NIL otherwise."
+  (with-lock-held ((%mailbox-lock mailbox))
+    (zerop (%mailbox-count mailbox))))
+
+(defdfun receive-message (mailbox &key timeout)
+  "Removes the oldest message from MAILBOX and returns it as the primary
+value, and a secondary value of T. If MAILBOX is empty waits until a message
+arrives.
+
+If TIMEOUT is provided, and no message arrives within the specified interval,
+returns primary and secondary value of NIL."
+  (with-lock-held ((%mailbox-lock mailbox))
+    (loop
+      with deadline = (and timeout
+                           (+ (get-internal-real-time)
+                              (* timeout internal-time-units-per-second)))
+      while (zerop (%mailbox-count mailbox))
+      do (cond ((null (condition-wait (%mailbox-cvar mailbox)
+                                      (%mailbox-lock mailbox)
+                                      :timeout timeout))
+                (return-from receive-message (values nil nil)))
+               ((and deadline (>= (get-internal-real-time) deadline))
+                (return-from receive-message (values nil nil)))
+               (timeout
+                (setf timeout (/ (- deadline (get-internal-real-time))
+                                 internal-time-units-per-second)))))
+    (decf (%mailbox-count mailbox))
+    (values (pop (%mailbox-messages mailbox)) t)))
+
+(defdfun receive-message-no-hang (mailbox)
+  "The non-blocking variant of RECEIVE-MESSAGE. Returns two values,
+the message removed from MAILBOX, and a flag specifying whether a
+message could be received."
+  (with-lock-held ((%mailbox-lock mailbox))
+    (unless (zerop (%mailbox-count mailbox))
+      (decf (%mailbox-count mailbox))
+      (values (pop (%mailbox-messages mailbox)) t))))
+
+(defdfun receive-pending-messages (mailbox &optional n)
+  "Removes and returns all (or at most N) currently pending messages
+from MAILBOX, or returns NIL if no messages are pending.
+
+Note: Concurrent threads may be snarfing messages during the run of
+this function, so even though X,Y appear right next to each other in
+the result, does not necessarily mean that Y was the message sent
+right after X."
+  (check-type n (or null (integer 0)))
+  (with-lock-held ((%mailbox-lock mailbox))
+    (setf n (min (%mailbox-count mailbox)
+                 (or n (%mailbox-count mailbox))))
+    (decf (%mailbox-count mailbox) n)
+    (loop
+      repeat n
+      collect (pop (%mailbox-messages mailbox)))))
+
+(defdfun send-message (mailbox message)
+  "Adds a MESSAGE to MAILBOX. Message can be any object."
+  (with-lock-held ((%mailbox-lock mailbox))
+    (incf (%mailbox-count mailbox))
+    (setf (car (%mailbox-messages-tail mailbox)) message
+          (cdr (%mailbox-messages-tail mailbox)) (list nil))
+    (pop (%mailbox-messages-tail mailbox))
+    (condition-notify (%mailbox-cvar mailbox))
+    t))
+
+(defdfun mailbox-p (object)
+  "Returns T if OBJECT is a mailbox; returns NIL otherwise."
+  (typep object 'mailbox))
+
 ;;; Introspection/debugging
 
 ;;; The following functions may be provided for debugging purposes,

@@ -100,6 +100,24 @@ support WITH-TIMEOUT natively and don't support threads either it has no effect.
 (deftype semaphore ()
   '%semaphore)
 
+;;; Mailboxes
+
+;;; We provide this structure definition unconditionally regardless of the fact
+;;; it may not be used not to prevent warnings from compiling default functions
+;;; for mailbox in default-implementations.lisp.
+(defstruct %mailbox
+  lock cvar messages messages-tail count name)
+
+(defmethod print-object ((mailbox %mailbox) stream)
+  (print-unreadable-object (mailbox stream :type t :identity t)
+    (format stream "~@[~S ~](~D msgs pending)"
+            (%mailbox-name mailbox)
+            (%mailbox-count mailbox)))
+  mailbox)
+
+(deftype mailbox ()
+  '%mailbox)
+
 ;;; Thread Creation
 
 ;;; See default-implementations.lisp for MAKE-THREAD.

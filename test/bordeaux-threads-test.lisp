@@ -273,6 +273,138 @@ Distributed under the MIT license (see LICENSE file)
   (is (bt:semaphore-p (bt:make-semaphore)))
   (is (null (bt:semaphore-p (bt:make-lock)))))
 
+(test mailbox-send-receive
+  (let ((mailbox (bt:make-mailbox :name "my smilebox")))
+    (is (bt:mailbox-p mailbox))
+    (is (not (bt:mailbox-p 42)))
+    (is (equalp (bt:mailbox-name mailbox) "my smilebox"))
+    ;; Add some
+    (bt:send-message mailbox "daniel")
+    (bt:send-message mailbox "ma")
+    (bt:send-message mailbox 4)
+    ;; Ensure FIFO order
+    (is (string= "daniel" (bt:receive-message mailbox)))
+    ;; Add some more
+    (bt:send-message mailbox "zielone")
+    (bt:send-message mailbox "koty")
+    ;; Ensure counting
+    (is (=  4 (bt:mailbox-count mailbox)))
+    (is (null (bt:mailbox-empty-p mailbox)))
+    ;; Ensure FIFO order and and other receive operations
+    (is (equalp "ma" (bt:receive-message mailbox)))
+    (is (equalp  4 (bt:receive-message mailbox)))
+    (is (equalp  "zielone" (bt:receive-message-no-hang mailbox)))
+    (is (= 1 (bt:mailbox-count mailbox)))
+    (is (equalp "koty" (bt:receive-message-no-hang mailbox)))
+    ;; Ensure empty box behavior
+    (is (= 0 (bt:mailbox-count mailbox)))
+    (is (bt:mailbox-empty-p mailbox))
+    (is (null (receive-message-no-hang mailbox)))
+    (is (null (receive-message mailbox :timeout 0.1)))
+    (is (= 0 (bt:mailbox-count mailbox)))
+    (is (bt:mailbox-empty-p mailbox))
+    ;; add some new data and verify group operations
+    (dotimes (v 10) (send-message mailbox v))
+    (is (= 10 (bt:mailbox-count mailbox)))
+    (is (not (bt:mailbox-empty-p mailbox)))
+    (is (equalp '(0 1 2 3 4 5 6 7 8 9) (list-mailbox-messages mailbox)))
+    (is (null (receive-pending-messages mailbox 0)))
+    (signals type-error (receive-pending-messages mailbox -1))
+    (is (= 10 (bt:mailbox-count mailbox)))
+    (is (not (bt:mailbox-empty-p mailbox)))
+    (is (equalp '(0 1 2 3 4) (receive-pending-messages mailbox 5)))
+    (is (equalp '(5 6 7 8 9) (list-mailbox-messages mailbox)))
+    (is (= (bt:mailbox-count mailbox) 5))
+    (is (not (bt:mailbox-empty-p mailbox)))
+    (is (equalp '(5 6 7 8 9) (receive-pending-messages mailbox 20)))
+    (is (= (bt:mailbox-count mailbox) 0))
+    (is (bt:mailbox-empty-p mailbox))
+    (is (null (receive-pending-messages mailbox 20)))
+    (is (= 0 (bt:mailbox-count mailbox)))
+    (is (bt:mailbox-empty-p mailbox))
+    ;; receive-pending-messages without optional argument
+    (dotimes (v 10) (send-message mailbox v))
+    (is (= 10 (bt:mailbox-count mailbox)))
+    (is (not (bt:mailbox-empty-p mailbox)))
+    (is (equalp '(0 1 2 3 4 5 6 7 8 9) (receive-pending-messages mailbox)))
+    (is (= 0 (bt:mailbox-count mailbox)))
+    (is (bt:mailbox-empty-p mailbox))))
+
+(test mailbox-producer-consumers
+  (let (;; we start from 0 and always send messages
+        ;; monotonically increasing. That means that each
+        ;; consumer has monotonically increasing
+        ;; elements. Note that results-mailbox may have all
+        ;; that jumbled up, because different consumers may
+        ;; send at different times.
+        (bt:mailbox (make-mailbox :initial-contents '(0)))
+        ;; we will submit all results to the second mailbox,
+        ;; then sort them and verify if nothing got lost. This
+        ;; also gives us concurrent send-message.
+        (results-mailbox (make-mailbox))
+        ;; all errors in a thread should be send here. For
+        ;; intance if messages are not monotonous from the
+        ;; consumer perspective it is an ordering issue.
+        (errors-mailbox (make-mailbox))
+        ;; flag to tell consumers that we are full. We always
+        ;; have a timeout in make-1-consumer (and
+        ;; make-n-consumer returns immedietely), so we may
+        ;; safely assume that join-thread will return.
+        (konsument-je-żeby-jeść-p nil)
+        ;; last added element to the mailbox called from
+        ;; producer thrad and *not* thread-safe - that means
+        ;; that only one producer at a time should run. For
+        ;; multiple producer we resend to results-mailbox from
+        ;; consumer threads.
+        (last-element-added 0))
+    (flet ((make-producer (n)
+             (lambda ()
+               (sleep 1)
+               (loop for i from 1 upto n
+                     do (progn (send-message mailbox (+ last-element-added i))))
+               (incf last-element-added n)))
+           ;; Consumers return T if they didn't put hand on any message.
+           (make-1-consumer (&optional timeout sleep)
+             (lambda ()
+               (loop until (and konsument-je-żeby-jeść-p
+                                (bt:mailbox-empty-p mailbox))
+                     with last-message = nil
+                     do (alexandria:when-let
+                            ((message (if timeout
+                                          (receive-message mailbox :timeout timeout)
+                                          (receive-message-no-hang mailbox))))
+                          (when (and last-message (> last-message message))
+                            (send-message errors-mailbox (cons last-message message)))
+                          (setf last-message message)
+                          (send-message results-mailbox message)
+                          (when sleep (sleep sleep)))
+                     finally (return (not last-message)))))
+           (make-n-consumer (batch-size &optional sleep)
+             (lambda ()
+               (loop until (and konsument-je-żeby-jeść-p
+                                (bt:mailbox-empty-p mailbox))
+                     with send = (alexandria:curry #'send-message results-mailbox)
+                     with starved = t
+                     do (progn
+                          (alexandria:when-let
+                              ((messages (receive-pending-messages mailbox batch-size)))
+                            (mapc send messages)
+                            (setf starved nil))
+                          (when sleep (sleep sleep)))
+                     finally (return starved)))))
+      (let ((producer (bt:make-thread (make-producer 5000)))
+            (threads (append (loop repeat 4 collect (bt:make-thread (make-1-consumer)))
+                             (loop repeat 4 collect (bt:make-thread (make-1-consumer nil 0.1)))
+                             (loop repeat 4 collect (bt:make-thread (make-1-consumer 1)))
+                             (loop repeat 4 collect (bt:make-thread (make-n-consumer 3))))))
+        (bt:join-thread producer)
+        (setf konsument-je-żeby-jeść-p t)
+        (mapc #'bt:join-thread threads)
+        (is (bt:mailbox-empty-p errors-mailbox)
+            "Some messages were not in FIFO order")
+        (is (= (bt:mailbox-count results-mailbox) (1+ last-element-added))
+            "Some messages were not processed")))))
+
 (test with-timeout-return-value
   (is (eql :foo (bt:with-timeout (5) :foo))))
 
