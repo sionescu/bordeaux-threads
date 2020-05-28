@@ -1,21 +1,24 @@
-language: lisp
+os: linux
+dist: bionic
+language: generic
 
 env:
-  matrix:
-    - LISP=allegro
-    - LISP=ccl
-    - LISP=ccl32
+  jobs:
     - LISP=sbcl
     - LISP=sbcl32
-    - LISP=abcl
-    - LISP=cmucl
+    - LISP=ccl
+    - LISP=ccl32
     - LISP=ecl
+    - LISP=allegro
+    - LISP=cmucl
+    # - LISP=abcl
 
-matrix:
+jobs:
   allow_failures:
     - env: LISP=abcl
+    - env: LISP=allegro
+    - env: LISP=ccl32
     - env: LISP=cmucl
-    - env: LISP=ecl
 
 notifications:
   email:
@@ -42,5 +45,3 @@ script:
            (uiop:quit (if (some (lambda (x) (typep x '5am::test-failure))
                                 (5am:run :bordeaux-threads))
                           1 0))"
-
-sudo: required

@@ -57,6 +57,29 @@ Distributed under the MIT license (see LICENSE file)
     (is (acquire-lock lock nil))
     (release-lock lock)))
 
+#-(or allegro sbcl)
+(def-test acquire-recursive-lock ()
+  (let ((test-lock (make-recursive-lock))
+        (results (make-array 4 :adjustable t :fill-pointer 0))
+        (results-lock (make-lock))
+        (threads ()))
+    (flet ((add-result (r)
+             (with-lock-held (results-lock)
+               (vector-push-extend r results))))
+      (dotimes (i 2)
+        (push (make-thread
+               #'(lambda ()
+                   (when (acquire-recursive-lock test-lock)
+                     (unwind-protect
+                          (progn
+                            (add-result :enter)
+                            (sleep 1)
+                            (add-result :leave))
+                       (release-recursive-lock test-lock)))))
+              threads)))
+    (map 'nil #'join-thread threads)
+    (is (equalp results #(:enter :leave :enter :leave)))))
+
 (defun set-equal (set-a set-b)
   (and (null (set-difference set-a set-b))
        (null (set-difference set-b set-a))))
@@ -150,7 +173,7 @@ Distributed under the MIT license (see LICENSE file)
       (is (equal num-procs *shared*)))))
 
 ;; Generally safe sanity check for the locks and single-notify
-#+(and lispworks (not lispworks6))
+#+(and lispworks (or lispworks4 lispworks5))
 (test condition-variable-lw
   (let ((condition-variable (make-condition-variable :name "Test"))
         (test-lock (make-lock))
@@ -249,3 +272,17 @@ Distributed under the MIT license (see LICENSE file)
   (is (typep (bt:make-semaphore) 'bt:semaphore))
   (is (bt:semaphore-p (bt:make-semaphore)))
   (is (null (bt:semaphore-p (bt:make-lock)))))
+
+(test with-timeout-return-value
+  (is (eql :foo (bt:with-timeout (5) :foo))))
+
+(test with-timeout-signals
+  (signals timeout (bt:with-timeout (1) (sleep 5))))
+
+(test with-timeout-non-interference
+  (flet ((sleep-with-timeout (s)
+           (bt:with-timeout (4) (sleep s))))
+    (finishes
+      (progn
+        (sleep-with-timeout 3)
+        (sleep-with-timeout 3)))))

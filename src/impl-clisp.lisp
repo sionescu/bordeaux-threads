@@ -28,16 +28,16 @@ Distributed under the MIT license (see LICENSE file)
 
 ;;; Resource contention: locks and recursive locks
 
-(deftype lock () 'mt:mt-mutex)
+(deftype lock () 'mt:mutex)
 
 (deftype recursive-lock ()
-  '(and mt:mt-mutex (satisfies mt:mutex-recursive-p)))
+  '(and mt:mutex (satisfies mt:mutex-recursive-p)))
 
 (defun lock-p (object)
-  (typep object 'mt:mt-mutex))
+  (typep object 'mt:mutex))
 
 (defun recursive-lock-p (object)
-  (and (typep object 'mt:mt-mutex)
+  (and (typep object 'mt:mutex)
        (mt:mutex-recursive-p object)))
 
 (defun make-lock (&optional name)
@@ -55,6 +55,12 @@ Distributed under the MIT license (see LICENSE file)
 (defun make-recursive-lock (&optional name)
   (mt:make-mutex :name (or name "Anonymous recursive lock")
                  :recursive-p t))
+
+(defun acquire-recursive-lock (lock &optional (wait-p t))
+  (acquire-lock lock wait-p))
+
+(defun release-recursive-lock (lock)
+  (release-lock lock))
 
 (defmacro with-recursive-lock-held ((place) &body body)
   `(mt:with-mutex-lock (,place) ,@body))

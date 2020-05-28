@@ -12,6 +12,7 @@ Distributed under the MIT license (see LICENSE file)
 (eval-when (:compile-toplevel :load-toplevel :execute)
   #+(or armedbear
         (and allegro multiprocessing)
+        (and clasp threads)
         (and clisp mt)
         (and openmcl openmcl-native-threads)
         (and cmu mp)
@@ -43,6 +44,7 @@ Distributed under the MIT license (see LICENSE file)
                  (:file "bordeaux-threads")
                  (:file #+(and thread-support armedbear) "impl-abcl"
                         #+(and thread-support allegro)   "impl-allegro"
+                        #+(and thread-support clasp)     "impl-clasp"
                         #+(and thread-support clisp)     "impl-clisp"
                         #+(and thread-support openmcl)   "impl-clozure"
                         #+(and thread-support cmu)       "impl-cmucl"
@@ -60,7 +62,8 @@ Distributed under the MIT license (see LICENSE file)
                  (:file "impl-lispworks-condition-variables")
                  #+(and thread-support digitool)
                  (:file "condition-variables")
-                 (:file "default-implementations")))))
+                 (:file "default-implementations"))))
+  :in-order-to ((test-op (test-op :bordeaux-threads/test))))
 
 (defsystem :bordeaux-threads/test
   :author "Greg Pfeil <greg@technomadic.org>"
@@ -69,8 +72,5 @@ Distributed under the MIT license (see LICENSE file)
   :version (:read-file-form "version.sexp")
   :depends-on (:bordeaux-threads :fiveam)
   :components ((:module "test"
-                :components ((:file "bordeaux-threads-test")))))
-
-(defmethod perform ((o test-op) (c (eql (find-system :bordeaux-threads))))
-  (load-system :bordeaux-threads/test)
-  (symbol-call :5am :run! :bordeaux-threads))
+                :components ((:file "bordeaux-threads-test"))))
+  :perform (test-op (o c) (symbol-call :5am :run! :bordeaux-threads)))
