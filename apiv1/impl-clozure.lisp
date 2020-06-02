@@ -96,9 +96,7 @@ Distributed under the MIT license (see LICENSE file)
 
 (defun make-semaphore (&key name (count 0))
   (declare (ignore name))
-  (let ((semaphore (ccl:make-semaphore)))
-    (dotimes (c count) (ccl:signal-semaphore semaphore))
-    semaphore))
+  (ccl:make-semaphore :count count))
 
 (defun signal-semaphore (semaphore &key (count 1))
   (dotimes (c count) (ccl:signal-semaphore semaphore)))

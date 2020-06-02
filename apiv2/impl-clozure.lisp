@@ -111,9 +111,7 @@
 
 (defun %make-semaphore (name count)
   (declare (ignore name))
-  (let ((semaphore (ccl:make-semaphore)))
-    (dotimes (c count) (ccl:signal-semaphore semaphore))
-    semaphore))
+  (ccl:make-semaphore :count count))
 
 (defun %signal-semaphore (semaphore count)
   (dotimes (c count) (ccl:signal-semaphore semaphore)))
