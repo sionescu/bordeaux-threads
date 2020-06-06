@@ -1,4 +1,5 @@
-;;;; -*- indent-tabs-mode: nil -*-
+;;;; -*- Mode: LISP; Syntax: ANSI-Common-lisp; Base: 10; Package: CL-USER -*-
+;;;; The above modeline is required for Genera. Do not change.
 
 (cl:defpackage :bordeaux-threads
   (:nicknames #:bt)
