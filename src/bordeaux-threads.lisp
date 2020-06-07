@@ -50,7 +50,7 @@ Distributed under the MIT license (see LICENSE file)
 (define-condition interrupt ()
   ((tag :initarg :tag :reader interrupt-tag)))
 
-#-sbcl
+#-(or sbcl genera)
 (defmacro with-timeout ((timeout) &body body)
   "Execute `BODY' and signal a condition of type TIMEOUT if the execution of
 BODY does not complete within `TIMEOUT' seconds. On implementations which do not
