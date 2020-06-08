@@ -89,7 +89,7 @@ Distributed under the MIT license (see LICENSE file)
   #-smp
   (mp:process-run-function
    name
-   (lambda ()
+   (named-lambda %join-thread-wrapper ()
      (let ((return-values
              (multiple-value-list (funcall function))))
        (setf (getf (mp:process-property-list mp:*current-process*)

@@ -107,7 +107,7 @@ Distributed under the MIT license (see LICENSE file)
 (defun interrupt-thread (thread function &rest args)
   (mezzano.supervisor:establish-thread-foothold
    thread
-   (lambda ()
+   (named-lambda %interrupt-thread-wrapper ()
      (apply function args))))
 
 (defun destroy-thread (thread)

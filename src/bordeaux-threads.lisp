@@ -155,7 +155,7 @@ support WITH-TIMEOUT natively and don't support threads either it has no effect.
   "Return a closure that binds the symbols in SPECIAL-BINDINGS and calls
 FUNCTION."
   (let ((specials (remove-duplicates special-bindings :from-end t :key #'car)))
-    (lambda ()
+    (named-lambda %binding-default-specials-wrapper ()
       (progv (mapcar #'car specials)
           (loop for (nil . form) in specials collect (eval form))
         (funcall function)))))

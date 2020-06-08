@@ -22,7 +22,7 @@ Distributed under the MIT license (see LICENSE file)
 (defun %make-thread (function name)
   (mp:process-run-function
    name nil
-   (lambda ()
+   (named-lambda %join-thread-wrapper ()
      (let ((return-values
              (multiple-value-list (funcall function))))
        (setf (mp:process-property 'return-values)

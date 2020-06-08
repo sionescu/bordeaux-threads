@@ -20,7 +20,7 @@ Distributed under the MIT license (see LICENSE file)
   #+#.(cl:if (cl:find-symbol (cl:string '#:process-join) :mp) '(and) '(or))
   (mp:make-process function :name name)
   #-#.(cl:if (cl:find-symbol (cl:string '#:process-join) :mp) '(and) '(or))
-  (mp:make-process (lambda ()
+  (mp:make-process (named-lambda %join-thread-wrapper ()
                      (let ((return-values
                              (multiple-value-list (funcall function))))
                        (setf (getf (mp:process-property-list mp:*current-process*)

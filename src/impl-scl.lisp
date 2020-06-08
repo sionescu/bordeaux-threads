@@ -85,7 +85,8 @@ Distributed under the MIT license (see LICENSE file)
 (defun interrupt-thread (thread function &rest args)
   (flet ((apply-function ()
            (if args
-               (lambda () (apply function args))
+               (named-lambda %interrupt-thread-wrapper ()
+                 (apply function args))
                function)))
     (declare (dynamic-extent #'apply-function))
     (thread:thread-interrupt thread (apply-function))))
@@ -98,6 +99,7 @@ Distributed under the MIT license (see LICENSE file)
 
 (defun join-thread (thread)
   (mp:process-wait (format nil "Waiting for thread ~A to complete" thread)
-                   (lambda () (not (mp:process-alive-p thread)))))
+                   (named-lambda %thread-completedp ()
+                     (not (mp:process-alive-p thread)))))
 
 (mark-supported)
