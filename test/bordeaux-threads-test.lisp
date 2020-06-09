@@ -26,6 +26,10 @@ Distributed under the MIT license (see LICENSE file)
     (join-thread thread)
     (is (eql (car box) thread))))
 
+(test current-thread-eql
+  (is (eql (current-thread)
+           (current-thread))))
+
 (test join-thread-return-value
   (is (eql 0 (join-thread (make-thread (lambda () 0))))))
 
