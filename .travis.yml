@@ -5,11 +5,11 @@ language: generic
 env:
   jobs:
     - LISP=sbcl
-    - LISP=sbcl32
     - LISP=ccl
-    - LISP=ccl32
     - LISP=ecl
     - LISP=allegro
+    - LISP=sbcl32
+    - LISP=ccl32
     - LISP=cmucl
     # - LISP=abcl
 
@@ -19,6 +19,7 @@ jobs:
     - env: LISP=allegro
     - env: LISP=ccl32
     - env: LISP=cmucl
+    - env: LISP=ecl
 
 notifications:
   email:
@@ -34,9 +35,6 @@ notifications:
 
 install:
   - curl -L https://raw.githubusercontent.com/sionescu/cl-travis/master/install.sh | sh
-  - cl -e "(cl:in-package :cl-user)
-           (dolist (p '(:fiveam))
-             (ql:quickload p :verbose t))"
 
 script:
   - cl -e "(cl:in-package :cl-user)
