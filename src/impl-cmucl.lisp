@@ -32,7 +32,7 @@ Distributed under the MIT license (see LICENSE file)
 (defun current-thread ()
   mp:*current-process*)
 
-(defmethod threadp (object)
+(defun threadp (object)
   (mp:processp object))
 
 (defun thread-name (thread)
@@ -108,8 +108,6 @@ Distributed under the MIT license (see LICENSE file)
                    #'(lambda () (condition-var-active condition-variable)))
   (acquire-lock lock)
   t)
-
-(define-condition-wait-compiler-macro)
 
 (defun condition-notify (condition-variable)
   (check-type condition-variable condition-var)
