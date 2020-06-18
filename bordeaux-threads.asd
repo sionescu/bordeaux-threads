@@ -1,12 +1,6 @@
 ;;;; -*- Mode: LISP; Syntax: ANSI-Common-lisp; Base: 10; Package: ASDF -*-
 ;;;; The above modeline is required for Genera. Do not change.
 
-#|
-Copyright 2006,2007 Greg Pfeil
-
-Distributed under the MIT license (see LICENSE file)
-|#
-
 #.(unless (or #+asdf3.1 (version<= "3.1" (asdf-version)))
     (error "You need ASDF >= 3.1 to load this system correctly."))
 
@@ -29,16 +23,17 @@ Distributed under the MIT license (see LICENSE file)
   (pushnew :thread-support *features*))
 
 (defsystem :bordeaux-threads
-  :author "Greg Pfeil <greg@technomadic.org>"
+  :author "Stelian Ionescu <sionescu@cddr.org>"
   :licence "MIT"
   :description "Bordeaux Threads makes writing portable multi-threaded apps simple."
   :version (:read-file-form "version.sexp")
-  :depends-on (:alexandria
+  :depends-on (:alexandria :global-vars :trivial-garbage
                #+(and allegro (version>= 9))       (:require "smputil")
                #+(and allegro (not (version>= 9))) (:require "process")
                #+corman                            (:require "threads"))
   :components ((:static-file "version.sexp")
-               (:module "src"
+               (:module "api-v1"
+                :pathname "src/"
                 :serial t
                 :components
                 ((:file "pkgdcl")
@@ -63,15 +58,50 @@ Distributed under the MIT license (see LICENSE file)
                  (:file "impl-lispworks-condition-variables")
                  #+(and thread-support digitool)
                  (:file "condition-variables")
-                 (:file "default-implementations"))))
+                 (:file "default-implementations")))
+               (:module "api-v2"
+                :pathname "apiv2/"
+                :depends-on ("api-v1")
+                :serial t
+                :components
+                ((:file "pkgdcl")
+                 (:file "bordeaux-threads")
+                 (:file "timeout-interrupt")
+                 (:file "impl-abcl" :if-feature :abcl)
+                 (:file "impl-allegro" :if-feature :allegro)
+                 (:file "impl-clasp" :if-feature :clasp)
+                 (:file "impl-clisp" :if-feature :clisp)
+                 (:file "impl-clozure" :if-feature :clozure)
+                 (:file "impl-cmucl" :if-feature :cmu)
+                 (:file "impl-corman" :if-feature :corman)
+                 (:file "impl-ecl" :if-feature :ecl)
+                 (:file "impl-genera" :if-feature :genera)
+                 (:file "impl-mezzano" :if-feature :mezzano)
+                 (:file "impl-mkcl" :if-feature :mkcl)
+                 (:file "impl-lispworks" :if-feature :lispworks)
+                 (:file "impl-mcl" :if-feature :digitool)
+                 (:file "impl-sbcl" :if-feature :sbcl)
+                 (:file "impl-scl" :if-feature :scl)
+                 (:file "atomics" :if-feature (:not :abcl))
+                 (:file "atomics-java" :if-feature :abcl)
+                 (:file "api-locks")
+                 (:file "api-threads")
+                 (:file "api-semaphores")
+                 (:file "impl-condition-variables-semaphores"
+                  :if-feature :ccl)
+                 (:file "api-condition-variables"))))
   :in-order-to ((test-op (test-op :bordeaux-threads/test))))
 
 (defsystem :bordeaux-threads/test
-  :author "Greg Pfeil <greg@technomadic.org>"
+  :author "Stelian Ionescu <sionescu@cddr.org>"
   :description "Bordeaux Threads test suite."
   :licence "MIT"
   :version (:read-file-form "version.sexp")
   :depends-on (:bordeaux-threads :fiveam)
-  :components ((:module "test"
-                :components ((:file "bordeaux-threads-test"))))
-  :perform (test-op (o c) (symbol-call :5am :run! :bordeaux-threads)))
+  :pathname "test/"
+  :serial t
+  :components ((:file "bordeaux-threads-test")
+               (:file "pkgdcl")
+               (:file "not-implemented")
+               (:file "tests-v2"))
+  :perform (test-op (o c) (symbol-call :5am :run! :bordeaux-threads-2)))
