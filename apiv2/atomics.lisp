@@ -9,8 +9,9 @@
   #+ecl (with-gensyms (tmp)
           `(let ((,tmp ,old))
              (eql ,tmp (mp:compare-and-swap ,place ,tmp ,new))))
+  #+lispworks `(system:compare-and-swap ,place ,old ,new)
   #+sbcl `(sb-ext:compare-and-swap ,place ,old ,new)
-  #-(or allegro ccl ecl sbcl)
+  #-(or allegro ccl ecl lispworks sbcl)
   (signal-not-implemented 'atomic-cas))
 
 (defmacro atomic-decf (place &optional (delta 1))
@@ -18,6 +19,7 @@
   #+allegro `(excl:decf-atomic ,place ,delta)
   #+ccl `(ccl::atomic-incf-decf ,place (- ,delta))
   #+ecl `(- (mp:atomic-decf ,place ,delta) ,delta)
+  #+lispworks `(system:atomic-decf ,place ,delta)
   #+sbcl `(- (sb-ext:atomic-decf ,place ,delta) ,delta)
   #-(or allegro ccl ecl sbcl)
   (signal-not-implemented 'atomic-decf))
@@ -27,6 +29,7 @@
   #+allegro `(excl:incf-atomic ,place ,delta)
   #+ccl `(ccl::atomic-incf-decf ,place ,delta)
   #+ecl `(+ (mp:atomic-incf ,place ,delta) ,delta)
+  #+lispworks `(system:atomic-incf ,place ,delta)
   #+sbcl `(+ (sb-ext:atomic-incf ,place ,delta) ,delta)
   #-(or allegro ccl ecl sbcl)
   (signal-not-implemented 'atomic-incf))
@@ -38,7 +41,7 @@
             (:constructor %make-atomic-integer ()))
   "Wrapper for an (UNSIGNED-BYTE 64) that allows atomic
 increment, decrement and swap."
-  #+(or allegro ccl ecl)
+  #+(or allegro ccl ecl lispworks)
   (cell (make-array 1 :element-type t))
   #+sbcl
   (cell 0 :type %atomic-integer-value))
@@ -47,7 +50,7 @@ increment, decrement and swap."
   (print-unreadable-object (aint stream :type t :identity t)
     (format stream "~S" (atomic-integer-value aint))))
 
-#-(or allegro ccl ecl sbcl)
+#-(or allegro ccl ecl lispworks sbcl)
 (mark-not-implemented 'make-atomic-integer)
 (defun make-atomic-integer (&key (value 0))
   (check-type value %atomic-integer-value)
@@ -55,7 +58,7 @@ increment, decrement and swap."
   (let ((aint (%make-atomic-integer)))
     (setf (atomic-integer-value aint) value)
     aint)
-  #-(or allegro ccl ecl sbcl)
+  #-(or allegro ccl ecl lispworks sbcl)
   (signal-not-implemented 'make-atomic-integer))
 
 (defun atomic-integer-compare-and-swap (atomic-integer old new)
