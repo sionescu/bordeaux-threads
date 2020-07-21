@@ -33,7 +33,7 @@
                #+corman                            (:require "threads"))
   :components ((:static-file "version.sexp")
                (:module "api-v1"
-                :pathname "src/"
+                :pathname "apiv1/"
                 :serial t
                 :components
                 ((:file "pkgdcl")
@@ -100,7 +100,7 @@
   :depends-on (:bordeaux-threads :fiveam)
   :pathname "test/"
   :serial t
-  :components ((:file "bordeaux-threads-test")
+  :components ((:file "tests-v1")
                (:file "pkgdcl")
                (:file "not-implemented")
                (:file "tests-v2"))
