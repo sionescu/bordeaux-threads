@@ -10,7 +10,9 @@
           `(let ((,tmp ,old))
              (eql ,tmp (mp:compare-and-swap ,place ,tmp ,new))))
   #+lispworks `(system:compare-and-swap ,place ,old ,new)
-  #+sbcl `(sb-ext:compare-and-swap ,place ,old ,new)
+  #+sbcl (with-gensyms (tmp)
+           `(let ((,tmp ,old))
+              (eql ,tmp (sb-ext:compare-and-swap ,place ,old ,new))))
   #-(or allegro ccl ecl lispworks sbcl)
   (signal-not-implemented 'atomic-cas))
 
