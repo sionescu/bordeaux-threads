@@ -23,7 +23,7 @@
   (jmethod "java.util.concurrent.atomic.AtomicLong" "compareAndSet"
            (jclass "long") (jclass "long")))
 
-(defun atomic-integer-compare-and-swap (atomic-integer old new)
+(defun atomic-integer-cas (atomic-integer old new)
   (declare (type atomic-integer atomic-integer)
            (type %atomic-integer-value old new)
            (optimize (safety 0) (speed 3)))

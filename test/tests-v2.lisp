@@ -360,8 +360,8 @@
 #+(or abcl allegro ccl ecl lispworks sbcl)
 (test atomic-integer-cas.return-value
   (let ((aint (make-atomic-integer :value 4)))
-    (is (null (atomic-integer-compare-and-swap aint 0 100)))
-    (is (eql t (atomic-integer-compare-and-swap aint 4 7)))))
+    (is (null (atomic-integer-cas aint 0 100)))
+    (is (eql t (atomic-integer-cas aint 4 7)))))
 
 #+(or abcl allegro ccl ecl lispworks sbcl)
 (test atomic-integer.concurrency

@@ -63,7 +63,7 @@ increment, decrement and swap."
   #-(or allegro ccl ecl lispworks sbcl)
   (signal-not-implemented 'make-atomic-integer))
 
-(defun atomic-integer-compare-and-swap (atomic-integer old new)
+(defun atomic-integer-cas (atomic-integer old new)
   (declare (type atomic-integer atomic-integer)
            (type %atomic-integer-value old new)
            (optimize (safety 0) (speed 3)))
