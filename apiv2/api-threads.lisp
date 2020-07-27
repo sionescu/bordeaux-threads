@@ -51,44 +51,46 @@
   the same symbol, so defaults may be overridden by consing to the
   head of the list.")
 
-(defmacro defbindings (name docstring &body initforms)
-  (check-type docstring string)
-  `(defparameter ,name
-     (list
-      ,@(loop for (special form) in initforms
-              collect `(cons ',special ',form)))
-     ,docstring))
-
-(defbindings *standard-io-bindings*
-  "Standard bindings of printer/reader control variables as per
+(macrolet
+    ((defbindings (name docstring &body initforms)
+         (check-type docstring string)
+       `(alexandria:define-constant ,name
+            (list
+             ,@(loop for (special form) in initforms
+                     collect `(cons ',special ',form)))
+          :test #'equal
+          :documentation ,docstring)))
+  (defbindings +standard-io-bindings+
+      "Standard bindings of printer/reader control variables as per
 CL:WITH-STANDARD-IO-SYNTAX. Forms are evaluated in the calling thread."
-  (*package*                   (find-package :common-lisp-user))
-  (*print-array*               t)
-  (*print-base*                10)
-  (*print-case*                :upcase)
-  (*print-circle*              nil)
-  (*print-escape*              t)
-  (*print-gensym*              t)
-  (*print-length*              nil)
-  (*print-level*               nil)
-  (*print-lines*               nil)
-  (*print-miser-width*         nil)
-  (*print-pprint-dispatch*     (copy-pprint-dispatch nil))
-  (*print-pretty*              nil)
-  (*print-radix*               nil)
-  (*print-readably*            t)
-  (*print-right-margin*        nil)
-  (*random-state*              (make-random-state t))
-  (*read-base*                 10)
-  (*read-default-float-format* 'single-float)
-  (*read-eval*                 t)
-  (*read-suppress*             nil)
-  (*readtable*                 (copy-readtable nil)))
+    (*package*                   (find-package :common-lisp-user))
+    (*print-array*               t)
+    (*print-base*                10)
+    (*print-case*                :upcase)
+    (*print-circle*              nil)
+    (*print-escape*              t)
+    (*print-gensym*              t)
+    (*print-length*              nil)
+    (*print-level*               nil)
+    (*print-lines*               nil)
+    (*print-miser-width*         nil)
+    (*print-pprint-dispatch*     (copy-pprint-dispatch nil))
+    (*print-pretty*              nil)
+    (*print-radix*               nil)
+    (*print-readably*            t)
+    (*print-right-margin*        nil)
+    (*random-state*              (make-random-state t))
+    (*read-base*                 10)
+    (*read-default-float-format* 'double-float)
+    (*read-eval*                 nil)
+    (*read-suppress*             nil)
+    (*readtable*                 (copy-readtable nil))))
 
 (defvar *current-thread*)
 
 (defun compute-special-bindings (bindings)
-  (remove-duplicates (acons '*current-thread* nil bindings)
+  (remove-duplicates (acons '*current-thread* nil
+                            (append bindings +standard-io-bindings+))
                      :from-end t :key #'car))
 
 (defun establish-dynamic-env (thread function special-bindings trap-conditions)
