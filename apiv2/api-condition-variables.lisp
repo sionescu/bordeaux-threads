@@ -40,6 +40,10 @@
 ;;; case the notify call would not see A, which would be left sleeping
 ;;; despite there being an event available.
 
+(defun condition-variable-p (object)
+  "Returns TRUE if OBJECT is a condition variable, and NIL otherwise."
+  (typep object 'condition-variable))
+
 (defun make-condition-variable (&key name)
   "Returns a new condition-variable object for use
   with CONDITION-WAIT and CONDITION-NOTIFY."

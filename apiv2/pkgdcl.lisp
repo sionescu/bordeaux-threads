@@ -60,6 +60,8 @@
 
   ;; Condition variables
   (:export
+   #:condition-variable
+   #:condition-variable-p
    #:make-condition-variable
    #:condition-wait
    #:condition-notify
