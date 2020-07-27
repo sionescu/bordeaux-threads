@@ -9,24 +9,24 @@
   #+sbcl
   (:import-from :sb-ext #:timeout)
 
+  (:export
+   #:*supports-threads-p*
+   #:bordeaux-threads-error
+   #:not-implemented)
+
   ;; Threads
   (:export
    #:thread
-   #:make-thread
-   #:current-thread
-   #:threadp
    #:thread-name
    #:thread-native-thread
-   #:start-multiprocessing
+   #:threadp
+   #:make-thread
    #:*default-special-bindings*
    #:*standard-io-bindings*
-   #:*supports-threads-p*
-   #:bordeaux-threads-error
-   #:not-implemented
-   #:implemented-p
-   #:implemented-p*
-
+   #:current-thread
    #:all-threads
+   #:start-multiprocessing
+
    #:interrupt-thread
    #:signal-in-thread
    #:warn-in-thread

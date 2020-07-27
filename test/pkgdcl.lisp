@@ -2,6 +2,9 @@
 
 (defpackage :bordeaux-threads-2/test
   (:use :common-lisp :alexandria :bordeaux-threads-2 :fiveam)
+  (:import-from :bordeaux-threads-2
+                #:mark-not-implemented #:*not-implemented*
+                #:implemented-p #:implemented-p*)
   (:shadow #:is))
 
 (in-package :bordeaux-threads-2/test)

@@ -18,17 +18,17 @@
   (is (eql (current-thread)
            (current-thread))))
 
-#+#.(bt2:implemented-p* 'bt2:join-thread)
+#+#.(bt2::implemented-p* 'bt2:join-thread)
 (test current-thread.identity
   (let ((thread (make-thread #'current-thread)))
     (is (eql thread (join-thread thread)))))
 
-#+#.(bt2:implemented-p* 'bt2:join-thread)
+#+#.(bt2::implemented-p* 'bt2:join-thread)
 (test current-thread.special
   (let ((thread (make-thread (lambda () bt2::*current-thread*))))
     (is (eql thread (join-thread thread)))))
 
-#+#.(bt2:implemented-p* 'bt2:join-thread)
+#+#.(bt2::implemented-p* 'bt2:join-thread)
 (test current-thread.error
   (let ((thread (make-thread (lambda ()
                                (error "FOOBAR")))))
@@ -56,7 +56,7 @@
 (defparameter *shared* 0)
 (defparameter *lock* (make-lock))
 
-#+#.(bt2:implemented-p* 'bt2:thread-yield)
+#+#.(bt2::implemented-p* 'bt2:thread-yield)
 (test should-have-thread-interaction
   ;; this simple test generates N process. Each process grabs and
   ;; releases the lock until SHARED has some value, it then
@@ -98,7 +98,7 @@
   (let ((thread (make-thread (lambda () (sleep 60)))))
     (is (find thread (all-threads)))))
 
-#+#.(bt2:implemented-p* 'bt2:interrupt-thread)
+#+#.(bt2::implemented-p* 'bt2:interrupt-thread)
 (test interrupt-thread.throw
   (let ((thread (make-thread (lambda ()
                                (catch 'new-thread
@@ -113,7 +113,7 @@
 (test thread-alive-p.new-thread
   (is (thread-alive-p (make-thread (lambda () (sleep 60))))))
 
-#+#.(bt2:implemented-p* 'bt2:destroy-thread)
+#+#.(bt2::implemented-p* 'bt2:destroy-thread)
 (test destroy-thread.terminates
   (let ((thread (make-thread (lambda () (sleep 3)))))
     (is (threadp (destroy-thread thread)))
@@ -144,7 +144,7 @@
     (is (acquire-lock lock :wait nil))
     (is (lockp (release-lock lock)))))
 
-#+#.(bt2:implemented-p* 'bt2:acquire-recursive-lock)
+#+#.(bt2::implemented-p* 'bt2:acquire-recursive-lock)
 (test acquire-recursive-lock
   (let ((test-lock (make-recursive-lock))
         (results (make-array 4 :adjustable t :fill-pointer 0))
@@ -187,7 +187,7 @@
   (let ((lock (make-lock)))
     (is (eql :ok (with-lock-held (lock :timeout .1) :ok)))))
 
-#+#.(bt2:implemented-p* 'bt2:acquire-lock)
+#+#.(bt2::implemented-p* 'bt2:acquire-lock)
 (test with-lock-held.timeout-expires
   (let ((lock (make-lock)))
     (make-thread (lambda ()
@@ -211,7 +211,7 @@
     (is (acquire-recursive-lock lock :wait nil))
     (is (recursive-lock-p (release-recursive-lock lock)))))
 
-#+#.(bt2:implemented-p* 'bt2:acquire-recursive-lock)
+#+#.(bt2::implemented-p* 'bt2:acquire-recursive-lock)
 (test acquire-recursive-lock.try-lock
   (let ((lock (make-recursive-lock)))
     (make-thread (lambda ()
@@ -220,7 +220,7 @@
     (sleep 3)
     (is-false (acquire-recursive-lock lock :wait nil))))
 
-#+#.(bt2:implemented-p* 'bt2:acquire-recursive-lock)
+#+#.(bt2::implemented-p* 'bt2:acquire-recursive-lock)
 (test acquire-recursive-lock.timeout-expires
   (let ((lock (make-recursive-lock)))
     (make-thread (lambda ()
@@ -233,7 +233,7 @@
   (let ((lock (make-recursive-lock)))
     (is (eql :ok (with-recursive-lock-held (lock :timeout .1) :ok)))))
 
-#+#.(bt2:implemented-p* 'bt2:acquire-recursive-lock)
+#+#.(bt2::implemented-p* 'bt2:acquire-recursive-lock)
 (test with-recursive-lock-held.timeout-expires
   (let ((lock (make-recursive-lock)))
     (make-thread (lambda ()
@@ -251,7 +251,7 @@
 ;;; Semaphores
 ;;;
 
-#+#.(bt2:implemented-p* 'bt2:signal-semaphore)
+#+#.(bt2::implemented-p* 'bt2:signal-semaphore)
 (progn
   (test semaphore.typed
     (is (typep (make-semaphore) 'semaphore))
@@ -290,7 +290,7 @@
 ;;; Condition variables
 ;;;
 
-#+#.(bt2:implemented-p* 'bt2:condition-wait)
+#+#.(bt2::implemented-p* 'bt2:condition-wait)
 (test condition-variable.concurrency
   (setf *shared* 0)
   (let ((cv (make-condition-variable)))
@@ -315,7 +315,7 @@
             do (condition-wait cv *lock*)))
         (is (equal num-procs *shared*))))))
 
-#+#.(bt2:implemented-p* 'bt2:condition-wait :timeout)
+#+#.(bt2::implemented-p* 'bt2:condition-wait :timeout)
 (test condition-wait.timeout
   (let ((lock (make-lock))
         (cv (make-condition-variable))
