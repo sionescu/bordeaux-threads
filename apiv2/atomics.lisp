@@ -23,7 +23,7 @@
   #+ecl `(- (mp:atomic-decf ,place ,delta) ,delta)
   #+lispworks `(system:atomic-decf ,place ,delta)
   #+sbcl `(- (sb-ext:atomic-decf ,place ,delta) ,delta)
-  #-(or allegro ccl ecl sbcl)
+  #-(or allegro ccl ecl lispworks sbcl)
   (signal-not-implemented 'atomic-decf))
 
 (defmacro atomic-incf (place &optional (delta 1))
@@ -33,7 +33,7 @@
   #+ecl `(+ (mp:atomic-incf ,place ,delta) ,delta)
   #+lispworks `(system:atomic-incf ,place ,delta)
   #+sbcl `(+ (sb-ext:atomic-incf ,place ,delta) ,delta)
-  #-(or allegro ccl ecl sbcl)
+  #-(or allegro ccl ecl lispworks sbcl)
   (signal-not-implemented 'atomic-incf))
 
 (deftype %atomic-integer-value ()
