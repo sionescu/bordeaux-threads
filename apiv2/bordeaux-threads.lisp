@@ -3,7 +3,7 @@
 
 (in-package :bordeaux-threads-2)
 
-(defconstant *supports-threads-p*
+(defconstant +supports-threads-p+
   #+thread-support t
   #-thread-support nil
   "This should be set to T if the running instance has thread support.")
