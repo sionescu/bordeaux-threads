@@ -111,5 +111,3 @@
 
 (defun %condition-broadcast (cv)
   (mt:condition-broadcast cv))
-
-(bt2::mark-supported)

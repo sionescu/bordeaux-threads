@@ -160,5 +160,3 @@
 (defun %condition-broadcast (cv)
   (threads:synchronized-on cv
      (threads:object-notify-all cv)))
-
-(bt2::mark-supported)

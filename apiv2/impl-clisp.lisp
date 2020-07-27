@@ -117,5 +117,3 @@
   (once-only (timeout)
     `(mt:with-timeout (,timeout (error 'timeout :length ,timeout))
        ,@body)))
-
-(bt2::mark-supported)

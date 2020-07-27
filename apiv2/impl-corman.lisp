@@ -77,5 +77,3 @@
 (defun %make-condition-variable (name)
   (declare (ignore name))
   (signal-not-implemented 'make-condition-variable))
-
-(bt2::mark-supported)

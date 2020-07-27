@@ -148,5 +148,3 @@
 (defun %condition-broadcast (cv)
   (declare (ignore cv))
   (signal-not-implemented 'condition-broadcast))
-
-(bt2::mark-supported)

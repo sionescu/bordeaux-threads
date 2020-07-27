@@ -140,5 +140,3 @@
   (once-only (timeout)
     `(mp:with-timeout (,timeout (error 'timeout :length ,timeout))
        ,@body)))
-
-(bt2::mark-supported)

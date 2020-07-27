@@ -134,5 +134,3 @@
 (defmacro with-timeout ((timeout) &body body)
   `(sb-ext:with-timeout ,timeout
      ,@body))
-
-(bt2::mark-supported)

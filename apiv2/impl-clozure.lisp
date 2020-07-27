@@ -131,5 +131,3 @@
 ;;; Clozure doesn't have native condition variables.
 ;;; We'll use the implementation in
 ;;; impl-condition-variables-semaphores.lisp
-
-(bt2::mark-supported)

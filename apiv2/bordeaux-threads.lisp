@@ -3,14 +3,16 @@
 
 (in-package :bordeaux-threads-2)
 
-(defvar *supports-threads-p* nil
+(defconstant *supports-threads-p*
+  #+thread-support t
+  #-thread-support nil
   "This should be set to T if the running instance has thread support.")
 
-(defun bool (thing) (if thing t nil))
-
-(defun mark-supported ()
-  (setf *supports-threads-p* t)
+#+thread-support
+(eval-when (:compile-toplevel :load-toplevel :execute)
   (pushnew :bordeaux-threads *features*))
+
+(defun bool (thing) (if thing t nil))
 
 (define-condition bordeaux-threads-error (error) ())
 

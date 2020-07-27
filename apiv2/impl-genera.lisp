@@ -220,5 +220,3 @@ BODY does not complete within `TIMEOUT' seconds."
     (if result
         (values-list (cdr result))
         (error 'timeout :length timeout))))
-
-(bt2::mark-supported)

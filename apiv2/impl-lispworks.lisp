@@ -129,5 +129,3 @@
 
 (defun %condition-broadcast (cv)
   (mp:condition-variable-broadcast cv))
-
-(bt2::mark-supported)

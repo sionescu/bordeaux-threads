@@ -111,5 +111,3 @@
 
 (defun %condition-broadcast (cv)
   (thread:cond-var-broadcast v))
-
-(bt2::mark-supported)
