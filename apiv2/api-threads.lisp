@@ -136,10 +136,10 @@ It is safe to call repeatedly."
                     &key
                       name
                       (initial-bindings *default-special-bindings*)
-                      (gather-backtrace-on-error t))
+                      (handle-conditions t))
   "Creates and returns a thread named NAME, which will call the
   function FUNCTION with no arguments: when FUNCTION returns, the
-  thread terminates. NAME defaults to \"Anonymous thread\" if unsupplied.
+  thread terminates.
 
   The interaction between threads and dynamic variables is in some
   cases complex, and depends on whether the variable has only a global
@@ -161,6 +161,7 @@ It is safe to call repeatedly."
     particular behaviour in this case, nor should it assign to such
     variables without first rebinding them in the new thread."
   (check-type function (and (not null) (or symbol function)))
+  (check-type name (or null string))
   (let ((thread (make-instance 'thread :name name)))
     (with-slots (native-thread %init-lock) thread
         (with-lock-held (%init-lock)
@@ -169,7 +170,7 @@ It is safe to call repeatedly."
                                  thread
                                  function
                                  initial-bindings
-                                 gather-backtrace-on-error)
+                                 handle-conditions)
                                 name)))
             (setf native-thread %thread)
             (setf (thread-wrapper %thread) thread))))
