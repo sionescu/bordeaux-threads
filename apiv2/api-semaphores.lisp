@@ -8,7 +8,7 @@
             (:constructor %make-semaphore (name counter)))
   name counter
   (lock               (make-lock))
-  (condition-variable (%make-condition-variable)))
+  (condition-variable (%make-condition-variable nil)))
 
 #-(or allegro ccl ecl lispworks mezzano sbcl)
 (deftype semaphore () '%semaphore)

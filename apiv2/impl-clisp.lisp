@@ -46,7 +46,8 @@
 ;;; Non-recursive locks
 ;;;
 
-(deftype native-lock () 'mt:mutex)
+(deftype native-lock ()
+  'mt:mutex)
 
 (defun %make-lock (name)
   (mt:make-mutex :name name))

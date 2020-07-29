@@ -357,19 +357,19 @@
 ;;; Atomics
 ;;;
 
-#+(or abcl allegro ccl ecl lispworks sbcl)
+#+(or abcl allegro ccl clisp ecl lispworks sbcl)
 (test atomic-integer-incf-decf.return-value
   (let ((aint (make-atomic-integer :value 0)))
     (is (= (atomic-integer-incf aint 5) 5))
     (is (= (atomic-integer-decf aint 1) 4))))
 
-#+(or abcl allegro ccl ecl lispworks sbcl)
+#+(or abcl allegro ccl clisp ecl lispworks sbcl)
 (test atomic-integer-cas.return-value
   (let ((aint (make-atomic-integer :value 4)))
     (is (null (atomic-integer-cas aint 0 100)))
     (is (eql t (atomic-integer-cas aint 4 7)))))
 
-#+(or abcl allegro ccl ecl lispworks sbcl)
+#+(or abcl allegro ccl clisp ecl lispworks sbcl)
 (test atomic-integer.concurrency
   (let* ((aint (make-atomic-integer :value 1000000))
          (thread-inc

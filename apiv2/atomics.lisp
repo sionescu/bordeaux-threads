@@ -45,61 +45,88 @@
 increment, decrement and swap."
   #+(or allegro ccl ecl lispworks)
   (cell (make-array 1 :element-type t))
-  #+sbcl
-  (cell 0 :type %atomic-integer-value))
+  #+(or clisp sbcl)
+  (cell 0 :type %atomic-integer-value)
+  #+clisp
+  (%lock (%make-lock nil) :type native-lock))
 
 (defmethod print-object ((aint atomic-integer) stream)
   (print-unreadable-object (aint stream :type t :identity t)
     (format stream "~S" (atomic-integer-value aint))))
 
-#-(or allegro ccl ecl lispworks sbcl)
+#-(or allegro ccl clisp ecl lispworks sbcl)
 (mark-not-implemented 'make-atomic-integer)
 (defun make-atomic-integer (&key (value 0))
   (check-type value %atomic-integer-value)
-  #+(or allegro ccl ecl sbcl)
+  #+(or allegro ccl clisp ecl lispworks sbcl)
   (let ((aint (%make-atomic-integer)))
     (setf (atomic-integer-value aint) value)
     aint)
-  #-(or allegro ccl ecl lispworks sbcl)
+  #-(or allegro ccl clisp ecl lispworks sbcl)
   (signal-not-implemented 'make-atomic-integer))
 
 (defun atomic-integer-cas (atomic-integer old new)
   (declare (type atomic-integer atomic-integer)
            (type %atomic-integer-value old new)
            (optimize (safety 0) (speed 3)))
+  #-clisp
   (atomic-cas #-sbcl (svref (atomic-integer-cell atomic-integer) 0)
               #+sbcl (atomic-integer-cell atomic-integer)
-              old new))
+              old new)
+  #+clisp
+  (%with-lock ((atomic-integer-%lock atomic-integer) nil)
+    (cond
+      ((= old (slot-value atomic-integer 'cell))
+       (setf (slot-value atomic-integer 'cell) new)
+       t)
+      (t nil))))
 
 (defun atomic-integer-decf (atomic-integer &optional (delta 1))
   (declare (type atomic-integer atomic-integer)
            (type %atomic-integer-value delta)
            (optimize (safety 0) (speed 3)))
+  #-clisp
   (atomic-decf #-sbcl (svref (atomic-integer-cell atomic-integer) 0)
                #+sbcl (atomic-integer-cell atomic-integer)
-               delta))
+               delta)
+  #+clisp
+  (%with-lock ((atomic-integer-%lock atomic-integer) nil)
+    (decf (atomic-integer-cell atomic-integer) delta)))
 
 (defun atomic-integer-incf (atomic-integer &optional (delta 1))
   (declare (type atomic-integer atomic-integer)
            (type %atomic-integer-value delta)
            (optimize (safety 0) (speed 3)))
+  #-clisp
   (atomic-incf #-sbcl (svref (atomic-integer-cell atomic-integer) 0)
                #+sbcl (atomic-integer-cell atomic-integer)
-               delta))
+               delta)
+  #+clisp
+  (%with-lock ((atomic-integer-%lock atomic-integer) nil)
+    (incf (atomic-integer-cell atomic-integer) delta)))
 
 (defun atomic-integer-value (atomic-integer)
   (declare (type atomic-integer atomic-integer)
            (optimize (safety 0) (speed 3)))
-  #-sbcl (svref (atomic-integer-cell atomic-integer) 0)
-  #+sbcl (atomic-integer-cell atomic-integer))
+  #-clisp
+  (progn
+    #-sbcl (svref (atomic-integer-cell atomic-integer) 0)
+    #+sbcl (atomic-integer-cell atomic-integer))
+  #+clisp
+  (%with-lock ((atomic-integer-%lock atomic-integer) nil)
+    (atomic-integer-cell atomic-integer)))
 
 (defun (setf atomic-integer-value) (newval atomic-integer)
   (declare (type atomic-integer atomic-integer)
            (type %atomic-integer-value newval)
            (optimize (safety 0) (speed 3)))
+  #-clisp
   (setf #-sbcl (svref (atomic-integer-cell atomic-integer) 0)
         #+sbcl (atomic-integer-cell atomic-integer)
-        newval))
+        newval)
+  #+clisp
+  (%with-lock ((atomic-integer-%lock atomic-integer) nil)
+    (setf (atomic-integer-cell atomic-integer) newval)))
 
 (defstruct queue
   (vector (make-array 7 :adjustable t :fill-pointer 0) :type vector)
