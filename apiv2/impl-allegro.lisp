@@ -162,6 +162,9 @@
 ;;; Condition variables
 ;;;
 
+(deftype condition-variable ()
+  'mp:condition-variable)
+
 (defun %make-condition-variable (name)
   (mp:make-condition-variable :name name))
 

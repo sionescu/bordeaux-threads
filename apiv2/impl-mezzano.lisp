@@ -135,6 +135,9 @@
 ;;; Condition variables
 ;;;
 
+(deftype condition-variable ()
+  'mezzano.supervisor:condition-variable)
+
 (defun %make-condition-variable (name)
   (mezzano.supervisor:make-condition-variable name))
 

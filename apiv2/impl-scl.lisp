@@ -98,6 +98,9 @@
 ;;; Condition variables
 ;;;
 
+(deftype condition-variable ()
+  'thread:cond-var)
+
 (defun %make-condition-variable (name)
   (thread:make-cond-var name))
 

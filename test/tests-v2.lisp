@@ -291,6 +291,12 @@
 ;;;
 
 #+#.(bt2::implemented-p* 'bt2:condition-wait)
+(test condition-variable.typed
+  (is (typep (make-condition-variable) 'condition-variable))
+  (is (condition-variable-p (make-condition-variable)))
+  (is (not (condition-variable-p (make-lock)))))
+
+#+#.(bt2::implemented-p* 'bt2:condition-wait)
 (test condition-variable.concurrency
   (setf *shared* 0)
   (let ((cv (make-condition-variable)))

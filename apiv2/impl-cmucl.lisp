@@ -109,7 +109,7 @@
 
 (mark-not-implemented 'condition-wait :timeout)
 (defun %condition-wait (cv lock timeout)
-  (check-type cv condition-var)
+  (check-type cv condition-variable)
   (when timeout
     (signal-not-implemented 'condition-wait :timeout))
   (%with-lock ((condition-var-lock cv) nil)
@@ -121,7 +121,7 @@
   t)
 
 (defun %condition-notify (cv)
-  (check-type cv condition-var)
+  (check-type cv condition-variable)
   (%with-lock ((condition-var-lock cv) nil)
     (setf (condition-var-active cv) t))
   (thread-yield))

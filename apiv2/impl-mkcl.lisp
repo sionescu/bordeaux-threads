@@ -95,6 +95,9 @@
 ;;; Condition variables
 ;;;
 
+(deftype condition-variable ()
+  'mt:condition-variable)
+
 (defun %make-condition-variable (name)
   (declare (ignore name))
   (mt:make-condition-variable))

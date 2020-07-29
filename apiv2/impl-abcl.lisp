@@ -135,7 +135,7 @@
 ;;; Condition variables
 ;;;
 
-(defstruct (%condition-variable
+(defstruct (condition-variable
             (:constructor %make-condition-variable (name)))
   name)
 

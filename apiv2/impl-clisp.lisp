@@ -96,6 +96,9 @@
 ;;; Condition variables
 ;;;
 
+(deftype condition-variable ()
+  'mt:exemption)
+
 (defun %make-condition-variable (name)
   (mt:make-exemption :name name))
 

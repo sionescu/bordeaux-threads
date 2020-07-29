@@ -110,6 +110,9 @@
 ;;; Condition variables
 ;;;
 
+(deftype condition-variable ()
+  'sb-thread:waitqueue)
+
 (defun %make-condition-variable (name)
   (sb-thread:make-waitqueue :name name))
 
