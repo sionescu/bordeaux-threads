@@ -151,31 +151,6 @@ Distributed under the MIT license (see LICENSE file)
              (sleep 0.001))))))
 
 
-(defparameter *condition-variable* (make-condition-variable))
-
-(test condition-variable
-  (setf *shared* 0)
-  (flet ((worker (i)
-           (with-lock-held (*lock*)
-             (loop
-               until (= i *shared*)
-               do (condition-wait *condition-variable* *lock*))
-             (incf *shared*))
-           (condition-notify *condition-variable*)))
-    (let ((num-procs 100))
-      (dotimes (i num-procs)
-        ;; create a new binding to protect against implementations that
-        ;; mutate instead of binding the loop variable
-        (let ((i i))
-          (make-thread (lambda ()
-                         (funcall #'worker i))
-                       :name (format nil "Proc #~D" i))))
-      (with-lock-held (*lock*)
-        (loop
-          until (= num-procs *shared*)
-          do (condition-wait *condition-variable* *lock*)))
-      (is (equal num-procs *shared*)))))
-
 ;; Generally safe sanity check for the locks and single-notify
 #+(and lispworks (or lispworks4 lispworks5))
 (test condition-variable-lw
