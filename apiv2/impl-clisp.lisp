@@ -80,7 +80,7 @@
 (defun %acquire-recursive-lock (lock waitp timeout)
   (when timeout
     (signal-not-implemented 'acquire-recursive-lock :timeout))
-  (%acquire-lock lock wait-p nil))
+  (%acquire-lock lock waitp nil))
 
 (defun %release-recursive-lock (lock)
   (%release-lock lock))
