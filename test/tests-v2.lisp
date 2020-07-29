@@ -36,7 +36,7 @@
 
 (test threadp.should-identify-threads
   (is (threadp (current-thread)))
-  (is (threadp (make-thread (lambda () t) :name "foo")))
+  (is (threadp (make-thread (lambda () t))))
   (is (not (threadp (make-lock)))))
 
 (test thread-name.should-retrieve-thread-name
@@ -57,7 +57,7 @@
 (defparameter *lock* (make-lock))
 
 #+#.(bt2::implemented-p* 'bt2:thread-yield)
-(test should-have-thread-interaction
+(test threads.interaction
   ;; this simple test generates N process. Each process grabs and
   ;; releases the lock until SHARED has some value, it then
   ;; increments SHARED. the outer code first sets shared 1 which
@@ -79,7 +79,7 @@
                     collect (let ((i i))
                               (make-thread (lambda ()
                                              (funcall #'worker i))
-                                           :name (format nil "Proc #~D" i))))))
+                                           :name (format nil "threads.interaction Proc #~D" i))))))
       (with-lock-held (*lock*)
         (incf *shared*))
       (block test
@@ -95,7 +95,8 @@
   (is (every #'threadp (all-threads))))
 
 (test all-threads.contains-new-thread
-  (let ((thread (make-thread (lambda () (sleep 60)))))
+  (let ((thread (make-thread (lambda () (sleep 60))
+                             :name "all-threads.contains-new-thread")))
     (is (find thread (all-threads)))))
 
 #+#.(bt2::implemented-p* 'bt2:interrupt-thread)
@@ -103,7 +104,8 @@
   (let ((thread (make-thread (lambda ()
                                (catch 'new-thread
                                  (sleep 60)
-                                 'not-interrupted)))))
+                                 'not-interrupted))
+                             :name "interrupt-thread.throw")))
     (sleep 1)
     (is (threadp
          (interrupt-thread thread (lambda ()
@@ -111,18 +113,21 @@
     (is (eql 'interrupted (join-thread thread)))))
 
 (test thread-alive-p.new-thread
-  (is (thread-alive-p (make-thread (lambda () (sleep 60))))))
+  (is (thread-alive-p (make-thread (lambda () (sleep 60))
+                                   :name "thread-alive-p.new-thread"))))
 
 #+#.(bt2::implemented-p* 'bt2:destroy-thread)
 (test destroy-thread.terminates
-  (let ((thread (make-thread (lambda () (sleep 3)))))
+  (let ((thread (make-thread (lambda () (sleep 3))
+                             :name "destroy-thread.terminates")))
     (is (threadp (destroy-thread thread)))
     (sleep 5)
     (is-false (thread-alive-p thread))))
 
 #+sbcl
 (test destroy-thread.join-error
-  (let ((thread (make-thread (lambda () (sleep 3)))))
+  (let ((thread (make-thread (lambda () (sleep 3))
+                             :name "destroy-thread.join-error")))
     (destroy-thread thread)
     (signals error (join-thread thread))))
 
@@ -162,7 +167,8 @@
                             (add-result :enter)
                             (sleep 1)
                             (add-result :leave))
-                       (release-recursive-lock test-lock)))))
+                       (release-recursive-lock test-lock))))
+               :name (format nil "acquire-recursive-lock Proc #~D" i))
               threads)))
     (map 'nil #'join-thread threads)
     (is (equalp results #(:enter :leave :enter :leave)))))
@@ -170,29 +176,32 @@
 (test acquire-lock.try-lock
   (let ((lock (make-lock)))
     (make-thread (lambda ()
-                   (acquire-lock lock)
-                   (sleep 60)))
-    (sleep 3)
+                   (with-lock-held (lock)
+                     (sleep 5)))
+                 :name "acquire-lock.try-lock")
+    (sleep 1)
     (is-false (acquire-lock lock :wait nil))))
 
 (test acquire-lock.timeout-expires
   (let ((lock (make-lock)))
     (make-thread (lambda ()
-                   (acquire-lock lock)
-                   (sleep 60)))
-    (sleep 3)
+                   (with-lock-held (lock)
+                     (sleep 5)))
+                 :name "acquire-lock.timeout-expires")
+    (sleep 1)
     (is (null (acquire-lock lock :timeout .1)))))
 
 (test with-lock-held.timeout-no-contention-acquired
   (let ((lock (make-lock)))
     (is (eql :ok (with-lock-held (lock :timeout .1) :ok)))))
 
-#+#.(bt2::implemented-p* 'bt2:acquire-lock)
+#+#.(bt2::implemented-p* 'bt2:with-lock-held)
 (test with-lock-held.timeout-expires
   (let ((lock (make-lock)))
     (make-thread (lambda ()
-                   (acquire-lock lock)
-                   (sleep 60)))
+                   (with-lock-held (lock)
+                     (sleep 5)))
+                 :name "with-lock-held.timeout-expires")
     (sleep 1)
     (is (eql :timeout
              (block ok
@@ -211,34 +220,37 @@
     (is (acquire-recursive-lock lock :wait nil))
     (is (recursive-lock-p (release-recursive-lock lock)))))
 
-#+#.(bt2::implemented-p* 'bt2:acquire-recursive-lock)
+#+#.(bt2::implemented-p* 'bt2:with-recursive-lock-held)
 (test acquire-recursive-lock.try-lock
   (let ((lock (make-recursive-lock)))
     (make-thread (lambda ()
-                   (acquire-recursive-lock lock)
-                   (sleep 60)))
-    (sleep 3)
+                   (with-recursive-lock-held (lock)
+                     (sleep 5)))
+                 :name "acquire-recursive-lock.try-lock")
+    (sleep 1)
     (is-false (acquire-recursive-lock lock :wait nil))))
 
-#+#.(bt2::implemented-p* 'bt2:acquire-recursive-lock)
+#+#.(bt2::implemented-p* 'bt2:with-recursive-lock-held)
 (test acquire-recursive-lock.timeout-expires
   (let ((lock (make-recursive-lock)))
     (make-thread (lambda ()
-                   (acquire-recursive-lock lock)
-                   (sleep 60)))
-    (sleep 3)
+                   (with-recursive-lock-held (lock)
+                     (sleep 5)))
+                 :name "acquire-recursive-lock.timeout-expires")
+    (sleep 1)
     (is (null (acquire-recursive-lock lock :timeout .1)))))
 
 (test with-recursive-lock-held.timeout-no-contention-acquired
   (let ((lock (make-recursive-lock)))
     (is (eql :ok (with-recursive-lock-held (lock :timeout .1) :ok)))))
 
-#+#.(bt2::implemented-p* 'bt2:acquire-recursive-lock)
+#+#.(bt2::implemented-p* 'bt2:with-recursive-lock-held)
 (test with-recursive-lock-held.timeout-expires
   (let ((lock (make-recursive-lock)))
     (make-thread (lambda ()
-                   (acquire-recursive-lock lock)
-                   (sleep 60)))
+                   (with-recursive-lock-held (lock)
+                     (sleep 5)))
+                 :name "with-recursive-lock-held.timeout-expires")
     (sleep 1)
     (is (eql :timeout
              (block ok
