@@ -228,7 +228,7 @@
                      (sleep 5)))
                  :name "acquire-recursive-lock.try-lock")
     (sleep 1)
-    (is-false (acquire-recursive-lock lock :wait nil))))
+    (is (null (acquire-recursive-lock lock :wait nil)))))
 
 #+#.(bt2::implemented-p* 'bt2:with-recursive-lock-held)
 (test acquire-recursive-lock.timeout-expires

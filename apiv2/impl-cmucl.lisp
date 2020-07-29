@@ -13,7 +13,8 @@
   (mp::startup-idle-and-top-level-loops))
 
 (defun %make-thread (function name)
-  (mp:make-process function :name name))
+  ;; CMUCL doesn't like NIL names.
+  (mp:make-process function :name (or name "")))
 
 (defun %current-thread ()
   mp:*current-process*)
@@ -112,18 +113,18 @@
   (check-type cv condition-variable)
   (when timeout
     (signal-not-implemented 'condition-wait :timeout))
-  (%with-lock ((condition-var-lock cv) nil)
-    (setf (condition-var-active cv) nil))
+  (%with-lock ((condition-variable-lock cv) nil)
+    (setf (condition-variable-active cv) nil))
   (%release-lock lock)
   (mp:process-wait "Condition Wait"
-                   #'(lambda () (condition-var-active cv)))
+                   #'(lambda () (condition-variable-active cv)))
   (%acquire-lock lock t nil)
   t)
 
 (defun %condition-notify (cv)
   (check-type cv condition-variable)
-  (%with-lock ((condition-var-lock cv) nil)
-    (setf (condition-var-active cv) t))
+  (%with-lock ((condition-variable-lock cv) nil)
+    (setf (condition-variable-active cv) t))
   (thread-yield))
 
 (mark-not-implemented 'condition-broadcast)
