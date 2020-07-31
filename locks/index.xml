@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Locks dictionary on Bordeaux-Threads</title>
+    <link>https://sionescu.github.io/bordeaux-threads/locks/</link>
+    <description>Recent content in Locks dictionary on Bordeaux-Threads</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 07 Jan 2022 08:00:00 +0000</lastBuildDate><atom:link href="https://sionescu.github.io/bordeaux-threads/locks/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Class LOCK</title>
+      <link>https://sionescu.github.io/bordeaux-threads/locks/lock/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/locks/lock/</guid>
+      <description>Class precedence list: lock, t
+Description: Wrapper for a native non-recursive lock.</description>
+    </item>
+    
+    <item>
+      <title>Function LOCKP</title>
+      <link>https://sionescu.github.io/bordeaux-threads/locks/lockp/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/locks/lockp/</guid>
+      <description>Syntax: lockp datum =&amp;gt; generalized-boolean
+Arguments and values: datum -&amp;gt; an object.
+generalized-boolean -&amp;gt; a generalized boolean.
+Description: Returns true if datum is a non-recursive lock, otherwise false.
+Exceptional situations: None.
+See also: lock
+Notes: None.</description>
+    </item>
+    
+    <item>
+      <title>Class RECURSIVE-LOCK</title>
+      <link>https://sionescu.github.io/bordeaux-threads/locks/recursive-lock/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/locks/recursive-lock/</guid>
+      <description>Class precedence list: recursive-lock, t
+Description: Wrapper for a native recursive lock.</description>
+    </item>
+    
+    <item>
+      <title>Function RECURSIVE-LOCK-P</title>
+      <link>https://sionescu.github.io/bordeaux-threads/locks/recursive-lock-p/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/locks/recursive-lock-p/</guid>
+      <description>Syntax: recursive-lock-p datum =&amp;gt; generalized-boolean
+Arguments and values: datum -&amp;gt; an object.
+generalized-boolean -&amp;gt; a generalized boolean.
+Description: Returns true if datum is a recursive lock, otherwise false.
+Exceptional situations: None.
+See also: recursive-lock
+Notes: None.</description>
+    </item>
+    
+    <item>
+      <title>Function LOCK-NAME, LOCK-NATIVE-LOCK</title>
+      <link>https://sionescu.github.io/bordeaux-threads/locks/lock-readers/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/locks/lock-readers/</guid>
+      <description>Syntax: lock-name lock =&amp;gt; name
+lock-native-lock lock =&amp;gt; native-lock
+Arguments and values: lock -&amp;gt; a lock object.
+name -&amp;gt; a string or nil.
+native-lock -&amp;gt; a native lock object.
+Description: lock-name returns the lock name, or nil of the lock was not given a name on creation.
+lock-native-lock returns the native lock object that is wrapped by lock.
+Exceptional situations: None.
+See also: lock
+Notes: None.</description>
+    </item>
+    
+    <item>
+      <title>Host type NATIVE-LOCK</title>
+      <link>https://sionescu.github.io/bordeaux-threads/locks/native-lock/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/locks/native-lock/</guid>
+      <description>Class precedence list: Implementation-defined.
+Description: A native-lock represents the non-recursive lock type exported by the host implementation.
+See also: lock
+Notes: The exact type of native-lock is implementation-defined.</description>
+    </item>
+    
+    <item>
+      <title>Function NATIVE-LOCK-P</title>
+      <link>https://sionescu.github.io/bordeaux-threads/locks/native-lock-p/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/locks/native-lock-p/</guid>
+      <description>Syntax: native-lock-p lock =&amp;gt; generalized-boolean
+Arguments and values: lock -&amp;gt; a lock object.
+generalized-boolean -&amp;gt; a generalized boolean.
+Description: Returns true if datum is a native non-recursive lock, otherwise false.
+Exceptional situations: None.
+See also: lock, native-lock
+Notes: None.</description>
+    </item>
+    
+    <item>
+      <title>Host type NATIVE-RECURSIVE-LOCK</title>
+      <link>https://sionescu.github.io/bordeaux-threads/locks/native-recursive-lock/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/locks/native-recursive-lock/</guid>
+      <description>Class precedence list: Implementation-defined.
+Description: A native-recursive-lock represents the recursive lock type exported by the host implementation.
+See also: recursive-lock
+Notes: The exact type of native-recursive-lock is implementation-defined.</description>
+    </item>
+    
+    <item>
+      <title>Function NATIVE-RECURSIVE-LOCK-P</title>
+      <link>https://sionescu.github.io/bordeaux-threads/locks/native-recursive-lock-p/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/locks/native-recursive-lock-p/</guid>
+      <description>Syntax: native-recursive-lock-p lock =&amp;gt; generalized-boolean
+Arguments and values: lock -&amp;gt; a recursive-lock object.
+generalized-boolean -&amp;gt; a generalized boolean.
+Description: Returns true if datum is a native recursive lock, otherwise false.
+Exceptional situations: None.
+See also: recursive-lock, native-recursive-lock
+Notes: None.</description>
+    </item>
+    
+    <item>
+      <title>Function MAKE-LOCK</title>
+      <link>https://sionescu.github.io/bordeaux-threads/locks/make-lock/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/locks/make-lock/</guid>
+      <description>Syntax: make-lock &amp;amp;key name =&amp;gt; lock
+Arguments and values: name -&amp;gt; a string or nil.
+lock -&amp;gt; a lock object.
+Description: Creates a non-recursive lock named name.
+Exceptional situations: Signals a condition of type type-error if name is neither a string nor nil.
+See also: lock
+Notes: A lock is also commonly known as a mutex.
+On some implementations, the host lock type is always recursive.</description>
+    </item>
+    
+    <item>
+      <title>Function ACQUIRE-LOCK, RELEASE-LOCK</title>
+      <link>https://sionescu.github.io/bordeaux-threads/locks/acquire-release-lock/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/locks/acquire-release-lock/</guid>
+      <description>Syntax: acquire-lock lock &amp;amp;key (wait t) timeout =&amp;gt; generalized-boolean
+release-lock lock =&amp;gt; lock
+Arguments and values: lock -&amp;gt; a lock object.
+wait -&amp;gt; a generalized boolean.
+timeout -&amp;gt; a non-negative real number.
+generalized-boolean -&amp;gt; a generalized boolean.
+Description: Acquire lock for the calling thread.
+wait governs what happens if the lock is not available: if wait is true, the calling thread will wait until the lock is available and then acquire it; if wait is nil, acquire-lock will return immediately.</description>
+    </item>
+    
+    <item>
+      <title>Macro WITH-LOCK-HELD</title>
+      <link>https://sionescu.github.io/bordeaux-threads/locks/with-lock-held/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/locks/with-lock-held/</guid>
+      <description>Syntax: with-lock-held (lock &amp;amp;key timeout) declaration* forms* =&amp;gt; results
+Arguments and values: lock -&amp;gt; a lock object.
+timeout -&amp;gt; a non-negative real number.
+declaration -&amp;gt; a declare expression; not evaluated.
+forms -&amp;gt; an implicit progn.
+results -&amp;gt; the values returned by the forms.
+Description: Evaluates forms. Before the forms in BODY are evaluated, lock is acquired as if by using acquire-lock. After the forms have been evaluated, or if a non-local control transfer is caused (e.</description>
+    </item>
+    
+    <item>
+      <title>Function MAKE-RECURSIVE-LOCK</title>
+      <link>https://sionescu.github.io/bordeaux-threads/locks/make-recursive-lock/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/locks/make-recursive-lock/</guid>
+      <description>Syntax: make-recursive-lock &amp;amp;key name =&amp;gt; lock
+Arguments and values: name -&amp;gt; a string or nil.
+lock -&amp;gt; a recursive-lock object.
+Description: Creates a recursive lock named name.
+Exceptional situations: Signals a condition of type type-error if name is neither a string nor nil.
+See also: recursive-lock
+Notes: A lock is also commonly known as a mutex.</description>
+    </item>
+    
+    <item>
+      <title>Function ACQUIRE-RECURSIVE-LOCK, RELEASE-RECURSIVE-LOCK</title>
+      <link>https://sionescu.github.io/bordeaux-threads/locks/acquire-release-recursive-lock/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/locks/acquire-release-recursive-lock/</guid>
+      <description>Syntax: acquire-recursive-lock lock &amp;amp;key (wait t) timeout =&amp;gt; generalized-boolean
+release-recursive-lock lock =&amp;gt; lock
+Arguments and values: lock -&amp;gt; a recursive-lock object.
+wait -&amp;gt; a generalized boolean.
+timeout -&amp;gt; a non-negative real number.
+generalized-boolean -&amp;gt; a generalized boolean.
+Description: Acquire lock for the calling thread.
+wait governs what happens if the lock is not available: if wait is true, the calling thread will wait until the lock is available and then acquire it; if wait is nil, acquire-recursive-lock will return immediately.</description>
+    </item>
+    
+    <item>
+      <title>Macro WITH-RECURSIVE-LOCK-HELD</title>
+      <link>https://sionescu.github.io/bordeaux-threads/locks/with-recursive-lock-held/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/locks/with-recursive-lock-held/</guid>
+      <description>Syntax: with-recursive-lock-held (lock &amp;amp;key timeout) declaration* forms* =&amp;gt; results
+Arguments and values: lock -&amp;gt; a recursive-lock object.
+timeout -&amp;gt; a non-negative real number.
+declaration -&amp;gt; a declare expression; not evaluated.
+forms -&amp;gt; an implicit progn.
+results -&amp;gt; the values returned by the forms.
+Description: Evaluates forms. Before the forms in BODY are evaluated, lock is acquired as if by using acquire-recursive-lock. After the forms have been evaluated, or if a non-local control transfer is caused (e.</description>
+    </item>
+    
+  </channel>
+</rss>

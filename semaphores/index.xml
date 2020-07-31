@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Semaphores dictionary on Bordeaux-Threads</title>
+    <link>https://sionescu.github.io/bordeaux-threads/semaphores/</link>
+    <description>Recent content in Semaphores dictionary on Bordeaux-Threads</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 07 Jan 2022 08:00:00 +0000</lastBuildDate><atom:link href="https://sionescu.github.io/bordeaux-threads/semaphores/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Class SEMAPHORE</title>
+      <link>https://sionescu.github.io/bordeaux-threads/semaphores/semaphore/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/semaphores/semaphore/</guid>
+      <description>Class precedence list: Implementation-defined.
+Description: This class represents semaphores.
+See also: make-semaphore
+Notes: On some implementations the library exposes the native type directly, while on others there is a custom implementations using condition variables and locks.</description>
+    </item>
+    
+    <item>
+      <title>Function SEMAPHOREP</title>
+      <link>https://sionescu.github.io/bordeaux-threads/semaphores/semaphorep/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/semaphores/semaphorep/</guid>
+      <description>Syntax: semaphorep datum =&amp;gt; generalized-boolean
+Arguments and values: datum -&amp;gt; an object.
+generalized-boolean -&amp;gt; a generalized boolean.
+Description: Returns true if datum is a semaphore object, otherwise false.
+Exceptional situations: None.
+See also: semaphore, make-semaphore
+Notes: None.</description>
+    </item>
+    
+    <item>
+      <title>Function MAKE-SEMAPHORE</title>
+      <link>https://sionescu.github.io/bordeaux-threads/semaphores/make-semaphore/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/semaphores/make-semaphore/</guid>
+      <description>Syntax: make-semaphore &amp;amp;key name count =&amp;gt; semaphore
+Arguments and values: name -&amp;gt; a string or nil.
+count -&amp;gt; non-negative integer.
+semaphore -&amp;gt; a semaphore object.
+Description: Creates a semaphore named name and with initial value count.
+Exceptional situations: Signals a condition of type type-error if name is neither a string nor nil. Signals a condition of type type-error if count is not a non-negative integer (an unsigned-byte).
+See also: semaphore</description>
+    </item>
+    
+    <item>
+      <title>Function SIGNAL-SEMAPHORE</title>
+      <link>https://sionescu.github.io/bordeaux-threads/semaphores/signal-semaphore/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/semaphores/signal-semaphore/</guid>
+      <description>Syntax: signal-semaphore semaphore -&amp;gt; t
+Arguments and values: semaphore -&amp;gt; a semaphore object.
+Description: Increment semaphore by count. If there are threads waiting on this semaphore, then count of them are woken up.
+Returns always true.
+Exceptional situations: Signals an error of type type-error if semaphore is not a semaphore object.
+See also: make-semaphore, wait-on-semaphore
+Notes: It is unspecified which thread gets a wakeup and does not necessarily relate to the order in which the threads went to sleep.</description>
+    </item>
+    
+    <item>
+      <title>Function WAIT-ON-SEMAPHORE</title>
+      <link>https://sionescu.github.io/bordeaux-threads/semaphores/wait-on-semaphore/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/semaphores/wait-on-semaphore/</guid>
+      <description>Syntax: wait-on-semaphore semaphore &amp;amp;key timeout -&amp;gt; generalized-boolean
+Arguments and values: semaphore -&amp;gt; a semaphore object.
+timeout -&amp;gt; a non-negative real number.
+generalized-boolean -&amp;gt; a generalized boolean.
+Description: Decrement the count of semaphore by 1 if the count is larger than zero.
+If the count is zero, blocks until semaphore can be decremented. Returns true on success.
+If timeout is given, it is the maximum number of seconds to wait. If the count cannot be decremented in that time, returns false without decrementing the count.</description>
+    </item>
+    
+  </channel>
+</rss>

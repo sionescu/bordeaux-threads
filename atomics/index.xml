@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Atomics dictionary on Bordeaux-Threads</title>
+    <link>https://sionescu.github.io/bordeaux-threads/atomics/</link>
+    <description>Recent content in Atomics dictionary on Bordeaux-Threads</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 07 Jan 2022 08:00:00 +0000</lastBuildDate><atom:link href="https://sionescu.github.io/bordeaux-threads/atomics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Class ATOMIC-INTEGER</title>
+      <link>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer/</guid>
+      <description>Class precedence list: atomic-integer, t.
+Description: This class represents an unsigned machine word that allows atomic increment, decrement and swap.
+See also: make-atomic-integer
+Notes: Depending on the host implementation, the size of the integer is either 32 or 64 bits.
+This class is unavailble on Lisp implementations that lack underlying atomic primitives. On some hosts, atomic-integer is implemented using locks.</description>
+    </item>
+    
+    <item>
+      <title>Function ATOMIC-INTEGER-P</title>
+      <link>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-p/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-p/</guid>
+      <description>Syntax: atomic-integer-p datum =&amp;gt; generalized-boolean
+Arguments and values: datum -&amp;gt; an object.
+generalized-boolean -&amp;gt; a generalized boolean.
+Description: Returns true if datum is an [atomic-integer](../atomic-integer] object, otherwise false.
+Exceptional situations: None.
+See also: atomic-integer, make-atomic-integer
+Notes: None.</description>
+    </item>
+    
+    <item>
+      <title>Function MAKE-ATOMIC-INTEGER</title>
+      <link>https://sionescu.github.io/bordeaux-threads/atomics/make-atomic-integer/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/atomics/make-atomic-integer/</guid>
+      <description>Syntax: make-atomic-integer &amp;amp;key value =&amp;gt; atomic-integer
+Arguments and values: value -&amp;gt; a non-negative integer.
+semaphore -&amp;gt; a semaphore object.
+Description: Creates an atomic integer name and initial value value.
+Exceptional situations: Signals a condition of type type-error if value is not a non-negative integer (an unsigned-byte).
+See also: atomic-integer
+Notes: None.</description>
+    </item>
+    
+    <item>
+      <title>Function ATOMIC-INTEGER-CAS</title>
+      <link>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-cas/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-cas/</guid>
+      <description>Syntax: atomic-integer-cas atomic-integer old new =&amp;gt; generalized-boolean
+Arguments and values: atomic-integer -&amp;gt; an atomic-integer object.
+old, new -&amp;gt; non-negative integers.
+generalized-boolean -&amp;gt; a generalized boolean.
+Description If the current value of atomic-integer is equal to old, replace it with new.
+Returns true if the replacement was successful, otherwise false.
+Exceptional situations: Signals an error of type type-error if atomic-integer is not an atomic-integer object.
+Signals an error of type type-error if old is not a non-negative integer.</description>
+    </item>
+    
+    <item>
+      <title>Function ATOMIC-INTEGER-DECF</title>
+      <link>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-decf/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-decf/</guid>
+      <description>Syntax: atomic-integer-decf atomic-integer &amp;amp;optional (delta 1) =&amp;gt; new-value
+Arguments and values: atomic-integer -&amp;gt; an atomic-integer object.
+delta -&amp;gt; an integer.
+new-value -&amp;gt; a non-negative integer.
+Description Decrements the value of atomic-integer by delta.
+Returns the new value of atomic-integer.
+Exceptional situations: Signals an error of type type-error if atomic-integer is not an atomic-integer object.
+Signals an error of type type-error if delta is not an integer.
+See also: atomic-integer, atomic-integer-incf, make-atomic-integer</description>
+    </item>
+    
+    <item>
+      <title>Function ATOMIC-INTEGER-INCF</title>
+      <link>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-incf/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-incf/</guid>
+      <description>Syntax: atomic-integer-incf atomic-integer &amp;amp;optional (delta 1) =&amp;gt; new-value
+Arguments and values: atomic-integer -&amp;gt; an atomic-integer object.
+delta -&amp;gt; an integer.
+new-value -&amp;gt; a non-negative integer.
+Description Increments the value of atomic-integer by delta.
+Returns the new value of atomic-integer.
+Exceptional situations: Signals an error of type type-error if atomic-integer is not an atomic-integer object.
+Signals an error of type type-error if delta is not an integer.
+See also: atomic-integer, atomic-integer-decf, make-atomic-integer</description>
+    </item>
+    
+    <item>
+      <title>Function ATOMIC-INTEGER-VALUE</title>
+      <link>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-value/</link>
+      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
+      
+      <guid>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-value/</guid>
+      <description>Syntax: atomic-integer-value atomic-integer =&amp;gt; value
+Arguments and values: atomic-integer -&amp;gt; an atomic-integer object.
+value -&amp;gt; a non-negative integer.
+Description Returns the current value of atomic-integer.
+Exceptional situations: Signals an error of type type-error if atomic-integer is not an atomic-integer object.
+See also: atomic-integer, make-atomic-integer
+Notes: None.</description>
+    </item>
+    
+  </channel>
+</rss>
