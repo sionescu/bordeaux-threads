@@ -22,7 +22,10 @@
   (trivial-garbage:make-weak-hash-table :weakness :key))
 
 (define-global-var* .known-threads-lock.
-    (make-lock :name "known-threads-lock"))
+  #+thread-support
+  (make-lock :name "known-threads-lock")
+  #-thread-support
+  nil)
 
 (defun thread-wrapper (&optional (native-thread (%current-thread)))
   (with-lock-held (.known-threads-lock.)

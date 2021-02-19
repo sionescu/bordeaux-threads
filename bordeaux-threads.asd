@@ -59,15 +59,21 @@
                  #+(and thread-support digitool)
                  (:file "condition-variables")
                  (:file "default-implementations")))
-               (:module "api-v2"
+               (:module "api-v2-head"
                 :pathname "apiv2/"
                 :depends-on ("api-v1")
                 :serial t
                 :components
                 ((:file "pkgdcl")
                  (:file "bordeaux-threads")
-                 (:file "timeout-interrupt")
-                 (:file "impl-abcl" :if-feature :abcl)
+                 (:file "timeout-interrupt")))
+               (:module "api-v2-impls"
+                :pathname "apiv2/"
+                :depends-on ("api-v2-head")
+                :serial t
+                :components
+                #+thread-support
+                ((:file "impl-abcl" :if-feature :abcl)
                  (:file "impl-allegro" :if-feature :allegro)
                  (:file "impl-clasp" :if-feature :clasp)
                  (:file "impl-clisp" :if-feature :clisp)
@@ -81,8 +87,16 @@
                  (:file "impl-lispworks" :if-feature :lispworks)
                  (:file "impl-mcl" :if-feature :digitool)
                  (:file "impl-sbcl" :if-feature :sbcl)
-                 (:file "impl-scl" :if-feature :scl)
-                 (:file "atomics" :if-feature (:not :abcl))
+                 (:file "impl-scl" :if-feature :scl))
+                ;; Probably here we need impl-null like in APIv1?
+                #-thread-support
+                ((:file "impl-null")))
+               (:module "api-v2-footer"
+                :pathname "apiv2/"
+                :depends-on ("api-v2-impls")
+                :serial t
+                :components
+                ((:file "atomics" :if-feature (:not :abcl))
                  (:file "atomics-java" :if-feature :abcl)
                  (:file "api-locks")
                  (:file "api-threads")
