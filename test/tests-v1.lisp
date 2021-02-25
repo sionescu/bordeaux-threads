@@ -1,3 +1,6 @@
+;;;; -*- Mode: LISP; Syntax: ANSI-Common-lisp; Base: 10; Package: CL-USER -*-
+;;;; The above modeline is required for Genera. Do not change.
+
 #|
 Copyright 2006,2007 Greg Pfeil
 

@@ -9,8 +9,30 @@
 ;;; without trying too hard to be very fast.
 ;;;
 
+(defstruct queue
+  (vector (make-array 7 :adjustable t :fill-pointer 0) :type vector)
+  (lock (%make-lock nil) :type native-lock))
+
+(defun queue-drain (queue)
+  (%with-lock ((queue-lock queue) nil)
+    (shiftf (queue-vector queue)
+            (make-array 7 :adjustable t :fill-pointer 0))))
+
+(defun queue-dequeue (queue)
+  (%with-lock ((queue-lock queue) nil)
+    (let ((vector (queue-vector queue)))
+      (if (zerop (length vector))
+          nil
+          (vector-pop vector)))))
+
+(defun queue-enqueue (queue value)
+  (%with-lock ((queue-lock queue) nil)
+    (vector-push-extend value (queue-vector queue))))
+
 (defstruct (condition-variable
-            (:constructor %make-condition-variable (name)))
+            (:constructor %make-condition-variable (name))
+	    ;; CONDITION-VARIABLE-P is defined in API-CONDITION-VARIABLES.LISP
+	    (:predicate nil))
   name
   (queue (make-queue)))
 

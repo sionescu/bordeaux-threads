@@ -1,4 +1,5 @@
-;;;; -*- indent-tabs-mode: nil -*-
+;;;; -*- Mode: LISP; Syntax: ANSI-Common-lisp; Base: 10; Package: BORDEAUX-THREADS-2/TEST -*-
+;;;; The above modeline is required for Genera. Do not change.
 
 (in-package :bordeaux-threads-2/test)
 

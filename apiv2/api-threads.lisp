@@ -1,4 +1,4 @@
-;;;; -*- Mode: LISP; Syntax: ANSI-Common-lisp; Base: 10; Package: BORDEAUX-THREADS -*-
+;;;; -*- Mode: LISP; Syntax: ANSI-Common-lisp; Base: 10; Package: BORDEAUX-THREADS-2 -*-
 ;;;; The above modeline is required for Genera. Do not change.
 
 (in-package :bordeaux-threads-2)
@@ -19,7 +19,7 @@
     (format stream "~S" (thread-name thread))))
 
 (define-global-var* .known-threads.
-  (trivial-garbage:make-weak-hash-table :weakness :key))
+  (trivial-garbage:make-weak-hash-table #-genera :weakness #-genera :key))
 
 (define-global-var* .known-threads-lock.
     (make-lock :name "known-threads-lock"))
@@ -74,7 +74,8 @@ CL:WITH-STANDARD-IO-SYNTAX. Forms are evaluated in the calling thread."
     (*print-level*               nil)
     (*print-lines*               nil)
     (*print-miser-width*         nil)
-    (*print-pprint-dispatch*     (copy-pprint-dispatch nil))
+    ;; Genera doesn't yet implement COPY-PPRINT-DISPATCH
+    (*print-pprint-dispatch*     #-genera (copy-pprint-dispatch nil) #+genera nil)
     (*print-pretty*              nil)
     (*print-radix*               nil)
     (*print-readably*            t)
@@ -101,7 +102,7 @@ FUNCTION."
          (values (mapcar (lambda (f) (eval (cdr f))) bindings)))
     (named-lambda %establish-dynamic-env-wrapper ()
       (progv specials values
-        (with-slots (%init-lock %return-values %exit-condition) thread
+        (with-slots (%init-lock %return-values %exit-condition #+genera native-thread) thread
           (flet ((record-condition (c)
                    (setf %exit-condition c))
                  (run-function ()
@@ -109,17 +110,22 @@ FUNCTION."
                      (setf *current-thread*
                            (thread-wrapper (%current-thread)))
                      (setf %return-values (multiple-value-list
-                                           (funcall function))))))
-            (if trap-conditions
-                (handler-case
-                    (progn
-                      (run-function)
-                      (values-list %return-values))
-                  (condition (c)
-                    (record-condition c)))
-                (handler-bind
-                    ((condition #'record-condition))
-                  (run-function)))))))))
+					    (funcall function))))))
+	    (unwind-protect
+		(if trap-conditions
+		    (handler-case
+		        (progn
+			  (run-function)
+			  (values-list %return-values))
+		      (condition (c)
+			(record-condition c)))
+		    (handler-bind
+		        ((condition #'record-condition))
+		      (run-function)))
+	      ;; Genera doesn't support weak key hash tables. If we don't remove
+	      ;; the native-thread object's entry from the hash table here, we'll
+	      ;; never be able to GC the native-thread after it terminates
+	      #+genera  (remhash native-thread .known-threads.))))))))
 
 
 ;;;

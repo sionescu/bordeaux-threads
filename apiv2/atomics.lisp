@@ -1,4 +1,5 @@
-;;;; -*- indent-tabs-mode: nil -*-
+;;;; -*- Mode: LISP; Syntax: ANSI-Common-lisp; Base: 10; Package: BORDEAUX-THREADS-2 -*-
+;;;; The above modeline is required for Genera. Do not change.
 
 (in-package :bordeaux-threads-2)
 
@@ -13,7 +14,8 @@
   #+sbcl (with-gensyms (tmp)
            `(let ((,tmp ,old))
               (eql ,tmp (sb-ext:compare-and-swap ,place ,old ,new))))
-  #-(or allegro ccl ecl lispworks sbcl)
+  #+genera `(sys:store-conditional (scl:locf ,place) ,old ,new)
+  #-(or allegro ccl ecl lispworks sbcl genera)
   (signal-not-implemented 'atomic-cas))
 
 (defmacro atomic-decf (place &optional (delta 1))
@@ -23,7 +25,8 @@
   #+ecl `(- (mp:atomic-decf ,place ,delta) ,delta)
   #+lispworks `(system:atomic-decf ,place ,delta)
   #+sbcl `(- (sb-ext:atomic-decf ,place ,delta) ,delta)
-  #-(or allegro ccl ecl lispworks sbcl)
+  #+genera `(process:atomic-decf ,place ,delta)
+  #-(or allegro ccl ecl lispworks sbcl genera)
   (signal-not-implemented 'atomic-decf))
 
 (defmacro atomic-incf (place &optional (delta 1))
@@ -33,7 +36,8 @@
   #+ecl `(+ (mp:atomic-incf ,place ,delta) ,delta)
   #+lispworks `(system:atomic-incf ,place ,delta)
   #+sbcl `(+ (sb-ext:atomic-incf ,place ,delta) ,delta)
-  #-(or allegro ccl ecl lispworks sbcl)
+  #+genera `(process:atomic-incf ,place ,delta)
+  #-(or allegro ccl ecl lispworks sbcl genera)
   (signal-not-implemented 'atomic-incf))
 
 (deftype %atomic-integer-value ()
@@ -43,7 +47,7 @@
             (:constructor %make-atomic-integer ()))
   "Wrapper for an (UNSIGNED-BYTE 64) that allows atomic
 increment, decrement and swap."
-  #+(or allegro ccl ecl lispworks)
+  #+(or allegro ccl ecl lispworks genera)
   (cell (make-array 1 :element-type t))
   #+(or clisp sbcl)
   (cell 0 :type %atomic-integer-value)
@@ -54,15 +58,15 @@ increment, decrement and swap."
   (print-unreadable-object (aint stream :type t :identity t)
     (format stream "~S" (atomic-integer-value aint))))
 
-#-(or allegro ccl clisp ecl lispworks sbcl)
+#-(or allegro ccl clisp ecl lispworks sbcl genera)
 (mark-not-implemented 'make-atomic-integer)
 (defun make-atomic-integer (&key (value 0))
   (check-type value %atomic-integer-value)
-  #+(or allegro ccl clisp ecl lispworks sbcl)
+  #+(or allegro ccl clisp ecl lispworks sbcl genera)
   (let ((aint (%make-atomic-integer)))
     (setf (atomic-integer-value aint) value)
     aint)
-  #-(or allegro ccl clisp ecl lispworks sbcl)
+  #-(or allegro ccl clisp ecl lispworks sbcl genera)
   (signal-not-implemented 'make-atomic-integer))
 
 (defun atomic-integer-cas (atomic-integer old new)
@@ -127,23 +131,3 @@ increment, decrement and swap."
   #+clisp
   (%with-lock ((atomic-integer-%lock atomic-integer) nil)
     (setf (atomic-integer-cell atomic-integer) newval)))
-
-(defstruct queue
-  (vector (make-array 7 :adjustable t :fill-pointer 0) :type vector)
-  (lock (%make-lock nil) :type native-lock))
-
-(defun queue-drain (queue)
-  (%with-lock ((queue-lock queue) nil)
-    (shiftf (queue-vector queue)
-            (make-array 7 :adjustable t :fill-pointer 0))))
-
-(defun queue-dequeue (queue)
-  (%with-lock ((queue-lock queue) nil)
-    (let ((vector (queue-vector queue)))
-      (if (zerop (length vector))
-          nil
-          (vector-pop vector)))))
-
-(defun queue-enqueue (queue value)
-  (%with-lock ((queue-lock queue) nil)
-    (vector-push-extend value (queue-vector queue))))
