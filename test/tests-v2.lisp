@@ -1,4 +1,5 @@
-;;;; -*- indent-tabs-mode: nil -*-
+;;;; -*- Mode: LISP; Syntax: ANSI-Common-lisp; Base: 10; Package: BORDEAUX-THREADS-2/TEST -*-
+;;;; The above modeline is required for Genera. Do not change.
 
 (in-package :bordeaux-threads-2/test)
 
@@ -316,8 +317,8 @@
              (with-lock-held (*lock*)
                (loop
                  until (= i *shared*)
-                 do (sleep (random .1))
-                    (condition-wait cv *lock*))
+                 do (condition-wait cv *lock*)
+                    (sleep (random .1)))
                (incf *shared*))
              (condition-broadcast cv)))
       (let ((num-procs 30))

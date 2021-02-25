@@ -47,9 +47,10 @@ Distributed under the MIT license (see LICENSE file)
   (check-type lock lock)
   (let ((lock-argument (process:make-lock-argument (lock-lock lock))))
     (cond (wait-p
-           (process:lock (lock-lock lock) lock-argument)
-           (setf (lock-lock-argument lock) lock-argument)
-           t)
+           (process:with-no-other-processes
+             (process:lock (lock-lock lock) lock-argument)
+             (setf (lock-lock-argument lock) lock-argument)
+             t))
           (t
            (process:with-no-other-processes
              (when (process:lock-lockable-p (lock-lock lock))
@@ -59,7 +60,8 @@ Distributed under the MIT license (see LICENSE file)
 
 (defun release-lock (lock)
   (check-type lock lock)
-  (process:unlock (lock-lock lock) (scl:shiftf (lock-lock-argument lock) nil)))
+  (process:with-no-other-processes
+    (process:unlock (lock-lock lock) (scl:shiftf (lock-lock-argument lock) nil))))
 
 (defstruct (recursive-lock (:constructor make-recursive-lock-internal))
   lock
@@ -84,18 +86,20 @@ Distributed under the MIT license (see LICENSE file)
                (setf (gethash key (recursive-lock-lock-arguments lock)) lock-argument)
                t)))
           (t
-           (process:lock (recursive-lock-lock lock) lock-argument)
-           (setf (gethash key (recursive-lock-lock-arguments lock)) lock-argument)
-           t))))
+           (process:with-no-other-processes
+             (process:lock (recursive-lock-lock lock) lock-argument)
+             (setf (gethash key (recursive-lock-lock-arguments lock)) lock-argument)
+             t)))))
 
 (defun release-recursive-lock (lock)
   (check-type lock recursive-lock)
   (let* ((key (cons *thread-recursive-lock-key* scl:*current-process*))
          (lock-argument (gethash key (recursive-lock-lock-arguments lock))))
-    (prog1
-        (process:unlock (recursive-lock-lock lock) lock-argument)
-      (decf *thread-recursive-lock-key*)
-      (remhash key (recursive-lock-lock-arguments lock)))))
+    (process:with-no-other-processes
+      (prog1
+          (process:unlock (recursive-lock-lock lock) lock-argument)
+        (decf *thread-recursive-lock-key*)
+        (remhash key (recursive-lock-lock-arguments lock))))))
 
 (defmacro with-recursive-lock-held ((place &key timeout) &body body)
   `(with-recursive-lock-held-internal ,place ,timeout #'(lambda () ,@body)))
@@ -185,7 +189,7 @@ BODY does not complete within `TIMEOUT' seconds."
 
 (defun destroy-thread (thread)
   (signal-error-if-current-thread thread)
-  (process:process-kill thread :without-aborts :force))
+  (process:process-kill thread :force))
 
 (defun thread-alive-p (thread)
   (process:process-active-p thread))

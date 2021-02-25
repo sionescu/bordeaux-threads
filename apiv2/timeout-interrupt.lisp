@@ -1,4 +1,4 @@
-;;;; -*- Mode: LISP; Syntax: ANSI-Common-lisp; Base: 10; Package: BORDEAUX-THREADS -*-
+;;;; -*- Mode: LISP; Syntax: ANSI-Common-lisp; Base: 10; Package: BORDEAUX-THREADS-2 -*-
 ;;;; The above modeline is required for Genera. Do not change.
 
 (in-package :bordeaux-threads-2)
