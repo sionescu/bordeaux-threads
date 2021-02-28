@@ -41,12 +41,15 @@
   (signal-not-implemented 'atomic-incf))
 
 (deftype %atomic-integer-value ()
-  '(unsigned-byte 64))
+  #+32-bit '(unsigned-byte 32)
+  #+64-bit '(unsigned-byte 64))
 
 (defstruct (atomic-integer
             (:constructor %make-atomic-integer ()))
-  "Wrapper for an (UNSIGNED-BYTE 64) that allows atomic
-increment, decrement and swap."
+  "Wrapper for an UNSIGNED-BYTE that allows atomic
+increment, decrement and swap.
+The counter is a machine word: 32/64 bits depending on CPU."
+
   #+(or allegro ccl ecl genera lispworks)
   (cell (make-array 1 :element-type t))
   #+(or clisp sbcl)

@@ -27,7 +27,7 @@
   :licence "MIT"
   :description "Bordeaux Threads makes writing portable multi-threaded apps simple."
   :version (:read-file-form "version.sexp")
-  :depends-on (:alexandria :global-vars :trivial-garbage
+  :depends-on (:alexandria :global-vars :trivial-features :trivial-garbage
                #+(and allegro (version>= 9))       (:require "smputil")
                #+(and allegro (not (version>= 9))) (:require "process")
                #+corman                            (:require "threads"))
