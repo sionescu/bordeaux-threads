@@ -7,17 +7,17 @@ env:
     - LISP=sbcl
     - LISP=ccl
     - LISP=ecl
-    - LISP=allegro
     - LISP=abcl
     - LISP=clisp
-    - LISP=sbcl32
-    # - LISP=ccl32
+    # - LISP=allegro
+    # - LISP=sbcl32
+    # - lisp=ccl32
     # - LISP=cmucl
 
 jobs:
   allow_failures:
     - env: LISP=clisp
-    - env: LISP=sbcl32
+    # - env: LISP=sbcl32
     # - env: LISP=ccl32
     # - env: LISP=cmucl
 
