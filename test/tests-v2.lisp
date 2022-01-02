@@ -276,11 +276,19 @@
       (make-thread (lambda () (sleep 0.4) (signal-semaphore sem)))
       (is (eql t (wait-on-semaphore sem)))))
 
-  (test semaphore-wait.timeout
+  (test semaphore.wait-on-nonzero-creation
+    "Tests that `WAIT-ON-SEMAPHORE` correctly returns T
+on a smaphore that was initialized to a non-zero value.
+In other words, it tests that `SIGNAL-SEMAPHORE` is not
+the only cause that can wake a waiter."
+    (let ((sem (make-semaphore :count 1)))
+      (is (eql t (wait-on-semaphore sem :timeout 0)))))
+
+  (test semaphore.wait.timeout
     (let* ((sem (make-semaphore)))
       (is (null (wait-on-semaphore sem :timeout 0)))
       (is (null (wait-on-semaphore sem :timeout 0.2)))))
-  
+
   (test semaphore.signal-n-of-m
     (let* ((sem (make-semaphore :count 1))
            (lock (make-lock))
@@ -288,7 +296,8 @@
            (waiter (lambda ()
                      (wait-on-semaphore sem)
                      (with-lock-held (lock) (incf count)))))
-      (make-thread (lambda () (sleep 0.2)
+      (make-thread (lambda ()
+                     (sleep 0.2)
                      (signal-semaphore sem :count 3)))
       (dotimes (v 5) (make-thread waiter))
       (sleep 0.3)
