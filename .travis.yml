@@ -15,7 +15,7 @@ env:
     # - LISP=cmucl
 
 
-matrix:
+jobs:
   fast_finish: true
   allow_failures:
     - env: LISP=clisp
