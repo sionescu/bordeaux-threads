@@ -93,7 +93,7 @@
   (%release-lock lock))
 
 (defmacro %with-recursive-lock ((place timeout) &body body)
-  `(mp:with-lock (,place nil timeout) ,@body))
+  `(mp:with-lock (,place nil ,timeout) ,@body))
 
 
 ;;;
