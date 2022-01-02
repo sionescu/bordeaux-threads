@@ -52,7 +52,7 @@
            `((*some-special* . (list :more *some-special*))
              ,@*default-special-bindings*))
          (thread (make-thread (lambda () *some-special*))))
-    (is (equal (join-thread thread) '(:more :local-value)))))
+    (is (equal '(:more :local-value) (join-thread thread)))))
 
 (defparameter *shared* 0)
 (defparameter *lock* (make-lock))
@@ -172,7 +172,7 @@
                :name (format nil "acquire-recursive-lock Proc #~D" i))
               threads)))
     (map 'nil #'join-thread threads)
-    (is (equalp results #(:enter :leave :enter :leave)))))
+    (is (equalp #(:enter :leave :enter :leave) results))))
 
 (test acquire-lock.try-lock
   (let ((lock (make-lock)))
@@ -301,11 +301,11 @@ the only cause that can wake a waiter."
                      (signal-semaphore sem :count 3)))
       (dotimes (v 5) (make-thread waiter))
       (sleep 0.3)
-      (is (= count 4))
+      (is (= 4 count))
       ;; release other waiters
       (is (eql t (signal-semaphore sem :count 2)))
       (sleep 0.1)
-      (is (= count 5)))))
+      (is (= 5 count)))))
 
 
 ;;;
@@ -382,8 +382,8 @@ the only cause that can wake a waiter."
 #+(or abcl allegro ccl clisp ecl lispworks sbcl)
 (test atomic-integer-incf-decf.return-value
   (let ((aint (make-atomic-integer :value 0)))
-    (is (= (atomic-integer-incf aint 5) 5))
-    (is (= (atomic-integer-decf aint 1) 4))))
+    (is (= 5 (atomic-integer-incf aint 5)))
+    (is (= 4 (atomic-integer-decf aint 1)))))
 
 #+(or abcl allegro ccl clisp ecl lispworks sbcl)
 (test atomic-integer-cas.return-value
@@ -404,4 +404,4 @@ the only cause that can wake a waiter."
                             (atomic-integer-decf aint))))))
     (join-thread thread-inc)
     (join-thread thread-dec)
-    (is (= (atomic-integer-value aint) 1000000))))
+    (is (= 1000000 (atomic-integer-value aint)))))
