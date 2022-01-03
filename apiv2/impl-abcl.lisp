@@ -132,6 +132,59 @@
 
 
 ;;;
+;;; Semaphores
+;;;
+
+(defstruct (semaphore
+            (:constructor %%make-semaphore (name cell)))
+  "Wrapper for java.util.concurrent.Semaphore."
+  name cell)
+
+(defconstant +semaphore-count+
+  (jmethod "java.util.concurrent.Semaphore" "availablePermits"))
+
+(defun %semaphore-count (semaphore)
+  (jcall +semaphore-count+ (semaphore-cell semaphore)))
+
+(defmethod print-object ((sem semaphore) stream)
+  (print-unreadable-object (sem stream :type t :identity t)
+    (format stream "~S count: ~S" (semaphore-name sem)
+            (%semaphore-count sem))))
+
+(defun %make-semaphore (name count)
+  (check-type count unsigned-byte)
+  (%%make-semaphore
+   name
+   (jnew "java.util.concurrent.Semaphore" count t)))
+
+(defconstant +semaphore-release+
+  (jmethod "java.util.concurrent.Semaphore" "release"
+           (jclass "int")))
+
+(defun %signal-semaphore (semaphore count)
+  (jcall +semaphore-release+ (semaphore-cell semaphore) count))
+
+(defconstant +semaphore-acquire+
+  (jmethod "java.util.concurrent.Semaphore" "acquire"))
+
+(defconstant +semaphore-try-acquire+
+  (jmethod "java.util.concurrent.Semaphore" "tryAcquire"
+           (jclass "long") (jclass "java.util.concurrent.TimeUnit")))
+
+(defun %wait-on-semaphore (semaphore timeout)
+  ;; TODO: handle thread interruption.
+  (cond
+    ((null timeout)
+     (jcall +semaphore-acquire+ (semaphore-cell semaphore))
+     t)
+    (t
+     (jcall +semaphore-try-acquire+
+            (semaphore-cell semaphore)
+            (timeout-to-microseconds timeout)
+            +microseconds+))))
+
+
+;;;
 ;;; Condition variables
 ;;;
 

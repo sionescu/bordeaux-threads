@@ -3,14 +3,14 @@
 
 (in-package :bordeaux-threads-2)
 
-#-(or allegro ccl ecl lispworks mezzano sbcl)
+#-(or abcl allegro ccl ecl lispworks mezzano sbcl)
 (defstruct (%semaphore
             (:constructor %make-semaphore (name counter)))
   name counter
   (lock               (make-lock))
   (condition-variable (%make-condition-variable nil)))
 
-#-(or allegro ccl ecl lispworks mezzano sbcl)
+#-(or abcl allegro ccl ecl lispworks mezzano sbcl)
 (deftype semaphore () '%semaphore)
 
 (defun make-semaphore (&key name (count 0))
@@ -18,7 +18,7 @@
   (check-type name (or null string))
   (%make-semaphore name count))
 
-#-(or allegro ccl ecl lispworks mezzano sbcl)
+#-(or abcl allegro ccl ecl lispworks mezzano sbcl)
 (defun %signal-semaphore (semaphore count)
   (with-lock-held ((%semaphore-lock semaphore))
     (incf (%semaphore-counter semaphore) count)
@@ -31,7 +31,7 @@ semaphore, then COUNT of them are woken up."
   (%signal-semaphore semaphore count)
   t)
 
-#-(or allegro ccl ecl lispworks mezzano sbcl)
+#-(or abcl allegro ccl ecl lispworks mezzano sbcl)
 (defun %wait-on-semaphore (semaphore timeout)
   (with-lock-held ((%semaphore-lock semaphore))
     (if (plusp (%semaphore-counter semaphore))
@@ -46,10 +46,10 @@ semaphore, then COUNT of them are woken up."
                              (%semaphore-condition-variable semaphore)
                              (lock-native-lock (%semaphore-lock semaphore))
                              timeout))
-                      (return-from wait-on-semaphore))
+                      (return-from %wait-on-semaphore))
                      ;; unfortunately cv-wait may return T on timeout too
                      ((and deadline (>= (get-internal-real-time) deadline))
-                      (return-from wait-on-semaphore))
+                      (return-from %wait-on-semaphore))
                      (timeout
                       (setf timeout (/ (- deadline (get-internal-real-time))
                                        internal-time-units-per-second)))))
