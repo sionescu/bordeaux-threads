@@ -16,10 +16,9 @@
 (defun %current-thread ()
   threads:*current-thread*)
 
-(mark-not-implemented 'thread-name)
 (defun %thread-name (thread)
   (declare (ignore thread))
-  (signal-not-implemented 'thread-name))
+  nil)
 
 (mark-not-implemented 'join-thread)
 (defun %join-thread (thread)

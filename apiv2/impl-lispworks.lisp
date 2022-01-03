@@ -17,14 +17,7 @@
   (mp:initialize-multiprocessing))
 
 (defun %make-thread (function name)
-  (mp:process-run-function
-   name nil
-   (named-lambda %join-thread-wrapper ()
-     (let ((return-values
-             (multiple-value-list (funcall function))))
-       (setf (mp:process-property 'return-values)
-             return-values)
-       (values-list return-values)))))
+  (mp:process-run-function name nil function))
 
 (defun %current-thread ()
   (mp:get-current-process))
@@ -33,10 +26,7 @@
   (mp:process-name thread))
 
 (defun %join-thread (thread)
-  (mp:process-join thread)
-  (let ((return-values
-          (mp:process-property 'return-values thread)))
-    (values-list return-values)))
+  (mp:process-join thread))
 
 (defun %thread-yield ()
   (mp:process-allow-scheduling))

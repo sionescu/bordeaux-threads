@@ -17,18 +17,7 @@
   (mp:start-scheduler))
 
 (defun %make-thread (function name)
-  #+smp
-  (mp:process-run-function name function)
-  #-smp
-  (mp:process-run-function
-   name
-   (named-lambda %join-thread-wrapper ()
-     (let ((return-values
-             (multiple-value-list (funcall function))))
-       (setf (getf (mp:process-property-list mp:*current-process*)
-                   'return-values)
-             return-values)
-       (values-list return-values)))))
+  (mp:process-run-function name function))
 
 (defun %current-thread ()
   mp:*current-process*)
@@ -38,15 +27,11 @@
 
 (defun %join-thread (thread)
   #+smp
-  (values-list (mp:process-join thread))
+  (mp:process-join thread)
   #-smp
-  (progn
-    (mp:process-wait (format nil "Waiting for thread ~A to complete" thread)
-                     (complement #'mp:process-alive-p)
-                     thread)
-    (let ((return-values
-            (getf (mp:process-property-list thread) 'return-values)))
-      (values-list return-values))))
+  (mp:process-wait (format nil "Waiting for thread ~A to complete" thread)
+                   (complement #'mp:process-alive-p)
+                   thread))
 
 (defun %thread-yield ()
   (mp:process-allow-schedule))

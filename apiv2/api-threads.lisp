@@ -7,7 +7,9 @@
   ((name :initarg :name :reader thread-name)
    (native-thread :initarg :native-thread
                   :reader thread-native-thread)
-   (%init-lock :initform (make-lock))
+   (%lock :initform (make-lock))
+   ;; Used for implementing condition variables in
+   ;; impl-condition-variables-semaphores.lisp.
    #+ccl
    (%semaphore :initform (%make-semaphore nil 0)
                :reader %thread-semaphore)
@@ -24,7 +26,7 @@
 (define-global-var* .known-threads-lock.
     (make-lock :name "known-threads-lock"))
 
-(defun thread-wrapper (&optional (native-thread (%current-thread)))
+(defun ensure-thread-wrapper (native-thread)
   (with-lock-held (.known-threads-lock.)
     (multiple-value-bind (thread presentp)
         (gethash native-thread .known-threads.)
@@ -35,9 +37,22 @@
                                :name (%thread-name native-thread)
                                :native-thread native-thread))))))
 
+(defun %get-thread-wrapper (native-thread)
+  (with-lock-held (.known-threads-lock.)
+    (multiple-value-bind (thread presentp)
+        (gethash native-thread .known-threads.)
+      (if presentp
+          thread
+          (bt-error "Thread wrapper is supposed to exist for ~S"
+                    native-thread)))))
+
 (defun (setf thread-wrapper) (thread native-thread)
   (with-lock-held (.known-threads-lock.)
     (setf (gethash native-thread .known-threads.) thread)))
+
+(defun remove-thread-wrapper (native-thread)
+  (with-lock-held (.known-threads-lock.)
+    (remhash native-thread .known-threads.)))
 
 ;; Forms are evaluated in the new thread or in the calling thread?
 (defvar *default-special-bindings* nil
@@ -104,30 +119,35 @@ FUNCTION."
          (values (mapcar (lambda (f) (eval (cdr f))) bindings)))
     (named-lambda %establish-dynamic-env-wrapper ()
       (progv specials values
-        (with-slots (%init-lock %return-values %exit-condition #+genera native-thread) thread
+        (with-slots (%lock %return-values %exit-condition #+genera native-thread)
+            thread
           (flet ((record-condition (c)
-                   (setf %exit-condition c))
+                   (with-lock-held (%lock)
+                     (setf %exit-condition c)))
                  (run-function ()
-                   (with-lock-held (%init-lock)
-                     (setf *current-thread*
-                           (thread-wrapper (%current-thread)))
-                     (setf %return-values (multiple-value-list
-                                            (funcall function))))))
+                   (let ((*current-thread* nil))
+                     ;; Wait until the thread creator has finished creating
+                     ;; the wrapper.
+                     (with-lock-held (%lock)
+                       (setf *current-thread* (%get-thread-wrapper (%current-thread))))
+                     (let ((retval
+                             (multiple-value-list (funcall function))))
+                       (with-lock-held (%lock)
+                         (setf %return-values retval))
+                       retval))))
             (unwind-protect
-                (if trap-conditions
-                    (handler-case
-                        (progn
-                          (run-function)
-                          (values-list %return-values))
-                      (condition (c)
-                        (record-condition c)))
-                    (handler-bind
-                        ((condition #'record-condition))
-                      (run-function)))
+                 (if trap-conditions
+                     (handler-case
+                         (values-list (run-function))
+                       (condition (c)
+                         (record-condition c)))
+                     (handler-bind
+                         ((condition #'record-condition))
+                       (values-list (run-function))))
               ;; Genera doesn't support weak key hash tables. If we don't remove
               ;; the native-thread object's entry from the hash table here, we'll
               ;; never be able to GC the native-thread after it terminates
-              #+genera  (remhash native-thread .known-threads.))))))))
+              #+genera (remove-thread-wrapper native-thread))))))))
 
 
 ;;;
@@ -146,7 +166,7 @@ It is safe to call repeatedly."
                     &key
                       name
                       (initial-bindings *default-special-bindings*)
-                      (handle-conditions t))
+                      (trap-conditions t))
   "Creates and returns a thread named NAME, which will call the
   function FUNCTION with no arguments: when FUNCTION returns, the
   thread terminates.
@@ -173,17 +193,17 @@ It is safe to call repeatedly."
   (check-type function (and (not null) (or symbol function)))
   (check-type name (or null string))
   (let ((thread (make-instance 'thread :name name)))
-    (with-slots (native-thread %init-lock) thread
-        (with-lock-held (%init-lock)
-          (let ((%thread
-                  (%make-thread (establish-dynamic-env
-                                 thread
-                                 function
-                                 initial-bindings
-                                 handle-conditions)
-                                name)))
-            (setf native-thread %thread)
-            (setf (thread-wrapper %thread) thread))))
+    (with-slots (native-thread %lock) thread
+      (with-lock-held (%lock)
+        (let ((%thread
+                (%make-thread (establish-dynamic-env
+                               thread
+                               function
+                               initial-bindings
+                               trap-conditions)
+                              name)))
+          (setf native-thread %thread)
+          (setf (thread-wrapper %thread) thread))))
     thread))
 
 (defun current-thread ()
@@ -194,7 +214,7 @@ It is safe to call repeatedly."
     ((boundp '*current-thread*)
      (assert (threadp *current-thread*))
      *current-thread*)
-    (t (thread-wrapper (%current-thread)))))
+    (t (ensure-thread-wrapper (%current-thread)))))
 
 (defun threadp (object)
   "Returns T if object is a thread, otherwise NIL."
@@ -204,14 +224,15 @@ It is safe to call repeatedly."
   "Wait until THREAD terminates. If THREAD has already terminated,
   return immediately. The return values of the thread function are
   returned."
-  (with-slots (native-thread %return-values %exit-condition)
+  (with-slots (native-thread %lock %return-values %exit-condition)
       thread
     (when (eql native-thread (%current-thread))
       (bt-error "Cannot join with the current thread"))
     (%join-thread native-thread)
-    (if %exit-condition
-        (error 'abnormal-exit :condition %exit-condition)
-        (values-list %return-values))))
+    (with-lock-held (%lock)
+      (if %exit-condition
+          (error 'abnormal-exit :condition %exit-condition)
+          (values-list %return-values)))))
 
 (defun thread-yield ()
   "Allows other threads to run. It may be necessary or desirable to
@@ -225,9 +246,8 @@ It is safe to call repeatedly."
 ;;;
 
 (defun all-threads ()
-  "Returns a sequence of all of the threads. This may not
-  be freshly-allocated, so the caller should not modify it."
-  (mapcar #'thread-wrapper (%all-threads)))
+  "Returns a sequence of all of the threads."
+  (mapcar #'ensure-thread-wrapper (%all-threads)))
 
 (defmethod interrupt-thread ((thread thread) function &rest args)
   "Interrupt THREAD and cause it to evaluate FUNCTION
