@@ -144,11 +144,52 @@
     (is (equal "Name" (lock-name lock)))))
 
 (test acquire-lock.no-contention
-  (with-fixture using-lock ()
+  (let ((lock (make-lock)))
     (is (acquire-lock lock :wait t))
     (is (lockp (release-lock lock)))
     (is (acquire-lock lock :wait nil))
     (is (lockp (release-lock lock)))))
+
+(test acquire-lock.try-lock
+  (let ((lock (make-lock)))
+    (make-thread (lambda ()
+                   (with-lock-held (lock)
+                     (sleep 5)))
+                 :name "acquire-lock.try-lock")
+    (sleep 1)
+    (is-false (acquire-lock lock :wait nil))))
+
+(test acquire-lock.timeout-expires
+  (let ((lock (make-lock)))
+    (make-thread (lambda ()
+                   (with-lock-held (lock)
+                     (sleep 5)))
+                 :name "acquire-lock.timeout-expires")
+    (sleep 1)
+    (is (null (acquire-lock lock :timeout .1)))))
+
+#+#.(bt2::implemented-p* 'bt2:with-lock-held)
+(test with-lock-held.timeout-no-contention-acquired
+  (let ((lock (make-lock)))
+    (is (eql :ok (with-lock-held (lock :timeout .1) :ok)))))
+
+#+#.(bt2::implemented-p* 'bt2:with-lock-held)
+(test with-lock-held.timeout-expires
+  (let ((lock (make-lock)))
+    (make-thread (lambda ()
+                   (with-lock-held (lock)
+                     (sleep 5)))
+                 :name "with-lock-held.timeout-expires")
+    (sleep 1)
+    (is (eql :timeout
+             (block ok
+               (with-lock-held (lock :timeout .1)
+                 (return-from ok :ok))
+               :timeout)))))
+
+;;;
+;;; Recursive Locks
+;;;
 
 #+#.(bt2::implemented-p* 'bt2:acquire-recursive-lock)
 (test acquire-recursive-lock
@@ -174,46 +215,7 @@
     (map 'nil #'join-thread threads)
     (is (equalp #(:enter :leave :enter :leave) results))))
 
-(test acquire-lock.try-lock
-  (let ((lock (make-lock)))
-    (make-thread (lambda ()
-                   (with-lock-held (lock)
-                     (sleep 5)))
-                 :name "acquire-lock.try-lock")
-    (sleep 1)
-    (is-false (acquire-lock lock :wait nil))))
-
-(test acquire-lock.timeout-expires
-  (let ((lock (make-lock)))
-    (make-thread (lambda ()
-                   (with-lock-held (lock)
-                     (sleep 5)))
-                 :name "acquire-lock.timeout-expires")
-    (sleep 1)
-    (is (null (acquire-lock lock :timeout .1)))))
-
-(test with-lock-held.timeout-no-contention-acquired
-  (let ((lock (make-lock)))
-    (is (eql :ok (with-lock-held (lock :timeout .1) :ok)))))
-
-#+#.(bt2::implemented-p* 'bt2:with-lock-held)
-(test with-lock-held.timeout-expires
-  (let ((lock (make-lock)))
-    (make-thread (lambda ()
-                   (with-lock-held (lock)
-                     (sleep 5)))
-                 :name "with-lock-held.timeout-expires")
-    (sleep 1)
-    (is (eql :timeout
-             (block ok
-               (with-lock-held (lock :timeout .1)
-                 (return-from ok :ok))
-               :timeout)))))
-
-;;;
-;;; Recursive Locks
-;;;
-
+#+#.(bt2::implemented-p* 'bt2:acquire-recursive-lock)
 (test acquire-recursive-lock.no-contention
   (let ((lock (make-recursive-lock)))
     (is (acquire-recursive-lock lock :wait t))
@@ -241,6 +243,7 @@
     (sleep 1)
     (is (null (acquire-recursive-lock lock :timeout .1)))))
 
+#+#.(bt2::implemented-p* 'bt2:with-recursive-lock-held)
 (test with-recursive-lock-held.timeout-no-contention-acquired
   (let ((lock (make-recursive-lock)))
     (is (eql :ok (with-recursive-lock-held (lock :timeout .1) :ok)))))
@@ -264,7 +267,7 @@
 ;;; Semaphores
 ;;;
 
-#+#.(bt2::implemented-p* 'bt2:signal-semaphore)
+#+#.(bt2::implemented-p* 'bt2:make-semaphore)
 (progn
   (test semaphore.typed
     (is (typep (make-semaphore) 'semaphore))
@@ -313,13 +316,13 @@ the only cause that can wake a waiter."
 ;;; Condition variables
 ;;;
 
-#+#.(bt2::implemented-p* 'bt2:condition-wait)
+#+#.(bt2::implemented-p* 'bt2:make-condition-variable)
 (test condition-variable.typed
   (is (typep (make-condition-variable) 'condition-variable))
   (is (condition-variable-p (make-condition-variable)))
   (is (not (condition-variable-p (make-lock)))))
 
-#+#.(bt2::implemented-p* 'bt2:condition-wait)
+#+#.(bt2::implemented-p* 'bt2:make-condition-variable)
 (test condition-variable.concurrency
   (setf *shared* 0)
   (let ((cv (make-condition-variable)))

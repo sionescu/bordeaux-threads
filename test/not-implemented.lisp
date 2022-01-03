@@ -34,7 +34,7 @@
       (pass)
       (signals not-implemented (make-thread (lambda ())))))
 
-(test make-thread.not-implemented
+(test join-thread.not-implemented
   (if (implemented-p 'bt2:join-thread)
       (pass)
       (signals not-implemented (join-thread (make-thread (lambda ()))))))

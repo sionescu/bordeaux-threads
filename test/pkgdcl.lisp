@@ -12,10 +12,6 @@
 
 (def-suite :bordeaux-threads-2)
 
-(def-fixture using-lock ()
-  (let ((lock (make-lock)))
-    (&body)))
-
 (defmacro is (test &rest reason-args)
   (with-gensyms (c)
     `(handler-case
