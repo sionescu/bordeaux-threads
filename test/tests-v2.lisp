@@ -365,10 +365,41 @@ the only cause that can wake a waiter."
         (flag nil))
     (make-thread (lambda () (sleep 0.4) (setf flag t)))
     (with-lock-held (lock)
-      (condition-wait cv lock :timeout 0.2)
-      (is (null flag))
-      (sleep 0.4)
-      (is (eq t flag)))))
+      (let ((success
+              (condition-wait cv lock :timeout 0.2)))
+        #+abcl
+        (skip "ABCL's condition-wait always returns T")
+        #-abcl
+        (is-false success)
+        (is (null flag))
+        (sleep 0.4)
+        (is (eq t flag))))))
+
+#+#.(bt2::implemented-p* 'bt2:condition-wait :timeout)
+(test condition-wait.lock-held-on-timeout
+  "Tests that even when `CONDITION-WAIT` times out, it reacquires the
+lock."
+  (let ((lock (make-lock :name "Test lock"))
+        (cv (make-condition-variable :name "Test condition variable")))
+    (with-lock-held (lock)
+      (let ((success
+              (condition-wait cv lock :timeout 2)))
+        #+abcl
+        (skip "ABCL's condition-wait always returns T")
+        #-abcl
+        (is-false success)
+        ;; We need to test if `lock` is locked, but it must be done in
+        ;; another thread, otherwise it would be a recursive attempt.
+        (let ((res-lock (make-lock :name "Result lock"))
+              (res-cv (make-condition-variable :name "Result condition variable"))
+              (lock-was-acquired-p nil))
+          (make-thread (lambda ()
+                         (with-lock-held (res-lock)
+                           (setf lock-was-acquired-p (acquire-lock lock :wait nil)))
+                         (condition-notify res-cv)))
+          (with-lock-held (res-lock)
+            (condition-wait res-cv res-lock)
+            (is-false lock-was-acquired-p)))))))
 
 
 ;;;

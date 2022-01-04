@@ -235,20 +235,15 @@ WITH-LOCK-HELD etc etc"
   It is an error to call function this unless from the thread that
   holds LOCK.
 
-  If TIMEOUT is nil or not provided, the system always reacquires LOCK
-  before returning to the caller. In this case T is returned.
+  If TIMEOUT is nil or not provided, the call blocks until a
+  notification is received.
 
   If TIMEOUT is non-nil, the call will return after at most TIMEOUT
   seconds (approximately), whether or not a notification has occurred.
-  Either NIL or T will be returned. A return of NIL indicates that the
-  lock is no longer held and that the timeout has expired. A return of
-  T indicates that the lock is held, in which case the timeout may or
-  may not have expired.
 
-  **NOTE**: The behavior of CONDITION-WAIT with TIMEOUT diverges from
-  the POSIX function pthread_cond_timedwait. The former may return
-  without the lock being held while the latter always returns with the
-  lock held.
+  Either NIL or T will be returned. A return of NIL indicates that the
+  timeout has expired without receiving a notification. A return of T
+  indicates that a notification was received.
 
   In an implementation that does not support multiple threads, this
   function signals an error."

@@ -134,7 +134,9 @@
       (handler-case
           (with-timeout (timeout)
             (mp:condition-variable-wait cv lock))
-        (timeout () nil))
+        (timeout ()
+          (%acquire-lock lock t nil)
+          nil))
       (mp:condition-variable-wait cv lock)))
 
 (defun %condition-notify (cv)

@@ -76,7 +76,9 @@ Distributed under the MIT license (see LICENSE file)
   (if timeout
       (handler-case (with-timeout (timeout)
                       (mp:condition-variable-wait condition-variable lock))
-        (timeout () nil))
+        (timeout ()
+          (acquire-lock lock)
+          nil))
       (mp:condition-variable-wait condition-variable lock)))
 
 (defun condition-notify (condition-variable)

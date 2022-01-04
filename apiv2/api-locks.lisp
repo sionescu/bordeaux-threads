@@ -98,6 +98,7 @@
 
 (defun make-recursive-lock (&key name)
   "Create and return a recursive lock whose name is NAME.
+
   A recursive lock differs from an ordinary lock in that a thread that
   already holds the recursive lock can acquire it again without
   blocking. The thread must then release the lock twice before it
@@ -111,9 +112,9 @@
 (defun acquire-recursive-lock (lock &key (wait t) timeout)
   "Acquire the lock LOCK for the calling thread.
 
-  WAIT governs what happens if the lock is not available: if WAIT
-  is true, the calling thread will wait until the lock is available
-  and then acquire it; if WAIT is NIL, ACQUIRE-LOCK will return
+  WAIT governs what happens if the lock is not available: if WAIT is
+  true, the calling thread will wait until the lock is available and
+  then acquire it; if WAIT is NIL, ACQUIRE-RECURSIVE-LOCK will return
   immediately.
 
   If WAIT is true, TIMEOUT may specify a maximum amount of seconds to

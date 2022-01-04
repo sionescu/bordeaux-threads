@@ -104,4 +104,6 @@
                (:file "pkgdcl")
                (:file "not-implemented")
                (:file "tests-v2"))
-  :perform (test-op (o c) (symbol-call :5am :run! :bordeaux-threads-2)))
+  :perform (test-op (o c)
+             (symbol-call :5am :run! :bordeaux-threads)
+             (symbol-call :5am :run! :bordeaux-threads-2)))
