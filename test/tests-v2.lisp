@@ -125,12 +125,23 @@
     (sleep 5)
     (is-false (thread-alive-p thread))))
 
-#+sbcl
-(test destroy-thread.join-error
+#+#.(bt2::implemented-p* 'bt2:destroy-thread)
+(test join-thread.error-if-destroyed
+  ;; I don't know how to deal with this yet.
+  #-sbcl
+  (skip "Joining a destroyed thread doesn't work properly.")
+  #+sbcl
   (let ((thread (make-thread (lambda () (sleep 3))
-                             :name "destroy-thread.join-error")))
+                             :name "join-thread.error-if-destroyed")))
     (destroy-thread thread)
     (signals error (join-thread thread))))
+
+#+#.(bt2::implemented-p* 'bt2:destroy-thread)
+(test destroy-thread.error-if-exited
+  (let ((thread (make-thread (lambda () (sleep 3))
+                             :name "destroy-thread.error-if-exited")))
+    (join-thread thread)
+    (signals bordeaux-threads-error (destroy-thread thread))))
 
 
 ;;;

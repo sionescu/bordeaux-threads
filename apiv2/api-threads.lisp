@@ -284,6 +284,9 @@ It is safe to call repeatedly."
   Destroying the calling thread is an error."
   (when (eql (thread-native-thread thread) (%current-thread))
     (bt-error "Cannot destroy the current thread"))
+  (unless (thread-alive-p thread)
+    (bt-error "Cannot destroy thread because it already exited: ~S."
+              thread))
   (%destroy-thread (thread-native-thread thread))
   thread)
 
