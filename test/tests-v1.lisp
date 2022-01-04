@@ -244,11 +244,11 @@ Distributed under the MIT license (see LICENSE file)
 (test semaphore-wait-timeout
   (let ((sem (make-semaphore))
         (flag nil))
-    (make-thread (lambda () (sleep 0.4) (setf flag t)))
+    (make-thread (lambda () (sleep 3) (setf flag t)))
     (is (null (wait-on-semaphore sem :timeout 0.2)))
-    (is (null flag))
-    (sleep 0.4)
-    (is (eq t flag))))
+    (is (eql nil flag))
+    (sleep 3)
+    (is (eql t flag))))
 
 (test semaphore-typed
   (is (typep (bt:make-semaphore) 'bt:semaphore))
