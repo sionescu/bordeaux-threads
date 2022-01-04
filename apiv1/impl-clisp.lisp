@@ -106,6 +106,6 @@ Distributed under the MIT license (see LICENSE file)
   (mt:thread-active-p thread))
 
 (defun join-thread (thread)
-  (mt:thread-join thread))
+  (values-list (mt:thread-join thread)))
 
 (mark-supported)
