@@ -18,7 +18,7 @@ boolean](http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_g.htm#gene
 
 Returns
 [true](http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_t.htm#true)
-if `datum` is a [**condition-variable**](../condition-variable]
+if `datum` is a [**condition-variable**](../condition-variable)
 object, otherwise
 [false](http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_f.htm#false).
 

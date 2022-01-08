@@ -12,9 +12,9 @@ structures such as queues, mailboxes, thread pools, execution graphs,
 etc... tend to be more specialized and are better left to other
 libraries.
 
-This document dscribes the second version of the API, which differs
-from the first version in a few key points and aims to provide a more
-uniformous interface across all Common Lisp implementations.
+This document describes the second version of the API (APIv2), which
+differs from the first version in a few key points and aims to provide
+a more uniformous interface across all Common Lisp implementations.
 
 ## Host support
 
