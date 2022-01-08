@@ -30,9 +30,9 @@ thread terminates.
 
 The interaction between threads and dynamic variables is in some
 cases complex, and depends on whether the variable has only a global
-binding (as established by e.g. DEFVAR/DEFPARAMETER/top-level SETQ)
-or has been bound locally (e.g. with LET or LET*) in the calling
-thread.
+binding (as established by e.g. `defvar`/`defparameter`/top-level 
+`setq`) or has been bound locally (e.g. with `let` or `let*`) in the
+calling thread.
 
 - Global bindings are shared between threads: the initial value of a
   global variable in the new thread will be the same as in the
