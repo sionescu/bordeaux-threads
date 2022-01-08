@@ -117,6 +117,40 @@
   (is (thread-alive-p (make-thread (lambda () (sleep 60))
                                    :name "thread-alive-p.new-thread"))))
 
+#+#.(bt2::implemented-p* 'bt2:join-thread)
+(test thread-termination.unwind-protect
+  (setf *some-special* nil)
+  #+abcl
+  (skip "DESTROY-THREAD does not execute UNWIND-PROTECT cleanup forms.
+         Filed https://github.com/armedbear/abcl/issues/430.")
+  #-abcl
+  (flet ((thread-fn ()
+           (setf *some-special* :entered)
+           (unwind-protect
+                (progn
+                  (sleep 5)
+                  (setf *some-special* :failed))
+             (when (eq *some-special* :entered)
+               (setf *some-special* :success)))))
+    (let ((thread (make-thread #'thread-fn)))
+      (sleep 1)
+      (destroy-thread thread)
+      (signals abnormal-exit
+        (join-thread thread))
+      (is (eq :success *some-special*)))))
+
+(define-condition test-error (error) ())
+
+#+#.(bt2::implemented-p* 'bt2:join-thread)
+(test thread-termination.handle-condition
+  (flet ((thread-fn ()
+           (error 'test-error)))
+    (let ((thread (make-thread #'thread-fn)))
+      (handler-case
+          (join-thread thread)
+        (abnormal-exit (e)
+          (is (typep (abnormal-exit-condition e) 'test-error)))))))
+
 #+#.(bt2::implemented-p* 'bt2:destroy-thread)
 (test destroy-thread.terminates
   (let ((thread (make-thread (lambda () (sleep 3))
@@ -127,14 +161,10 @@
 
 #+#.(bt2::implemented-p* 'bt2:destroy-thread)
 (test join-thread.error-if-destroyed
-  ;; I don't know how to deal with this yet.
-  #-sbcl
-  (skip "Joining a destroyed thread doesn't work properly.")
-  #+sbcl
   (let ((thread (make-thread (lambda () (sleep 3))
                              :name "join-thread.error-if-destroyed")))
     (destroy-thread thread)
-    (signals error (join-thread thread))))
+    (signals abnormal-exit (join-thread thread))))
 
 #+#.(bt2::implemented-p* 'bt2:destroy-thread)
 (test destroy-thread.error-if-exited

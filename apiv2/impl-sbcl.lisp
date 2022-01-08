@@ -19,7 +19,8 @@
   (sb-thread:thread-name thread))
 
 (defun %join-thread (thread)
-  (sb-thread:join-thread thread))
+  (ignore-some-conditions (sb-thread:join-thread-error)
+    (sb-thread:join-thread thread)))
 
 (defun %thread-yield ()
   (sb-thread:thread-yield))

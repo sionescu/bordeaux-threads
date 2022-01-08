@@ -229,10 +229,12 @@ It is safe to call repeatedly."
     (when (eql native-thread (%current-thread))
       (bt-error "Cannot join with the current thread"))
     (%join-thread native-thread)
-    (with-lock-held (%lock)
-      (if %exit-condition
-          (error 'abnormal-exit :condition %exit-condition)
-          (values-list %return-values)))))
+    (multiple-value-bind (exit-condition retval)
+        (with-lock-held (%lock)
+          (values %exit-condition %return-values))
+      (if exit-condition
+          (error 'abnormal-exit :condition exit-condition)
+          (values-list retval)))))
 
 (defun thread-yield ()
   "Allows other threads to run. It may be necessary or desirable to
@@ -282,12 +284,16 @@ It is safe to call repeatedly."
   releases its locks first.
 
   Destroying the calling thread is an error."
-  (when (eql (thread-native-thread thread) (%current-thread))
-    (bt-error "Cannot destroy the current thread"))
-  (unless (thread-alive-p thread)
-    (bt-error "Cannot destroy thread because it already exited: ~S."
-              thread))
-  (%destroy-thread (thread-native-thread thread))
+  (with-slots (native-thread %lock %exit-condition)
+      thread
+    (when (eql native-thread (%current-thread))
+      (bt-error "Cannot destroy the current thread"))
+    (unless (thread-alive-p thread)
+      (bt-error "Cannot destroy thread because it already exited: ~S."
+                thread))
+    (%destroy-thread native-thread)
+    (with-lock-held (%lock)
+      (setf %exit-condition :terminated)))
   thread)
 
 (defmethod thread-alive-p ((thread thread))

@@ -32,7 +32,8 @@ The return values of the thread function are returned.
 
 #### Exceptional situations:
 
-If a thread is terminated by a condition, then the condition
+If a thread is terminated by an unhandled condition, or by
+[**destroy-thread**](../destroy-thread), then the condition
 [**abnormal-exit**](../abnormal-exit) is signaled.
 
 #### See also:
@@ -42,4 +43,19 @@ If a thread is terminated by a condition, then the condition
 
 #### Notes:
 
-None.
+Due to how **join-thread** interacts with the dynamic environment
+established by **make-thread**, it is not safe to join with a thread
+that was created outside Bordeaux-Threads. For example, the following
+code has undefined behaviour and might very well corrupt the image:
+
+```
+(mapcar #'bt2:join-thread (bt2:all-threads))
+```
+
+Bordeaux-Threads can record some instances of thread termination due
+to non-local transfers of control, such as the use of
+[**destroy-thread**](../destroy-thread), but not all of them. For
+example, it is undefined how **join-thread** behaves when a thread is
+terminated because of a
+[**throw**](http://www.lispworks.com/documentation/lw50/CLHS/Body/s_throw.htm#throw)
+to a non-existent tag.

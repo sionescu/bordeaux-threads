@@ -10,12 +10,14 @@ weight: 16
 
 #### Arguments and values:
 
-*condition* -> a condition object.
+*condition* -> a condition object or `:terminated`.
 
 #### Description
 
 Returns the terminating condition of an
-[**abnormal-exit**](../abnormal-exit) condition object.
+[**abnormal-exit**](../abnormal-exit) condition object. If the thread
+was terminated by [**destroy-thread**](../destroy-thread) or other
+kinds of non-local exits, the keyword `:terminated` is returned.
 
 #### Examples:
 
