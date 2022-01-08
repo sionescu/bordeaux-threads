@@ -9,8 +9,6 @@
 (deftype native-thread ()
   'ccl:process)
 
-(defun %start-multiprocessing ())
-
 (defun %make-thread (function name)
   (ccl:process-run-function name function))
 

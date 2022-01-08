@@ -33,9 +33,6 @@
 (defun %thread-yield ()
   (scl:process-allow-schedule))
 
-(defun %start-multiprocessing () 
-  (values))
-
 ;;;
 ;;; Introspection/debugging
 ;;;
