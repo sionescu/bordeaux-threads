@@ -21,10 +21,11 @@ before it begins executing user code, by calling
 [eval](http://www.lispworks.com/documentation/HyperSpec/Body/f_eval.htm#eval)
 on its associated form.
 
-This variable may be rebound around calls to MAKE-THREAD to add/alter
-default bindings. The effect of mutating this list is undefined, but
-earlier forms take precedence over later forms for the same symbol, so
-defaults may be overridden by consing to the head of the list.
+This variable may be rebound around calls to [make-thread](../make-thread)
+to add/alter default bindings. The effect of mutating this list is
+undefined, but earlier forms take precedence over later forms for the
+same symbol, so defaults may be overridden by consing to the head of the
+list.
   
 The bindings in `*default-special-bindings*` are used to determine the
 initial bindings of a new thread, and take precedence over a default
