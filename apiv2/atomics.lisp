@@ -64,6 +64,7 @@ The counter is a machine word: 32/64 bits depending on CPU."
 #-(or allegro ccl clisp ecl genera lispworks sbcl)
 (mark-not-implemented 'make-atomic-integer)
 (defun make-atomic-integer (&key (value 0))
+  "Create an `ATOMIC-INTEGER` with initial value `VALUE`"
   (check-type value %atomic-integer-value)
   #+(or allegro ccl clisp ecl genera lispworks sbcl)
   (let ((aint (%make-atomic-integer)))
@@ -73,6 +74,10 @@ The counter is a machine word: 32/64 bits depending on CPU."
   (signal-not-implemented 'make-atomic-integer))
 
 (defun atomic-integer-cas (atomic-integer old new)
+  "If the current value of `ATOMIC-INTEGER` is equal to `OLD`, replace
+it with `NEW`.
+
+Returns T if the replacement was successful, otherwise NIL."
   (declare (type atomic-integer atomic-integer)
            (type %atomic-integer-value old new)
            (optimize (safety 0) (speed 3)))
@@ -89,6 +94,9 @@ The counter is a machine word: 32/64 bits depending on CPU."
       (t nil))))
 
 (defun atomic-integer-decf (atomic-integer &optional (delta 1))
+  "Decrements the value of `ATOMIC-INTEGER` by `DELTA`.
+
+Returns the new value of `ATOMIC-INTEGER`."
   (declare (type atomic-integer atomic-integer)
            (type %atomic-integer-value delta)
            (optimize (safety 0) (speed 3)))
@@ -101,6 +109,9 @@ The counter is a machine word: 32/64 bits depending on CPU."
     (decf (atomic-integer-cell atomic-integer) delta)))
 
 (defun atomic-integer-incf (atomic-integer &optional (delta 1))
+  "Increments the value of `ATOMIC-INTEGER` by `DELTA`.
+
+Returns the new value of `ATOMIC-INTEGER`."
   (declare (type atomic-integer atomic-integer)
            (type %atomic-integer-value delta)
            (optimize (safety 0) (speed 3)))
@@ -113,6 +124,7 @@ The counter is a machine word: 32/64 bits depending on CPU."
     (incf (atomic-integer-cell atomic-integer) delta)))
 
 (defun atomic-integer-value (atomic-integer)
+  "Returns the current value of `ATOMIC-INTEGER`."
   (declare (type atomic-integer atomic-integer)
            (optimize (safety 0) (speed 3)))
   #-clisp
