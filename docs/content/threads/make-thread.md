@@ -28,11 +28,16 @@ Creates and returns a thread named `name`, which will call the
 function `function` with no arguments: when `function` returns, the
 thread terminates.
 
-The interaction between threads and dynamic variables is in some
-cases complex, and depends on whether the variable has only a global
-binding (as established by e.g. DEFVAR/DEFPARAMETER/top-level SETQ)
-or has been bound locally (e.g. with LET or LET*) in the calling
-thread.
+The interaction between threads and dynamic variables is in some cases
+complex, and depends on whether the variable has only a global binding
+(as established by
+e.g. [defvar](http://www.lispworks.com/documentation/HyperSpec/Body/m_defpar.htm)/[defparameter](http://www.lispworks.com/documentation/HyperSpec/Body/m_defpar.htm)/top-level
+[setq](http://www.lispworks.com/documentation/HyperSpec/Body/s_setq.htm))
+or has been bound locally (e.g. with
+[let](http://www.lispworks.com/documentation/HyperSpec/Body/s_let_l.htm)
+or
+[let*](http://www.lispworks.com/documentation/HyperSpec/Body/s_let_l.htm))
+in the calling thread.
 
 - Global bindings are shared between threads: the initial value of a
   global variable in the new thread will be the same as in the
