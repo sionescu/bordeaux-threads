@@ -35,6 +35,7 @@
    #:thread-alive-p
    #:join-thread
    #:abnormal-exit
+   #:abnormal-exit-condition
    #:thread-yield)
 
   ;; Locks
