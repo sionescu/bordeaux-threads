@@ -11,7 +11,8 @@
 (defmacro with-timeout ((timeout) &body body)
   "Execute `BODY' and signal a condition of type TIMEOUT if the execution of
 BODY does not complete within `TIMEOUT' seconds. On implementations which do not
-support WITH-TIMEOUT natively and don't support threads either it has no effect."
+support WITH-TIMEOUT natively and don't support threads either it signals a
+condition of type `NOT-IMPLEMENTED`."
   (declare (ignorable timeout body))
   #+thread-support
   (once-only (timeout)
