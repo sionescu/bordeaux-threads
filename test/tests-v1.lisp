@@ -247,7 +247,7 @@ Distributed under the MIT license (see LICENSE file)
     (make-thread (lambda () (sleep 3) (setf flag t)))
     (is (null (wait-on-semaphore sem :timeout 0.2)))
     (is (eql nil flag))
-    (sleep 3)
+    (sleep 5)
     (is (eql t flag))))
 
 (test semaphore-typed
