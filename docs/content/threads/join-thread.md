@@ -52,10 +52,9 @@ code has undefined behaviour and might very well corrupt the image:
 (mapcar #'bt2:join-thread (bt2:all-threads))
 ```
 
-Bordeaux-Threads can record some instances of thread termination due
-to non-local transfers of control, such as the use of
-[**destroy-thread**](../destroy-thread), but not all of them. For
-example, it is undefined how **join-thread** behaves when a thread is
-terminated because of a
-[**throw**](http://www.lispworks.com/documentation/lw50/CLHS/Body/s_throw.htm#throw)
-to a non-existent tag.
+Bordeaux-Threads can only record instances of thread termination due
+to unhandled conditions or the use of
+[**destroy-thread**](../destroy-thread). In case of other ways to
+terminate a thread, such as throwing to an implementation-specific tag
+defined in the dynamic environment of the thread function, the
+behaviour of **join-thread** is undefined.
