@@ -133,6 +133,10 @@
 (defun %wait-on-semaphore (semaphore timeout)
   (cond
     (timeout
+     ;; Timeouts that are too small expire immediately.
+     ;; 100ms should suffice.
+     (when (< timeout 0.1)
+       (setf timeout 0.1))
      (handler-case
          (with-timeout (timeout)
            (mp:get-semaphore (semaphore-gate semaphore))

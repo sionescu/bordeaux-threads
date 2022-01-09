@@ -45,3 +45,8 @@ nor a non-negative real number.
 
 It is unspecified which thread gets a wakeup and does not necessarily
 relate to the order in which the threads went to sleep.
+
+On Allegro, a non-null `timeout` is forced to a minimum of 100ms,
+because Allegro does not provide a primitive for waiting with a
+timeout, which is emulated using
+[**with-timeout**](../../timeouts/with-timeout).
