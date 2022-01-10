@@ -2,10 +2,6 @@ os: linux
 dist: focal
 language: generic
 
-branches:
-  except:
-    - hugo
-
 env:
   jobs:
     - LISP=sbcl
