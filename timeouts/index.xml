@@ -1,31 +1,7 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Timeouts dictionary on Bordeaux-Threads</title>
-    <link>https://sionescu.github.io/bordeaux-threads/timeouts/</link>
-    <description>Recent content in Timeouts dictionary on Bordeaux-Threads</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Fri, 07 Jan 2022 08:00:00 +0000</lastBuildDate><atom:link href="https://sionescu.github.io/bordeaux-threads/timeouts/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Class TIMEOUT</title>
-      <link>https://sionescu.github.io/bordeaux-threads/timeouts/timeout/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/timeouts/timeout/</guid>
-      <description>Class precedence list: timeout, t.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Timeouts dictionary on Bordeaux-Threads</title><link>https://sionescu.github.io/bordeaux-threads/timeouts/</link><description>Recent content in Timeouts dictionary on Bordeaux-Threads</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 07 Jan 2022 08:00:00 +0000</lastBuildDate><atom:link href="https://sionescu.github.io/bordeaux-threads/timeouts/index.xml" rel="self" type="application/rss+xml"/><item><title>Class TIMEOUT</title><link>https://sionescu.github.io/bordeaux-threads/timeouts/timeout/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/timeouts/timeout/</guid><description>Class precedence list: timeout, t.
 Description: This class represents the condition of a body of code not completing execution within a certain amount of time.
 See also: with-timeout
-Notes: None.</description>
-    </item>
-    
-    <item>
-      <title>Macro WITH-TIMEOUT</title>
-      <link>https://sionescu.github.io/bordeaux-threads/timeouts/with-timeout/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/timeouts/with-timeout/</guid>
-      <description>Syntax: with-timoeut (timeout) declaration* forms* =&amp;gt; results
+Notes: None.</description></item><item><title>Macro WITH-TIMEOUT</title><link>https://sionescu.github.io/bordeaux-threads/timeouts/with-timeout/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/timeouts/with-timeout/</guid><description>Syntax: with-timoeut (timeout) declaration* forms* =&amp;gt; results
 Arguments and values: timeout -&amp;gt; a non-negative real number.
 declaration -&amp;gt; a declare expression; not evaluated.
 forms -&amp;gt; an implicit progn.
@@ -33,8 +9,4 @@ results -&amp;gt; the values returned by the forms.
 Description: Execute forms and signal a condition of type timeout if the execution of forms does not complete within timeout seconds.
 Exceptional situations: timeout, not-implemented
 See also: timeout
-Notes: On implementations which do not support with-timeout natively and don&amp;rsquo;t support threads either it signals a condition of type not-implemented.</description>
-    </item>
-    
-  </channel>
-</rss>
+Notes: On implementations which do not support with-timeout natively and don&amp;rsquo;t support threads either it signals a condition of type not-implemented.</description></item></channel></rss>

@@ -1,84 +1,24 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Threads dictionary on Bordeaux-Threads</title>
-    <link>https://sionescu.github.io/bordeaux-threads/threads/</link>
-    <description>Recent content in Threads dictionary on Bordeaux-Threads</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Fri, 07 Jan 2022 08:00:00 +0000</lastBuildDate><atom:link href="https://sionescu.github.io/bordeaux-threads/threads/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Class THREAD</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/class-thread/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/class-thread/</guid>
-      <description>Class precedence list: thread, t
-Description: A wrapper for host thread instances.</description>
-    </item>
-    
-    <item>
-      <title>Function THREAD-NAME, THREAD-NATIVE-THREAD</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/thread-readers/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/thread-readers/</guid>
-      <description>Syntax: thread-name thread =&amp;gt; name
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Threads dictionary on Bordeaux-Threads</title><link>https://sionescu.github.io/bordeaux-threads/threads/</link><description>Recent content in Threads dictionary on Bordeaux-Threads</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 07 Jan 2022 08:00:00 +0000</lastBuildDate><atom:link href="https://sionescu.github.io/bordeaux-threads/threads/index.xml" rel="self" type="application/rss+xml"/><item><title>Class THREAD</title><link>https://sionescu.github.io/bordeaux-threads/threads/class-thread/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/class-thread/</guid><description>Class precedence list: thread, t
+Description: A wrapper for host thread instances.</description></item><item><title>Function THREAD-NAME, THREAD-NATIVE-THREAD</title><link>https://sionescu.github.io/bordeaux-threads/threads/thread-readers/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/thread-readers/</guid><description>Syntax: thread-name thread =&amp;gt; name
 thread-native-thread thread =&amp;gt; native-thread
 Arguments and values: thread -&amp;gt; an instance of class thread.
 name -&amp;gt; a string or nil
 native-thread -&amp;gt; a host thread instance.
 Description: These accessors return the public slots of class thread.
-Exceptional situations: None.</description>
-    </item>
-    
-    <item>
-      <title>Function: THREADP</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/threadp/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/threadp/</guid>
-      <description>Syntax: threadp object =&amp;gt; generalized-boolean
+Exceptional situations: None.</description></item><item><title>Function: THREADP</title><link>https://sionescu.github.io/bordeaux-threads/threads/threadp/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/threadp/</guid><description>Syntax: threadp object =&amp;gt; generalized-boolean
 Arguments and values: object -&amp;gt; an object.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Returns true if object is of type thread, otherwise false.
 Exceptional situations: None.
-Notes: (threadp object) == (typep object &#39;thread)</description>
-    </item>
-    
-    <item>
-      <title>Function: MAKE-THREAD</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/make-thread/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/make-thread/</guid>
-      <description>Syntax: make-thread function &amp;amp;key name initial-bindings trap-conditions =&amp;gt; thread
+Notes: (threadp object) == (typep object 'thread)</description></item><item><title>Function: MAKE-THREAD</title><link>https://sionescu.github.io/bordeaux-threads/threads/make-thread/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/make-thread/</guid><description>Syntax: make-thread function &amp;amp;key name initial-bindings trap-conditions =&amp;gt; thread
 Arguments and values: function -&amp;gt; a function designator.
 name -&amp;gt; a string or nil.
 initial-bindings -&amp;gt; an alist mapping special variable names to values. Defaults to *default-special-bindings*.
 trap-conditions -&amp;gt; if true, wrap the thread function in a handler-case.
-Description: Creates and returns a thread named name, which will call the function function with no arguments: when function returns, the thread terminates.</description>
-    </item>
-    
-    <item>
-      <title>Variable *DEFAULT-SPECIAL-BINDINGS*</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/default-special-bindings/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/default-special-bindings/</guid>
-      <description>Value type: an alist mapping symbol names to forms to evaluate.
+Description: Creates and returns a thread named name, which will call the function function with no arguments: when function returns, the thread terminates.</description></item><item><title>Variable *DEFAULT-SPECIAL-BINDINGS*</title><link>https://sionescu.github.io/bordeaux-threads/threads/default-special-bindings/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/default-special-bindings/</guid><description>Value type: an alist mapping symbol names to forms to evaluate.
 Initial value: nil.
 Description: Variables named in this list are locally bound in the new thread, before it begins executing user code, by calling eval on its associated form.
-This variable may be rebound around calls to make-thread to add/alter default bindings. The effect of mutating this list is undefined, but earlier forms take precedence over later forms for the same symbol, so defaults may be overridden by consing to the head of the list.</description>
-    </item>
-    
-    <item>
-      <title>Function CURRENT-THREAD, ALL-THREADS</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/current-all-threads/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/current-all-threads/</guid>
-      <description>Syntax: current-thread =&amp;gt; thread
+This variable may be rebound around calls to make-thread to add/alter default bindings. The effect of mutating this list is undefined, but earlier forms take precedence over later forms for the same symbol, so defaults may be overridden by consing to the head of the list.</description></item><item><title>Function CURRENT-THREAD, ALL-THREADS</title><link>https://sionescu.github.io/bordeaux-threads/threads/current-all-threads/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/current-all-threads/</guid><description>Syntax: current-thread =&amp;gt; thread
 all-threads =&amp;gt; threads
 Arguments and values: thread -&amp;gt; a thread object.
 threads -&amp;gt; a list of thread objects.
@@ -86,56 +26,20 @@ Description: current-thread returns the thread object representing the calling t
 all-threads returns a fresh list of all running threads.
 Exceptional situations: None.
 See also: make-thread
-Notes: None.</description>
-    </item>
-    
-    <item>
-      <title>Function JOIN-THREAD</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/join-thread/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/join-thread/</guid>
-      <description>Syntax: join-thread thread =&amp;gt; multiple values
+Notes: None.</description></item><item><title>Function JOIN-THREAD</title><link>https://sionescu.github.io/bordeaux-threads/threads/join-thread/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/join-thread/</guid><description>Syntax: join-thread thread =&amp;gt; multiple values
 Arguments and values: thread -&amp;gt; a thread object.
 Description Wait until thread terminates, or if it has already terminated, return immediately.
 The return values of the thread function are returned.
 Examples (let ((thread (bt2:make-thread (lambda () (values 1 2 3))))) (bt2:join-thread thread)) =&amp;gt; 1, 2, 3
-Exceptional situations: If a thread is terminated by an unhandled condition, or by destroy-thread, then the condition abnormal-exit is signaled.</description>
-    </item>
-    
-    <item>
-      <title>Function THREAD-YIELD</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/thread-yield/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/thread-yield/</guid>
-      <description>Syntax: thread-yield =&amp;gt; No values.
+Exceptional situations: If a thread is terminated by an unhandled condition, or by destroy-thread, then the condition abnormal-exit is signaled.</description></item><item><title>Function THREAD-YIELD</title><link>https://sionescu.github.io/bordeaux-threads/threads/thread-yield/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/thread-yield/</guid><description>Syntax: thread-yield =&amp;gt; No values.
 Arguments and values: Returns no values.
 Description Causes the calling thread to relinquish the CPU to allow other threads to run.
 Exceptional situations: None.
-Notes: On modern implementations that use native OS (SMP) threads, this function is of little use. On some older implementations where threads are scheduled in user space, it may be necessary or desirable to call this periodically.</description>
-    </item>
-    
-    <item>
-      <title>Function START-MULTIPROCESSING</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/start-multiprocessing/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/start-multiprocessing/</guid>
-      <description>Syntax: start-multiprocessing =&amp;gt; No values.
+Notes: On modern implementations that use native OS (SMP) threads, this function is of little use. On some older implementations where threads are scheduled in user space, it may be necessary or desirable to call this periodically.</description></item><item><title>Function START-MULTIPROCESSING</title><link>https://sionescu.github.io/bordeaux-threads/threads/start-multiprocessing/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/start-multiprocessing/</guid><description>Syntax: start-multiprocessing =&amp;gt; No values.
 Arguments and values: Returns no values.
 Description: If the host implementation uses user-level threads, start the scheduler and multiprocessing, otherwise do nothing. It is safe to call repeatedly.
 Exceptional situations: None.
-Notes: Only has an effect on Allegro, CMUCL and Lispworks.</description>
-    </item>
-    
-    <item>
-      <title>Function INTERRUPT-THREAD</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/interrupt-thread/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/interrupt-thread/</guid>
-      <description>Syntax: interrupt-thread thread function &amp;amp;rest arguments =&amp;gt; thread
+Notes: Only has an effect on Allegro, CMUCL and Lispworks.</description></item><item><title>Function INTERRUPT-THREAD</title><link>https://sionescu.github.io/bordeaux-threads/threads/interrupt-thread/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/interrupt-thread/</guid><description>Syntax: interrupt-thread thread function &amp;amp;rest arguments =&amp;gt; thread
 Arguments and values: thread -&amp;gt; a thread object.
 function -&amp;gt; a function object.
 arguments -&amp;gt; a list of values.
@@ -143,16 +47,7 @@ Description: Interrupt thread and execute function within its dynamic context by
 Returns the thread object it acted on.
 Exceptional situations: None.
 See also: make-thread, join-thread
-Notes: This may not be a good idea if thread is holding locks or doing anything important.</description>
-    </item>
-    
-    <item>
-      <title>Function SIGNAL-IN-THREAD, WARN-IN-THREAD, ERROR-IN-THREAD</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/signal-in-thread/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/signal-in-thread/</guid>
-      <description>Syntax: signal-in-thread thread datum &amp;amp;rest arguments =&amp;gt; thread
+Notes: This may not be a good idea if thread is holding locks or doing anything important.</description></item><item><title>Function SIGNAL-IN-THREAD, WARN-IN-THREAD, ERROR-IN-THREAD</title><link>https://sionescu.github.io/bordeaux-threads/threads/signal-in-thread/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/signal-in-thread/</guid><description>Syntax: signal-in-thread thread datum &amp;amp;rest arguments =&amp;gt; thread
 warn-in-thread thread datum &amp;amp;rest arguments =&amp;gt; thread
 error-in-thread thread datum &amp;amp;rest arguments =&amp;gt; thread
 Arguments and values: thread -&amp;gt; a thread object.
@@ -160,72 +55,23 @@ datum, arguments -&amp;gt; designators for a condition.
 Description: Interrupt thread and apply signal/warn/error passing datum and arguments.
 Exceptional situations: None.
 See also: interrupt-thread, error, signal, warn
-Notes: These functions are currently implemented on top of interrupt-thread.</description>
-    </item>
-    
-    <item>
-      <title>Function DESTROY-THREAD</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/destroy-thread/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/destroy-thread/</guid>
-      <description>Syntax: destroy-thread thread =&amp;gt; thread
+Notes: These functions are currently implemented on top of interrupt-thread.</description></item><item><title>Function DESTROY-THREAD</title><link>https://sionescu.github.io/bordeaux-threads/threads/destroy-thread/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/destroy-thread/</guid><description>Syntax: destroy-thread thread =&amp;gt; thread
 Arguments and values: thread -&amp;gt; a thread object.
 Description: Terminates the thread thread.
 Exceptional situations: Signals bordeaux-threads-error if attempting to destroy the calling thread, or a thread that already terminated.
 See also: join-thread
-Notes: This should be used with caution: it is implementation-defined whether the thread runs cleanup forms or releases its locks first.</description>
-    </item>
-    
-    <item>
-      <title>Function THREAD-ALIVE-P</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/thread-alive-p/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/thread-alive-p/</guid>
-      <description>Syntax: thread-alive-p thread =&amp;gt; generalized-boolean
+Notes: This should be used with caution: it is implementation-defined whether the thread runs cleanup forms or releases its locks first.</description></item><item><title>Function THREAD-ALIVE-P</title><link>https://sionescu.github.io/bordeaux-threads/threads/thread-alive-p/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/thread-alive-p/</guid><description>Syntax: thread-alive-p thread =&amp;gt; generalized-boolean
 Arguments and values: thread -&amp;gt; a thread object.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Returns true if thread has not finished or destroy-thread has not been called on it.
 Exceptional situations: Signals a type error if thread is not a thread object.
 See also: None.
-Notes: None.</description>
-    </item>
-    
-    <item>
-      <title>Condition type BORDEAUX-THREADS-ERROR</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/bordeaux-thread-error/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/bordeaux-thread-error/</guid>
-      <description>Class Precedence List: bordeaux-threads-error, error, serious-condition, condition, t
+Notes: None.</description></item><item><title>Condition type BORDEAUX-THREADS-ERROR</title><link>https://sionescu.github.io/bordeaux-threads/threads/bordeaux-thread-error/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/bordeaux-thread-error/</guid><description>Class Precedence List: bordeaux-threads-error, error, serious-condition, condition, t
 Description: The type bordeaux-threads-error consists of error conditions that are related to thread operations.
-See also: abnormal-exit</description>
-    </item>
-    
-    <item>
-      <title>Condition type ABNORMAL-EXIT</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/abnormal-exit/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/abnormal-exit/</guid>
-      <description>Class Precedence List: abnormal-exit, bordeaux-threads-error, error, serious-condition, condition, t
+See also: abnormal-exit</description></item><item><title>Condition type ABNORMAL-EXIT</title><link>https://sionescu.github.io/bordeaux-threads/threads/abnormal-exit/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/abnormal-exit/</guid><description>Class Precedence List: abnormal-exit, bordeaux-threads-error, error, serious-condition, condition, t
 Description: The error abnormal-exit represents the condition of a thread not having terminated successfully.
-See also: abnormal-exit-condition, join-thread</description>
-    </item>
-    
-    <item>
-      <title>Function ABNORMAL-EXIT-CONDITION</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/abnormal-exit-condition/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/abnormal-exit-condition/</guid>
-      <description>Syntax: abnormal-exit-condition =&amp;gt; condition
+See also: abnormal-exit-condition, join-thread</description></item><item><title>Function ABNORMAL-EXIT-CONDITION</title><link>https://sionescu.github.io/bordeaux-threads/threads/abnormal-exit-condition/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/abnormal-exit-condition/</guid><description>Syntax: abnormal-exit-condition =&amp;gt; condition
 Arguments and values: condition -&amp;gt; a condition object or :terminated.
 Description Returns the terminating condition of an abnormal-exit condition object. If the thread was terminated by destroy-thread or other kinds of non-local exits, the keyword :terminated is returned.
 Examples: (let ((thread (bt2:make-thread (lambda () (error &amp;quot;This will terminate the thread&amp;quot;))))) (handler-case (bt2:join-thread thread) (abnormal-exit (e) (abnormal-exit-condition e)))) =&amp;gt; #&amp;lt;SIMPLE-ERROR &amp;quot;This will terminate the thread&amp;quot; {10043E01F3}&amp;gt;
-See also: abnormal-exit-condition, join-thread</description>
-    </item>
-    
-  </channel>
-</rss>
+See also: abnormal-exit-condition, join-thread</description></item></channel></rss>

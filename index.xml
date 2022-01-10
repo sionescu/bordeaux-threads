@@ -1,163 +1,49 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Documentation on Bordeaux-Threads</title>
-    <link>https://sionescu.github.io/bordeaux-threads/</link>
-    <description>Recent content in Documentation on Bordeaux-Threads</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Fri, 07 Jan 2022 08:00:00 +0000</lastBuildDate><atom:link href="https://sionescu.github.io/bordeaux-threads/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Class ATOMIC-INTEGER</title>
-      <link>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer/</guid>
-      <description>Class precedence list: atomic-integer, t.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Documentation on Bordeaux-Threads</title><link>https://sionescu.github.io/bordeaux-threads/</link><description>Recent content in Documentation on Bordeaux-Threads</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 07 Jan 2022 08:00:00 +0000</lastBuildDate><atom:link href="https://sionescu.github.io/bordeaux-threads/index.xml" rel="self" type="application/rss+xml"/><item><title>Class ATOMIC-INTEGER</title><link>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer/</guid><description>Class precedence list: atomic-integer, t.
 Description: This class represents an unsigned machine word that allows atomic increment, decrement and swap.
 See also: make-atomic-integer
 Notes: Depending on the host implementation, the size of the integer is either 32 or 64 bits.
-This class is unavailble on Lisp implementations that lack underlying atomic primitives. On some hosts, atomic-integer is implemented using locks.</description>
-    </item>
-    
-    <item>
-      <title>Class CONDITION-VARIABLE</title>
-      <link>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-variable/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-variable/</guid>
-      <description>Class precedence list: Implementation-defined.
+This class is unavailble on Lisp implementations that lack underlying atomic primitives. On some hosts, atomic-integer is implemented using locks.</description></item><item><title>Class CONDITION-VARIABLE</title><link>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-variable/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-variable/</guid><description>Class precedence list: Implementation-defined.
 Description: This class represents condition variables.
 See also: make-condition-variable
-Notes: On some implementations the library exposes the native type directly, while on others there is a custom implementations using semaphores and locks.</description>
-    </item>
-    
-    <item>
-      <title>Class LOCK</title>
-      <link>https://sionescu.github.io/bordeaux-threads/locks/lock/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/locks/lock/</guid>
-      <description>Class precedence list: lock, t
-Description: Wrapper for a native non-recursive lock.</description>
-    </item>
-    
-    <item>
-      <title>Class SEMAPHORE</title>
-      <link>https://sionescu.github.io/bordeaux-threads/semaphores/semaphore/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/semaphores/semaphore/</guid>
-      <description>Class precedence list: Implementation-defined.
+Notes: On some implementations the library exposes the native type directly, while on others there is a custom implementations using semaphores and locks.</description></item><item><title>Class LOCK</title><link>https://sionescu.github.io/bordeaux-threads/locks/lock/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/locks/lock/</guid><description>Class precedence list: lock, t
+Description: Wrapper for a native non-recursive lock.</description></item><item><title>Class SEMAPHORE</title><link>https://sionescu.github.io/bordeaux-threads/semaphores/semaphore/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/semaphores/semaphore/</guid><description>Class precedence list: Implementation-defined.
 Description: This class represents semaphores.
 See also: make-semaphore
-Notes: On some implementations the library exposes the native type directly, while on others there is a custom implementations using condition variables and locks.</description>
-    </item>
-    
-    <item>
-      <title>Class THREAD</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/class-thread/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/class-thread/</guid>
-      <description>Class precedence list: thread, t
-Description: A wrapper for host thread instances.</description>
-    </item>
-    
-    <item>
-      <title>Class TIMEOUT</title>
-      <link>https://sionescu.github.io/bordeaux-threads/timeouts/timeout/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/timeouts/timeout/</guid>
-      <description>Class precedence list: timeout, t.
+Notes: On some implementations the library exposes the native type directly, while on others there is a custom implementations using condition variables and locks.</description></item><item><title>Class THREAD</title><link>https://sionescu.github.io/bordeaux-threads/threads/class-thread/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/class-thread/</guid><description>Class precedence list: thread, t
+Description: A wrapper for host thread instances.</description></item><item><title>Class TIMEOUT</title><link>https://sionescu.github.io/bordeaux-threads/timeouts/timeout/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/timeouts/timeout/</guid><description>Class precedence list: timeout, t.
 Description: This class represents the condition of a body of code not completing execution within a certain amount of time.
 See also: with-timeout
-Notes: None.</description>
-    </item>
-    
-    <item>
-      <title>Function ATOMIC-INTEGER-P</title>
-      <link>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-p/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-p/</guid>
-      <description>Syntax: atomic-integer-p datum =&amp;gt; generalized-boolean
+Notes: None.</description></item><item><title>Function ATOMIC-INTEGER-P</title><link>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-p/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-p/</guid><description>Syntax: atomic-integer-p datum =&amp;gt; generalized-boolean
 Arguments and values: datum -&amp;gt; an object.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Returns true if datum is an [atomic-integer](../atomic-integer] object, otherwise false.
 Exceptional situations: None.
 See also: atomic-integer, make-atomic-integer
-Notes: None.</description>
-    </item>
-    
-    <item>
-      <title>Function CONDITION-VARIABLE-P</title>
-      <link>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-variable-p/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-variable-p/</guid>
-      <description>Syntax: condition-variable-p datum =&amp;gt; generalized-boolean
+Notes: None.</description></item><item><title>Function CONDITION-VARIABLE-P</title><link>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-variable-p/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-variable-p/</guid><description>Syntax: condition-variable-p datum =&amp;gt; generalized-boolean
 Arguments and values: datum -&amp;gt; an object.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Returns true if datum is a condition-variable object, otherwise false.
 Exceptional situations: None.
 See also: condition-variable, make-condition-variable
-Notes: None.</description>
-    </item>
-    
-    <item>
-      <title>Function LOCKP</title>
-      <link>https://sionescu.github.io/bordeaux-threads/locks/lockp/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/locks/lockp/</guid>
-      <description>Syntax: lockp datum =&amp;gt; generalized-boolean
+Notes: None.</description></item><item><title>Function LOCKP</title><link>https://sionescu.github.io/bordeaux-threads/locks/lockp/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/locks/lockp/</guid><description>Syntax: lockp datum =&amp;gt; generalized-boolean
 Arguments and values: datum -&amp;gt; an object.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Returns true if datum is a non-recursive lock, otherwise false.
 Exceptional situations: None.
 See also: lock
-Notes: None.</description>
-    </item>
-    
-    <item>
-      <title>Function SEMAPHOREP</title>
-      <link>https://sionescu.github.io/bordeaux-threads/semaphores/semaphorep/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/semaphores/semaphorep/</guid>
-      <description>Syntax: semaphorep datum =&amp;gt; generalized-boolean
+Notes: None.</description></item><item><title>Function SEMAPHOREP</title><link>https://sionescu.github.io/bordeaux-threads/semaphores/semaphorep/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/semaphores/semaphorep/</guid><description>Syntax: semaphorep datum =&amp;gt; generalized-boolean
 Arguments and values: datum -&amp;gt; an object.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Returns true if datum is a semaphore object, otherwise false.
 Exceptional situations: None.
 See also: semaphore, make-semaphore
-Notes: None.</description>
-    </item>
-    
-    <item>
-      <title>Function THREAD-NAME, THREAD-NATIVE-THREAD</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/thread-readers/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/thread-readers/</guid>
-      <description>Syntax: thread-name thread =&amp;gt; name
+Notes: None.</description></item><item><title>Function THREAD-NAME, THREAD-NATIVE-THREAD</title><link>https://sionescu.github.io/bordeaux-threads/threads/thread-readers/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/thread-readers/</guid><description>Syntax: thread-name thread =&amp;gt; name
 thread-native-thread thread =&amp;gt; native-thread
 Arguments and values: thread -&amp;gt; an instance of class thread.
 name -&amp;gt; a string or nil
 native-thread -&amp;gt; a host thread instance.
 Description: These accessors return the public slots of class thread.
-Exceptional situations: None.</description>
-    </item>
-    
-    <item>
-      <title>Macro WITH-TIMEOUT</title>
-      <link>https://sionescu.github.io/bordeaux-threads/timeouts/with-timeout/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/timeouts/with-timeout/</guid>
-      <description>Syntax: with-timoeut (timeout) declaration* forms* =&amp;gt; results
+Exceptional situations: None.</description></item><item><title>Macro WITH-TIMEOUT</title><link>https://sionescu.github.io/bordeaux-threads/timeouts/with-timeout/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/timeouts/with-timeout/</guid><description>Syntax: with-timoeut (timeout) declaration* forms* =&amp;gt; results
 Arguments and values: timeout -&amp;gt; a non-negative real number.
 declaration -&amp;gt; a declare expression; not evaluated.
 forms -&amp;gt; an implicit progn.
@@ -165,159 +51,61 @@ results -&amp;gt; the values returned by the forms.
 Description: Execute forms and signal a condition of type timeout if the execution of forms does not complete within timeout seconds.
 Exceptional situations: timeout, not-implemented
 See also: timeout
-Notes: On implementations which do not support with-timeout natively and don&amp;rsquo;t support threads either it signals a condition of type not-implemented.</description>
-    </item>
-    
-    <item>
-      <title>Class RECURSIVE-LOCK</title>
-      <link>https://sionescu.github.io/bordeaux-threads/locks/recursive-lock/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/locks/recursive-lock/</guid>
-      <description>Class precedence list: recursive-lock, t
-Description: Wrapper for a native recursive lock.</description>
-    </item>
-    
-    <item>
-      <title>Function MAKE-ATOMIC-INTEGER</title>
-      <link>https://sionescu.github.io/bordeaux-threads/atomics/make-atomic-integer/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/atomics/make-atomic-integer/</guid>
-      <description>Syntax: make-atomic-integer &amp;amp;key value =&amp;gt; atomic-integer
+Notes: On implementations which do not support with-timeout natively and don&amp;rsquo;t support threads either it signals a condition of type not-implemented.</description></item><item><title>Class RECURSIVE-LOCK</title><link>https://sionescu.github.io/bordeaux-threads/locks/recursive-lock/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/locks/recursive-lock/</guid><description>Class precedence list: recursive-lock, t
+Description: Wrapper for a native recursive lock.</description></item><item><title>Function MAKE-ATOMIC-INTEGER</title><link>https://sionescu.github.io/bordeaux-threads/atomics/make-atomic-integer/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/atomics/make-atomic-integer/</guid><description>Syntax: make-atomic-integer &amp;amp;key value =&amp;gt; atomic-integer
 Arguments and values: value -&amp;gt; a non-negative integer.
 semaphore -&amp;gt; a semaphore object.
 Description: Creates an atomic integer name and initial value value.
 Exceptional situations: Signals a condition of type type-error if value is not a non-negative integer (an unsigned-byte).
 See also: atomic-integer
-Notes: None.</description>
-    </item>
-    
-    <item>
-      <title>Function MAKE-CONDITION-VARIABLE</title>
-      <link>https://sionescu.github.io/bordeaux-threads/condition-variables/make-condition-variable/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/condition-variables/make-condition-variable/</guid>
-      <description>Syntax: make-condition-variable &amp;amp;key name =&amp;gt; condition-variable
+Notes: None.</description></item><item><title>Function MAKE-CONDITION-VARIABLE</title><link>https://sionescu.github.io/bordeaux-threads/condition-variables/make-condition-variable/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/condition-variables/make-condition-variable/</guid><description>Syntax: make-condition-variable &amp;amp;key name =&amp;gt; condition-variable
 Arguments and values: name -&amp;gt; a string or nil.
 condition-variable -&amp;gt; a condition-variable object.
 Description: Creates a condition variable named name.
 Exceptional situations: Signals a condition of type type-error if name is neither a string nor nil.
 See also: condition-variable
-Notes: On some implementations the library exposes the native type directly, while on others there is a custom implementations using semaphores and locks.</description>
-    </item>
-    
-    <item>
-      <title>Function MAKE-SEMAPHORE</title>
-      <link>https://sionescu.github.io/bordeaux-threads/semaphores/make-semaphore/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/semaphores/make-semaphore/</guid>
-      <description>Syntax: make-semaphore &amp;amp;key name count =&amp;gt; semaphore
+Notes: On some implementations the library exposes the native type directly, while on others there is a custom implementations using semaphores and locks.</description></item><item><title>Function MAKE-SEMAPHORE</title><link>https://sionescu.github.io/bordeaux-threads/semaphores/make-semaphore/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/semaphores/make-semaphore/</guid><description>Syntax: make-semaphore &amp;amp;key name count =&amp;gt; semaphore
 Arguments and values: name -&amp;gt; a string or nil.
 count -&amp;gt; non-negative integer.
 semaphore -&amp;gt; a semaphore object.
 Description: Creates a semaphore named name and with initial value count.
-Exceptional situations: Signals a condition of type type-error if name is neither a string nor nil. Signals a condition of type type-error if count is not a non-negative integer (an unsigned-byte).
-See also: semaphore</description>
-    </item>
-    
-    <item>
-      <title>Function: THREADP</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/threadp/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/threadp/</guid>
-      <description>Syntax: threadp object =&amp;gt; generalized-boolean
+Exceptional situations: Signals a condition of type type-error if name is neither a string nor nil.
+Signals a condition of type type-error if count is not a non-negative integer (an unsigned-byte).
+See also: semaphore</description></item><item><title>Function: THREADP</title><link>https://sionescu.github.io/bordeaux-threads/threads/threadp/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/threadp/</guid><description>Syntax: threadp object =&amp;gt; generalized-boolean
 Arguments and values: object -&amp;gt; an object.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Returns true if object is of type thread, otherwise false.
 Exceptional situations: None.
-Notes: (threadp object) == (typep object &#39;thread)</description>
-    </item>
-    
-    <item>
-      <title>Function ATOMIC-INTEGER-CAS</title>
-      <link>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-cas/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-cas/</guid>
-      <description>Syntax: atomic-integer-cas atomic-integer old new =&amp;gt; generalized-boolean
+Notes: (threadp object) == (typep object 'thread)</description></item><item><title>Function ATOMIC-INTEGER-CAS</title><link>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-cas/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-cas/</guid><description>Syntax: atomic-integer-cas atomic-integer old new =&amp;gt; generalized-boolean
 Arguments and values: atomic-integer -&amp;gt; an atomic-integer object.
 old, new -&amp;gt; non-negative integers.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description If the current value of atomic-integer is equal to old, replace it with new.
 Returns true if the replacement was successful, otherwise false.
 Exceptional situations: Signals an error of type type-error if atomic-integer is not an atomic-integer object.
-Signals an error of type type-error if old is not a non-negative integer.</description>
-    </item>
-    
-    <item>
-      <title>Function CONDITION-WAIT</title>
-      <link>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-wait/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-wait/</guid>
-      <description>Syntax: condition-wait condition-variable lock &amp;amp;key timeout =&amp;gt; generalized-boolean
+Signals an error of type type-error if old is not a non-negative integer.</description></item><item><title>Function CONDITION-WAIT</title><link>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-wait/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-wait/</guid><description>Syntax: condition-wait condition-variable lock &amp;amp;key timeout =&amp;gt; generalized-boolean
 Arguments and values: condition-variable -&amp;gt; a condition-variable object.
 lock -&amp;gt; a lock object.
 timeout -&amp;gt; a non-negative real number.
 generalized-boolean -&amp;gt; a generalized boolean.
-Description: Atomically release lock and enqueue the calling thread waiting for condition-variable. The thread will resume when another thread has notified it using condition-notify; it may also resume if interrupted by some external event or in other implementation-dependent circumstances: the caller must always test on waking that there is threading to be done, instead of assuming that it can go ahead.</description>
-    </item>
-    
-    <item>
-      <title>Function RECURSIVE-LOCK-P</title>
-      <link>https://sionescu.github.io/bordeaux-threads/locks/recursive-lock-p/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/locks/recursive-lock-p/</guid>
-      <description>Syntax: recursive-lock-p datum =&amp;gt; generalized-boolean
+Description: Atomically release lock and enqueue the calling thread waiting for condition-variable. The thread will resume when another thread has notified it using condition-notify; it may also resume if interrupted by some external event or in other implementation-dependent circumstances: the caller must always test on waking that there is threading to be done, instead of assuming that it can go ahead.</description></item><item><title>Function RECURSIVE-LOCK-P</title><link>https://sionescu.github.io/bordeaux-threads/locks/recursive-lock-p/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/locks/recursive-lock-p/</guid><description>Syntax: recursive-lock-p datum =&amp;gt; generalized-boolean
 Arguments and values: datum -&amp;gt; an object.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Returns true if datum is a recursive lock, otherwise false.
 Exceptional situations: None.
 See also: recursive-lock
-Notes: None.</description>
-    </item>
-    
-    <item>
-      <title>Function SIGNAL-SEMAPHORE</title>
-      <link>https://sionescu.github.io/bordeaux-threads/semaphores/signal-semaphore/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/semaphores/signal-semaphore/</guid>
-      <description>Syntax: signal-semaphore semaphore -&amp;gt; t
+Notes: None.</description></item><item><title>Function SIGNAL-SEMAPHORE</title><link>https://sionescu.github.io/bordeaux-threads/semaphores/signal-semaphore/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/semaphores/signal-semaphore/</guid><description>Syntax: signal-semaphore semaphore -&amp;gt; t
 Arguments and values: semaphore -&amp;gt; a semaphore object.
 Description: Increment semaphore by count. If there are threads waiting on this semaphore, then count of them are woken up.
 Returns always true.
 Exceptional situations: Signals an error of type type-error if semaphore is not a semaphore object.
 See also: make-semaphore, wait-on-semaphore
-Notes: It is unspecified which thread gets a wakeup and does not necessarily relate to the order in which the threads went to sleep.</description>
-    </item>
-    
-    <item>
-      <title>Function: MAKE-THREAD</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/make-thread/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/make-thread/</guid>
-      <description>Syntax: make-thread function &amp;amp;key name initial-bindings trap-conditions =&amp;gt; thread
+Notes: It is unspecified which thread gets a wakeup and does not necessarily relate to the order in which the threads went to sleep.</description></item><item><title>Function: MAKE-THREAD</title><link>https://sionescu.github.io/bordeaux-threads/threads/make-thread/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/make-thread/</guid><description>Syntax: make-thread function &amp;amp;key name initial-bindings trap-conditions =&amp;gt; thread
 Arguments and values: function -&amp;gt; a function designator.
 name -&amp;gt; a string or nil.
 initial-bindings -&amp;gt; an alist mapping special variable names to values. Defaults to *default-special-bindings*.
 trap-conditions -&amp;gt; if true, wrap the thread function in a handler-case.
-Description: Creates and returns a thread named name, which will call the function function with no arguments: when function returns, the thread terminates.</description>
-    </item>
-    
-    <item>
-      <title>Function ATOMIC-INTEGER-DECF</title>
-      <link>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-decf/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-decf/</guid>
-      <description>Syntax: atomic-integer-decf atomic-integer &amp;amp;optional (delta 1) =&amp;gt; new-value
+Description: Creates and returns a thread named name, which will call the function function with no arguments: when function returns, the thread terminates.</description></item><item><title>Function ATOMIC-INTEGER-DECF</title><link>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-decf/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-decf/</guid><description>Syntax: atomic-integer-decf atomic-integer &amp;amp;optional (delta 1) =&amp;gt; new-value
 Arguments and values: atomic-integer -&amp;gt; an atomic-integer object.
 delta -&amp;gt; an integer.
 new-value -&amp;gt; a non-negative integer.
@@ -325,32 +113,14 @@ Description Decrements the value of atomic-integer by delta.
 Returns the new value of atomic-integer.
 Exceptional situations: Signals an error of type type-error if atomic-integer is not an atomic-integer object.
 Signals an error of type type-error if delta is not an integer.
-See also: atomic-integer, atomic-integer-incf, make-atomic-integer</description>
-    </item>
-    
-    <item>
-      <title>Function CONDITION-NOTIFY</title>
-      <link>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-notify/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-notify/</guid>
-      <description>Syntax: condition-notify condition-variable -&amp;gt; generalized-boolean
+See also: atomic-integer, atomic-integer-incf, make-atomic-integer</description></item><item><title>Function CONDITION-NOTIFY</title><link>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-notify/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-notify/</guid><description>Syntax: condition-notify condition-variable -&amp;gt; generalized-boolean
 Arguments and values: condition-variable -&amp;gt; a condition-variable object.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Notify one of the threads waiting for condition-variable.
 Returns true if a thread was woken up, otherwise false.
 Exceptional situations: Signals an error of type type-error if condition-variable is not a condition-variable object.
 See also: condition-wait, condition-broadcast
-Notes: It is unspecified which thread gets a wakeup and does not necessarily relate to the order in which the threads went to sleep.</description>
-    </item>
-    
-    <item>
-      <title>Function LOCK-NAME, LOCK-NATIVE-LOCK</title>
-      <link>https://sionescu.github.io/bordeaux-threads/locks/lock-readers/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/locks/lock-readers/</guid>
-      <description>Syntax: lock-name lock =&amp;gt; name
+Notes: It is unspecified which thread gets a wakeup and does not necessarily relate to the order in which the threads went to sleep.</description></item><item><title>Function LOCK-NAME, LOCK-NATIVE-LOCK</title><link>https://sionescu.github.io/bordeaux-threads/locks/lock-readers/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/locks/lock-readers/</guid><description>Syntax: lock-name lock =&amp;gt; name
 lock-native-lock lock =&amp;gt; native-lock
 Arguments and values: lock -&amp;gt; a lock object.
 name -&amp;gt; a string or nil.
@@ -359,43 +129,16 @@ Description: lock-name returns the lock name, or nil of the lock was not given a
 lock-native-lock returns the native lock object that is wrapped by lock.
 Exceptional situations: None.
 See also: lock
-Notes: None.</description>
-    </item>
-    
-    <item>
-      <title>Function WAIT-ON-SEMAPHORE</title>
-      <link>https://sionescu.github.io/bordeaux-threads/semaphores/wait-on-semaphore/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/semaphores/wait-on-semaphore/</guid>
-      <description>Syntax: wait-on-semaphore semaphore &amp;amp;key timeout -&amp;gt; generalized-boolean
+Notes: None.</description></item><item><title>Function WAIT-ON-SEMAPHORE</title><link>https://sionescu.github.io/bordeaux-threads/semaphores/wait-on-semaphore/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/semaphores/wait-on-semaphore/</guid><description>Syntax: wait-on-semaphore semaphore &amp;amp;key timeout -&amp;gt; generalized-boolean
 Arguments and values: semaphore -&amp;gt; a semaphore object.
 timeout -&amp;gt; a non-negative real number.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Decrement the count of semaphore by 1 if the count is larger than zero.
 If the count is zero, blocks until semaphore can be decremented. Returns true on success.
-If timeout is given, it is the maximum number of seconds to wait. If the count cannot be decremented in that time, returns false without decrementing the count.</description>
-    </item>
-    
-    <item>
-      <title>Variable *DEFAULT-SPECIAL-BINDINGS*</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/default-special-bindings/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/default-special-bindings/</guid>
-      <description>Value type: an alist mapping symbol names to forms to evaluate.
+If timeout is given, it is the maximum number of seconds to wait. If the count cannot be decremented in that time, returns false without decrementing the count.</description></item><item><title>Variable *DEFAULT-SPECIAL-BINDINGS*</title><link>https://sionescu.github.io/bordeaux-threads/threads/default-special-bindings/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/default-special-bindings/</guid><description>Value type: an alist mapping symbol names to forms to evaluate.
 Initial value: nil.
 Description: Variables named in this list are locally bound in the new thread, before it begins executing user code, by calling eval on its associated form.
-This variable may be rebound around calls to make-thread to add/alter default bindings. The effect of mutating this list is undefined, but earlier forms take precedence over later forms for the same symbol, so defaults may be overridden by consing to the head of the list.</description>
-    </item>
-    
-    <item>
-      <title>Function ATOMIC-INTEGER-INCF</title>
-      <link>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-incf/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-incf/</guid>
-      <description>Syntax: atomic-integer-incf atomic-integer &amp;amp;optional (delta 1) =&amp;gt; new-value
+This variable may be rebound around calls to make-thread to add/alter default bindings. The effect of mutating this list is undefined, but earlier forms take precedence over later forms for the same symbol, so defaults may be overridden by consing to the head of the list.</description></item><item><title>Function ATOMIC-INTEGER-INCF</title><link>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-incf/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-incf/</guid><description>Syntax: atomic-integer-incf atomic-integer &amp;amp;optional (delta 1) =&amp;gt; new-value
 Arguments and values: atomic-integer -&amp;gt; an atomic-integer object.
 delta -&amp;gt; an integer.
 new-value -&amp;gt; a non-negative integer.
@@ -403,32 +146,14 @@ Description Increments the value of atomic-integer by delta.
 Returns the new value of atomic-integer.
 Exceptional situations: Signals an error of type type-error if atomic-integer is not an atomic-integer object.
 Signals an error of type type-error if delta is not an integer.
-See also: atomic-integer, atomic-integer-decf, make-atomic-integer</description>
-    </item>
-    
-    <item>
-      <title>Function CONDITION-BROADCAST</title>
-      <link>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-broadcast/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-broadcast/</guid>
-      <description>Syntax: condition-broadcast condition-variable -&amp;gt; generalized-boolean
+See also: atomic-integer, atomic-integer-decf, make-atomic-integer</description></item><item><title>Function CONDITION-BROADCAST</title><link>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-broadcast/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-broadcast/</guid><description>Syntax: condition-broadcast condition-variable -&amp;gt; generalized-boolean
 Arguments and values: condition-variable -&amp;gt; a condition-variable object.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Notify all the threads waiting for condition-variable.
 Returns true if at least one thread was woken up, otherwise false.
 Exceptional situations: Signals an error of type type-error if condition-variable is not a condition-variable object.
 See also: condition-wait, condition-notify
-Notes: The order of wakeup is unspecified and does not necessarily relate to the order in which the threads went to sleep.</description>
-    </item>
-    
-    <item>
-      <title>Function CURRENT-THREAD, ALL-THREADS</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/current-all-threads/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/current-all-threads/</guid>
-      <description>Syntax: current-thread =&amp;gt; thread
+Notes: The order of wakeup is unspecified and does not necessarily relate to the order in which the threads went to sleep.</description></item><item><title>Function CURRENT-THREAD, ALL-THREADS</title><link>https://sionescu.github.io/bordeaux-threads/threads/current-all-threads/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/current-all-threads/</guid><description>Syntax: current-thread =&amp;gt; thread
 all-threads =&amp;gt; threads
 Arguments and values: thread -&amp;gt; a thread object.
 threads -&amp;gt; a list of thread objects.
@@ -436,157 +161,58 @@ Description: current-thread returns the thread object representing the calling t
 all-threads returns a fresh list of all running threads.
 Exceptional situations: None.
 See also: make-thread
-Notes: None.</description>
-    </item>
-    
-    <item>
-      <title>Host type NATIVE-LOCK</title>
-      <link>https://sionescu.github.io/bordeaux-threads/locks/native-lock/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/locks/native-lock/</guid>
-      <description>Class precedence list: Implementation-defined.
+Notes: None.</description></item><item><title>Host type NATIVE-LOCK</title><link>https://sionescu.github.io/bordeaux-threads/locks/native-lock/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/locks/native-lock/</guid><description>Class precedence list: Implementation-defined.
 Description: A native-lock represents the non-recursive lock type exported by the host implementation.
 See also: lock
-Notes: The exact type of native-lock is implementation-defined.</description>
-    </item>
-    
-    <item>
-      <title>Function ATOMIC-INTEGER-VALUE</title>
-      <link>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-value/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-value/</guid>
-      <description>Syntax: atomic-integer-value atomic-integer =&amp;gt; value
+Notes: The exact type of native-lock is implementation-defined.</description></item><item><title>Function ATOMIC-INTEGER-VALUE</title><link>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-value/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-value/</guid><description>Syntax: atomic-integer-value atomic-integer =&amp;gt; value
 Arguments and values: atomic-integer -&amp;gt; an atomic-integer object.
 value -&amp;gt; a non-negative integer.
 Description Returns the current value of atomic-integer.
 Exceptional situations: Signals an error of type type-error if atomic-integer is not an atomic-integer object.
 See also: atomic-integer, make-atomic-integer
-Notes: None.</description>
-    </item>
-    
-    <item>
-      <title>Function JOIN-THREAD</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/join-thread/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/join-thread/</guid>
-      <description>Syntax: join-thread thread =&amp;gt; multiple values
+Notes: None.</description></item><item><title>Function JOIN-THREAD</title><link>https://sionescu.github.io/bordeaux-threads/threads/join-thread/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/join-thread/</guid><description>Syntax: join-thread thread =&amp;gt; multiple values
 Arguments and values: thread -&amp;gt; a thread object.
 Description Wait until thread terminates, or if it has already terminated, return immediately.
 The return values of the thread function are returned.
 Examples (let ((thread (bt2:make-thread (lambda () (values 1 2 3))))) (bt2:join-thread thread)) =&amp;gt; 1, 2, 3
-Exceptional situations: If a thread is terminated by an unhandled condition, or by destroy-thread, then the condition abnormal-exit is signaled.</description>
-    </item>
-    
-    <item>
-      <title>Function NATIVE-LOCK-P</title>
-      <link>https://sionescu.github.io/bordeaux-threads/locks/native-lock-p/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/locks/native-lock-p/</guid>
-      <description>Syntax: native-lock-p lock =&amp;gt; generalized-boolean
+Exceptional situations: If a thread is terminated by an unhandled condition, or by destroy-thread, then the condition abnormal-exit is signaled.</description></item><item><title>Function NATIVE-LOCK-P</title><link>https://sionescu.github.io/bordeaux-threads/locks/native-lock-p/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/locks/native-lock-p/</guid><description>Syntax: native-lock-p lock =&amp;gt; generalized-boolean
 Arguments and values: lock -&amp;gt; a lock object.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Returns true if datum is a native non-recursive lock, otherwise false.
 Exceptional situations: None.
 See also: lock, native-lock
-Notes: None.</description>
-    </item>
-    
-    <item>
-      <title>Host type NATIVE-RECURSIVE-LOCK</title>
-      <link>https://sionescu.github.io/bordeaux-threads/locks/native-recursive-lock/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/locks/native-recursive-lock/</guid>
-      <description>Class precedence list: Implementation-defined.
+Notes: None.</description></item><item><title>Host type NATIVE-RECURSIVE-LOCK</title><link>https://sionescu.github.io/bordeaux-threads/locks/native-recursive-lock/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/locks/native-recursive-lock/</guid><description>Class precedence list: Implementation-defined.
 Description: A native-recursive-lock represents the recursive lock type exported by the host implementation.
 See also: recursive-lock
-Notes: The exact type of native-recursive-lock is implementation-defined.</description>
-    </item>
-    
-    <item>
-      <title>Function NATIVE-RECURSIVE-LOCK-P</title>
-      <link>https://sionescu.github.io/bordeaux-threads/locks/native-recursive-lock-p/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/locks/native-recursive-lock-p/</guid>
-      <description>Syntax: native-recursive-lock-p lock =&amp;gt; generalized-boolean
+Notes: The exact type of native-recursive-lock is implementation-defined.</description></item><item><title>Function NATIVE-RECURSIVE-LOCK-P</title><link>https://sionescu.github.io/bordeaux-threads/locks/native-recursive-lock-p/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/locks/native-recursive-lock-p/</guid><description>Syntax: native-recursive-lock-p lock =&amp;gt; generalized-boolean
 Arguments and values: lock -&amp;gt; a recursive-lock object.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Returns true if datum is a native recursive lock, otherwise false.
 Exceptional situations: None.
 See also: recursive-lock, native-recursive-lock
-Notes: None.</description>
-    </item>
-    
-    <item>
-      <title>Function THREAD-YIELD</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/thread-yield/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/thread-yield/</guid>
-      <description>Syntax: thread-yield =&amp;gt; No values.
+Notes: None.</description></item><item><title>Function THREAD-YIELD</title><link>https://sionescu.github.io/bordeaux-threads/threads/thread-yield/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/thread-yield/</guid><description>Syntax: thread-yield =&amp;gt; No values.
 Arguments and values: Returns no values.
 Description Causes the calling thread to relinquish the CPU to allow other threads to run.
 Exceptional situations: None.
-Notes: On modern implementations that use native OS (SMP) threads, this function is of little use. On some older implementations where threads are scheduled in user space, it may be necessary or desirable to call this periodically.</description>
-    </item>
-    
-    <item>
-      <title>Function MAKE-LOCK</title>
-      <link>https://sionescu.github.io/bordeaux-threads/locks/make-lock/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/locks/make-lock/</guid>
-      <description>Syntax: make-lock &amp;amp;key name =&amp;gt; lock
+Notes: On modern implementations that use native OS (SMP) threads, this function is of little use. On some older implementations where threads are scheduled in user space, it may be necessary or desirable to call this periodically.</description></item><item><title>Function MAKE-LOCK</title><link>https://sionescu.github.io/bordeaux-threads/locks/make-lock/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/locks/make-lock/</guid><description>Syntax: make-lock &amp;amp;key name =&amp;gt; lock
 Arguments and values: name -&amp;gt; a string or nil.
 lock -&amp;gt; a lock object.
 Description: Creates a non-recursive lock named name.
 Exceptional situations: Signals a condition of type type-error if name is neither a string nor nil.
 See also: lock
 Notes: A lock is also commonly known as a mutex.
-On some implementations, the host lock type is always recursive.</description>
-    </item>
-    
-    <item>
-      <title>Function START-MULTIPROCESSING</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/start-multiprocessing/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/start-multiprocessing/</guid>
-      <description>Syntax: start-multiprocessing =&amp;gt; No values.
+On some implementations, the host lock type is always recursive.</description></item><item><title>Function START-MULTIPROCESSING</title><link>https://sionescu.github.io/bordeaux-threads/threads/start-multiprocessing/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/start-multiprocessing/</guid><description>Syntax: start-multiprocessing =&amp;gt; No values.
 Arguments and values: Returns no values.
 Description: If the host implementation uses user-level threads, start the scheduler and multiprocessing, otherwise do nothing. It is safe to call repeatedly.
 Exceptional situations: None.
-Notes: Only has an effect on Allegro, CMUCL and Lispworks.</description>
-    </item>
-    
-    <item>
-      <title>Function ACQUIRE-LOCK, RELEASE-LOCK</title>
-      <link>https://sionescu.github.io/bordeaux-threads/locks/acquire-release-lock/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/locks/acquire-release-lock/</guid>
-      <description>Syntax: acquire-lock lock &amp;amp;key (wait t) timeout =&amp;gt; generalized-boolean
+Notes: Only has an effect on Allegro, CMUCL and Lispworks.</description></item><item><title>Function ACQUIRE-LOCK, RELEASE-LOCK</title><link>https://sionescu.github.io/bordeaux-threads/locks/acquire-release-lock/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/locks/acquire-release-lock/</guid><description>Syntax: acquire-lock lock &amp;amp;key (wait t) timeout =&amp;gt; generalized-boolean
 release-lock lock =&amp;gt; lock
 Arguments and values: lock -&amp;gt; a lock object.
 wait -&amp;gt; a generalized boolean.
 timeout -&amp;gt; a non-negative real number.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Acquire lock for the calling thread.
-wait governs what happens if the lock is not available: if wait is true, the calling thread will wait until the lock is available and then acquire it; if wait is nil, acquire-lock will return immediately.</description>
-    </item>
-    
-    <item>
-      <title>Function INTERRUPT-THREAD</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/interrupt-thread/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/interrupt-thread/</guid>
-      <description>Syntax: interrupt-thread thread function &amp;amp;rest arguments =&amp;gt; thread
+wait governs what happens if the lock is not available: if wait is true, the calling thread will wait until the lock is available and then acquire it; if wait is nil, acquire-lock will return immediately.</description></item><item><title>Function INTERRUPT-THREAD</title><link>https://sionescu.github.io/bordeaux-threads/threads/interrupt-thread/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/interrupt-thread/</guid><description>Syntax: interrupt-thread thread function &amp;amp;rest arguments =&amp;gt; thread
 Arguments and values: thread -&amp;gt; a thread object.
 function -&amp;gt; a function object.
 arguments -&amp;gt; a list of values.
@@ -594,16 +220,7 @@ Description: Interrupt thread and execute function within its dynamic context by
 Returns the thread object it acted on.
 Exceptional situations: None.
 See also: make-thread, join-thread
-Notes: This may not be a good idea if thread is holding locks or doing anything important.</description>
-    </item>
-    
-    <item>
-      <title>Function SIGNAL-IN-THREAD, WARN-IN-THREAD, ERROR-IN-THREAD</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/signal-in-thread/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/signal-in-thread/</guid>
-      <description>Syntax: signal-in-thread thread datum &amp;amp;rest arguments =&amp;gt; thread
+Notes: This may not be a good idea if thread is holding locks or doing anything important.</description></item><item><title>Function SIGNAL-IN-THREAD, WARN-IN-THREAD, ERROR-IN-THREAD</title><link>https://sionescu.github.io/bordeaux-threads/threads/signal-in-thread/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/signal-in-thread/</guid><description>Syntax: signal-in-thread thread datum &amp;amp;rest arguments =&amp;gt; thread
 warn-in-thread thread datum &amp;amp;rest arguments =&amp;gt; thread
 error-in-thread thread datum &amp;amp;rest arguments =&amp;gt; thread
 Arguments and values: thread -&amp;gt; a thread object.
@@ -611,133 +228,48 @@ datum, arguments -&amp;gt; designators for a condition.
 Description: Interrupt thread and apply signal/warn/error passing datum and arguments.
 Exceptional situations: None.
 See also: interrupt-thread, error, signal, warn
-Notes: These functions are currently implemented on top of interrupt-thread.</description>
-    </item>
-    
-    <item>
-      <title>Macro WITH-LOCK-HELD</title>
-      <link>https://sionescu.github.io/bordeaux-threads/locks/with-lock-held/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/locks/with-lock-held/</guid>
-      <description>Syntax: with-lock-held (lock &amp;amp;key timeout) declaration* forms* =&amp;gt; results
+Notes: These functions are currently implemented on top of interrupt-thread.</description></item><item><title>Macro WITH-LOCK-HELD</title><link>https://sionescu.github.io/bordeaux-threads/locks/with-lock-held/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/locks/with-lock-held/</guid><description>Syntax: with-lock-held (lock &amp;amp;key timeout) declaration* forms* =&amp;gt; results
 Arguments and values: lock -&amp;gt; a lock object.
 timeout -&amp;gt; a non-negative real number.
 declaration -&amp;gt; a declare expression; not evaluated.
 forms -&amp;gt; an implicit progn.
 results -&amp;gt; the values returned by the forms.
-Description: Evaluates forms. Before the forms in BODY are evaluated, lock is acquired as if by using acquire-lock. After the forms have been evaluated, or if a non-local control transfer is caused (e.</description>
-    </item>
-    
-    <item>
-      <title>Function DESTROY-THREAD</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/destroy-thread/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/destroy-thread/</guid>
-      <description>Syntax: destroy-thread thread =&amp;gt; thread
+Description: Evaluates forms. Before the forms in BODY are evaluated, lock is acquired as if by using acquire-lock. After the forms have been evaluated, or if a non-local control transfer is caused (e.</description></item><item><title>Function DESTROY-THREAD</title><link>https://sionescu.github.io/bordeaux-threads/threads/destroy-thread/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/destroy-thread/</guid><description>Syntax: destroy-thread thread =&amp;gt; thread
 Arguments and values: thread -&amp;gt; a thread object.
 Description: Terminates the thread thread.
 Exceptional situations: Signals bordeaux-threads-error if attempting to destroy the calling thread, or a thread that already terminated.
 See also: join-thread
-Notes: This should be used with caution: it is implementation-defined whether the thread runs cleanup forms or releases its locks first.</description>
-    </item>
-    
-    <item>
-      <title>Function MAKE-RECURSIVE-LOCK</title>
-      <link>https://sionescu.github.io/bordeaux-threads/locks/make-recursive-lock/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/locks/make-recursive-lock/</guid>
-      <description>Syntax: make-recursive-lock &amp;amp;key name =&amp;gt; lock
+Notes: This should be used with caution: it is implementation-defined whether the thread runs cleanup forms or releases its locks first.</description></item><item><title>Function MAKE-RECURSIVE-LOCK</title><link>https://sionescu.github.io/bordeaux-threads/locks/make-recursive-lock/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/locks/make-recursive-lock/</guid><description>Syntax: make-recursive-lock &amp;amp;key name =&amp;gt; lock
 Arguments and values: name -&amp;gt; a string or nil.
 lock -&amp;gt; a recursive-lock object.
 Description: Creates a recursive lock named name.
 Exceptional situations: Signals a condition of type type-error if name is neither a string nor nil.
 See also: recursive-lock
-Notes: A lock is also commonly known as a mutex.</description>
-    </item>
-    
-    <item>
-      <title>Function ACQUIRE-RECURSIVE-LOCK, RELEASE-RECURSIVE-LOCK</title>
-      <link>https://sionescu.github.io/bordeaux-threads/locks/acquire-release-recursive-lock/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/locks/acquire-release-recursive-lock/</guid>
-      <description>Syntax: acquire-recursive-lock lock &amp;amp;key (wait t) timeout =&amp;gt; generalized-boolean
+Notes: A lock is also commonly known as a mutex.</description></item><item><title>Function ACQUIRE-RECURSIVE-LOCK, RELEASE-RECURSIVE-LOCK</title><link>https://sionescu.github.io/bordeaux-threads/locks/acquire-release-recursive-lock/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/locks/acquire-release-recursive-lock/</guid><description>Syntax: acquire-recursive-lock lock &amp;amp;key (wait t) timeout =&amp;gt; generalized-boolean
 release-recursive-lock lock =&amp;gt; lock
 Arguments and values: lock -&amp;gt; a recursive-lock object.
 wait -&amp;gt; a generalized boolean.
 timeout -&amp;gt; a non-negative real number.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Acquire lock for the calling thread.
-wait governs what happens if the lock is not available: if wait is true, the calling thread will wait until the lock is available and then acquire it; if wait is nil, acquire-recursive-lock will return immediately.</description>
-    </item>
-    
-    <item>
-      <title>Function THREAD-ALIVE-P</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/thread-alive-p/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/thread-alive-p/</guid>
-      <description>Syntax: thread-alive-p thread =&amp;gt; generalized-boolean
+wait governs what happens if the lock is not available: if wait is true, the calling thread will wait until the lock is available and then acquire it; if wait is nil, acquire-recursive-lock will return immediately.</description></item><item><title>Function THREAD-ALIVE-P</title><link>https://sionescu.github.io/bordeaux-threads/threads/thread-alive-p/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/thread-alive-p/</guid><description>Syntax: thread-alive-p thread =&amp;gt; generalized-boolean
 Arguments and values: thread -&amp;gt; a thread object.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Returns true if thread has not finished or destroy-thread has not been called on it.
 Exceptional situations: Signals a type error if thread is not a thread object.
 See also: None.
-Notes: None.</description>
-    </item>
-    
-    <item>
-      <title>Condition type BORDEAUX-THREADS-ERROR</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/bordeaux-thread-error/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/bordeaux-thread-error/</guid>
-      <description>Class Precedence List: bordeaux-threads-error, error, serious-condition, condition, t
+Notes: None.</description></item><item><title>Condition type BORDEAUX-THREADS-ERROR</title><link>https://sionescu.github.io/bordeaux-threads/threads/bordeaux-thread-error/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/bordeaux-thread-error/</guid><description>Class Precedence List: bordeaux-threads-error, error, serious-condition, condition, t
 Description: The type bordeaux-threads-error consists of error conditions that are related to thread operations.
-See also: abnormal-exit</description>
-    </item>
-    
-    <item>
-      <title>Macro WITH-RECURSIVE-LOCK-HELD</title>
-      <link>https://sionescu.github.io/bordeaux-threads/locks/with-recursive-lock-held/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/locks/with-recursive-lock-held/</guid>
-      <description>Syntax: with-recursive-lock-held (lock &amp;amp;key timeout) declaration* forms* =&amp;gt; results
+See also: abnormal-exit</description></item><item><title>Macro WITH-RECURSIVE-LOCK-HELD</title><link>https://sionescu.github.io/bordeaux-threads/locks/with-recursive-lock-held/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/locks/with-recursive-lock-held/</guid><description>Syntax: with-recursive-lock-held (lock &amp;amp;key timeout) declaration* forms* =&amp;gt; results
 Arguments and values: lock -&amp;gt; a recursive-lock object.
 timeout -&amp;gt; a non-negative real number.
 declaration -&amp;gt; a declare expression; not evaluated.
 forms -&amp;gt; an implicit progn.
 results -&amp;gt; the values returned by the forms.
-Description: Evaluates forms. Before the forms in BODY are evaluated, lock is acquired as if by using acquire-recursive-lock. After the forms have been evaluated, or if a non-local control transfer is caused (e.</description>
-    </item>
-    
-    <item>
-      <title>Condition type ABNORMAL-EXIT</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/abnormal-exit/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/abnormal-exit/</guid>
-      <description>Class Precedence List: abnormal-exit, bordeaux-threads-error, error, serious-condition, condition, t
+Description: Evaluates forms. Before the forms in BODY are evaluated, lock is acquired as if by using acquire-recursive-lock. After the forms have been evaluated, or if a non-local control transfer is caused (e.</description></item><item><title>Condition type ABNORMAL-EXIT</title><link>https://sionescu.github.io/bordeaux-threads/threads/abnormal-exit/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/abnormal-exit/</guid><description>Class Precedence List: abnormal-exit, bordeaux-threads-error, error, serious-condition, condition, t
 Description: The error abnormal-exit represents the condition of a thread not having terminated successfully.
-See also: abnormal-exit-condition, join-thread</description>
-    </item>
-    
-    <item>
-      <title>Function ABNORMAL-EXIT-CONDITION</title>
-      <link>https://sionescu.github.io/bordeaux-threads/threads/abnormal-exit-condition/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/threads/abnormal-exit-condition/</guid>
-      <description>Syntax: abnormal-exit-condition =&amp;gt; condition
+See also: abnormal-exit-condition, join-thread</description></item><item><title>Function ABNORMAL-EXIT-CONDITION</title><link>https://sionescu.github.io/bordeaux-threads/threads/abnormal-exit-condition/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/abnormal-exit-condition/</guid><description>Syntax: abnormal-exit-condition =&amp;gt; condition
 Arguments and values: condition -&amp;gt; a condition object or :terminated.
 Description Returns the terminating condition of an abnormal-exit condition object. If the thread was terminated by destroy-thread or other kinds of non-local exits, the keyword :terminated is returned.
 Examples: (let ((thread (bt2:make-thread (lambda () (error &amp;quot;This will terminate the thread&amp;quot;))))) (handler-case (bt2:join-thread thread) (abnormal-exit (e) (abnormal-exit-condition e)))) =&amp;gt; #&amp;lt;SIMPLE-ERROR &amp;quot;This will terminate the thread&amp;quot; {10043E01F3}&amp;gt;
-See also: abnormal-exit-condition, join-thread</description>
-    </item>
-    
-  </channel>
-</rss>
+See also: abnormal-exit-condition, join-thread</description></item></channel></rss>

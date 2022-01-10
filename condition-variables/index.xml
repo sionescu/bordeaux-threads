@@ -1,99 +1,35 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Condition Variables dictionary on Bordeaux-Threads</title>
-    <link>https://sionescu.github.io/bordeaux-threads/condition-variables/</link>
-    <description>Recent content in Condition Variables dictionary on Bordeaux-Threads</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Fri, 07 Jan 2022 08:00:00 +0000</lastBuildDate><atom:link href="https://sionescu.github.io/bordeaux-threads/condition-variables/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Class CONDITION-VARIABLE</title>
-      <link>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-variable/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-variable/</guid>
-      <description>Class precedence list: Implementation-defined.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Condition Variables dictionary on Bordeaux-Threads</title><link>https://sionescu.github.io/bordeaux-threads/condition-variables/</link><description>Recent content in Condition Variables dictionary on Bordeaux-Threads</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 07 Jan 2022 08:00:00 +0000</lastBuildDate><atom:link href="https://sionescu.github.io/bordeaux-threads/condition-variables/index.xml" rel="self" type="application/rss+xml"/><item><title>Class CONDITION-VARIABLE</title><link>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-variable/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-variable/</guid><description>Class precedence list: Implementation-defined.
 Description: This class represents condition variables.
 See also: make-condition-variable
-Notes: On some implementations the library exposes the native type directly, while on others there is a custom implementations using semaphores and locks.</description>
-    </item>
-    
-    <item>
-      <title>Function CONDITION-VARIABLE-P</title>
-      <link>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-variable-p/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-variable-p/</guid>
-      <description>Syntax: condition-variable-p datum =&amp;gt; generalized-boolean
+Notes: On some implementations the library exposes the native type directly, while on others there is a custom implementations using semaphores and locks.</description></item><item><title>Function CONDITION-VARIABLE-P</title><link>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-variable-p/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-variable-p/</guid><description>Syntax: condition-variable-p datum =&amp;gt; generalized-boolean
 Arguments and values: datum -&amp;gt; an object.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Returns true if datum is a condition-variable object, otherwise false.
 Exceptional situations: None.
 See also: condition-variable, make-condition-variable
-Notes: None.</description>
-    </item>
-    
-    <item>
-      <title>Function MAKE-CONDITION-VARIABLE</title>
-      <link>https://sionescu.github.io/bordeaux-threads/condition-variables/make-condition-variable/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/condition-variables/make-condition-variable/</guid>
-      <description>Syntax: make-condition-variable &amp;amp;key name =&amp;gt; condition-variable
+Notes: None.</description></item><item><title>Function MAKE-CONDITION-VARIABLE</title><link>https://sionescu.github.io/bordeaux-threads/condition-variables/make-condition-variable/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/condition-variables/make-condition-variable/</guid><description>Syntax: make-condition-variable &amp;amp;key name =&amp;gt; condition-variable
 Arguments and values: name -&amp;gt; a string or nil.
 condition-variable -&amp;gt; a condition-variable object.
 Description: Creates a condition variable named name.
 Exceptional situations: Signals a condition of type type-error if name is neither a string nor nil.
 See also: condition-variable
-Notes: On some implementations the library exposes the native type directly, while on others there is a custom implementations using semaphores and locks.</description>
-    </item>
-    
-    <item>
-      <title>Function CONDITION-WAIT</title>
-      <link>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-wait/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-wait/</guid>
-      <description>Syntax: condition-wait condition-variable lock &amp;amp;key timeout =&amp;gt; generalized-boolean
+Notes: On some implementations the library exposes the native type directly, while on others there is a custom implementations using semaphores and locks.</description></item><item><title>Function CONDITION-WAIT</title><link>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-wait/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-wait/</guid><description>Syntax: condition-wait condition-variable lock &amp;amp;key timeout =&amp;gt; generalized-boolean
 Arguments and values: condition-variable -&amp;gt; a condition-variable object.
 lock -&amp;gt; a lock object.
 timeout -&amp;gt; a non-negative real number.
 generalized-boolean -&amp;gt; a generalized boolean.
-Description: Atomically release lock and enqueue the calling thread waiting for condition-variable. The thread will resume when another thread has notified it using condition-notify; it may also resume if interrupted by some external event or in other implementation-dependent circumstances: the caller must always test on waking that there is threading to be done, instead of assuming that it can go ahead.</description>
-    </item>
-    
-    <item>
-      <title>Function CONDITION-NOTIFY</title>
-      <link>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-notify/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-notify/</guid>
-      <description>Syntax: condition-notify condition-variable -&amp;gt; generalized-boolean
+Description: Atomically release lock and enqueue the calling thread waiting for condition-variable. The thread will resume when another thread has notified it using condition-notify; it may also resume if interrupted by some external event or in other implementation-dependent circumstances: the caller must always test on waking that there is threading to be done, instead of assuming that it can go ahead.</description></item><item><title>Function CONDITION-NOTIFY</title><link>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-notify/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-notify/</guid><description>Syntax: condition-notify condition-variable -&amp;gt; generalized-boolean
 Arguments and values: condition-variable -&amp;gt; a condition-variable object.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Notify one of the threads waiting for condition-variable.
 Returns true if a thread was woken up, otherwise false.
 Exceptional situations: Signals an error of type type-error if condition-variable is not a condition-variable object.
 See also: condition-wait, condition-broadcast
-Notes: It is unspecified which thread gets a wakeup and does not necessarily relate to the order in which the threads went to sleep.</description>
-    </item>
-    
-    <item>
-      <title>Function CONDITION-BROADCAST</title>
-      <link>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-broadcast/</link>
-      <pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate>
-      
-      <guid>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-broadcast/</guid>
-      <description>Syntax: condition-broadcast condition-variable -&amp;gt; generalized-boolean
+Notes: It is unspecified which thread gets a wakeup and does not necessarily relate to the order in which the threads went to sleep.</description></item><item><title>Function CONDITION-BROADCAST</title><link>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-broadcast/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-broadcast/</guid><description>Syntax: condition-broadcast condition-variable -&amp;gt; generalized-boolean
 Arguments and values: condition-variable -&amp;gt; a condition-variable object.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Notify all the threads waiting for condition-variable.
 Returns true if at least one thread was woken up, otherwise false.
 Exceptional situations: Signals an error of type type-error if condition-variable is not a condition-variable object.
 See also: condition-wait, condition-notify
-Notes: The order of wakeup is unspecified and does not necessarily relate to the order in which the threads went to sleep.</description>
-    </item>
-    
-  </channel>
-</rss>
+Notes: The order of wakeup is unspecified and does not necessarily relate to the order in which the threads went to sleep.</description></item></channel></rss>
