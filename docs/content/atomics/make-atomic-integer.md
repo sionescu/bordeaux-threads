@@ -19,8 +19,9 @@ Creates an atomic integer `name` and initial value `value`.
 
 #### Exceptional situations:
 
-Signals a condition of type **type-error** if `value` is not a
-non-negative integer (an unsigned-byte).
+Signals a condition of type
+[**type-error**](http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error)
+if `value` is not a non-negative integer (an unsigned-byte).
 
 #### See also:
 

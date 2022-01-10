@@ -26,8 +26,10 @@ if at least one thread was woken up, otherwise
 
 #### Exceptional situations:
 
-Signals an error of type **type-error** if `condition-variable` is not
-a [**condition-variable**](../condition-variable) object.
+Signals an error of type
+[**type-error**](http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error)
+if `condition-variable` is not a
+[**condition-variable**](../condition-variable) object.
 
 #### See also:
 

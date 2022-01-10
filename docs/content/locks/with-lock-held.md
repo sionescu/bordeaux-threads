@@ -26,10 +26,12 @@ caused (e.g. by `throw` or `signal`), the lock is released as if by
 
 #### Exceptional situations:
 
-Signals an error of type **type-error** is `lock` is not a
-[**lock**](../lock) object.\
-Signals an error of type **type-error** if `timeout` is neither nil
-nor a non-negative real number.
+Signals an error of type
+[**type-error**](http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error)
+is `lock` is not a [**lock**](../lock) object.\
+Signals an error of type
+[**type-error**](http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error)
+if `timeout` is neither nil nor a non-negative real number.
 
 #### See also:
 

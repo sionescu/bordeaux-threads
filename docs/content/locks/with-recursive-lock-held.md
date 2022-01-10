@@ -27,10 +27,12 @@ as if by [**release-recursive-lock**](../release-recursive-lock).
 
 #### Exceptional situations:
 
-Signals an error of type **type-error** is `lock` is not a
-[**recursive-lock**](../recursive-lock) object.\
-Signals an error of type **type-error** if `timeout` is neither nil
-nor a non-negative real number.
+Signals an error of type
+[**type-error**](http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error)
+is `lock` is not a [**recursive-lock**](../recursive-lock) object.\
+Signals an error of type
+[**type-error**](http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error)
+if `timeout` is neither nil nor a non-negative real number.
 
 #### See also:
 

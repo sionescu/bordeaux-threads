@@ -19,8 +19,9 @@ Creates a condition variable named `name`.
 
 #### Exceptional situations:
 
-Signals a condition of type **type-error** if `name` is neither a
-string nor nil.
+Signals a condition of type
+[**type-error**](http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error)
+if `name` is neither a string nor nil.
 
 #### See also:
 

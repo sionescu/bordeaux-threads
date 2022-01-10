@@ -20,10 +20,12 @@ Creates a semaphore named `name` and with initial value `count`.
 
 #### Exceptional situations:
 
-Signals a condition of type **type-error** if `name` is neither a
-string nor nil.
-Signals a condition of type **type-error** if `count` is not a
-non-negative integer (an unsigned-byte).
+Signals a condition of type
+[**type-error**](http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error)
+if `name` is neither a string nor nil.\
+Signals a condition of type
+[**type-error**](http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error)
+if `count` is not a non-negative integer (an unsigned-byte).
 
 #### See also:
 

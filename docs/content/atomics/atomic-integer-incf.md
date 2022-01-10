@@ -23,9 +23,13 @@ Returns the new value of `atomic-integer`.
 
 #### Exceptional situations:
 
-Signals an error of type **type-error** if `atomic-integer` is not
-an [**atomic-integer**](../atomic-integer) object.\
-Signals an error of type **type-error** if `delta` is not an integer.
+Signals an error of type
+[**type-error**](http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error)
+if `atomic-integer` is not an [**atomic-integer**](../atomic-integer)
+object.\
+Signals an error of type
+[**type-error**](http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error)
+if `delta` is not an integer.
 
 #### See also:
 

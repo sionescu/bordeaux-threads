@@ -28,12 +28,16 @@ if the replacement was successful, otherwise
 
 #### Exceptional situations:
 
-Signals an error of type **type-error** if `atomic-integer` is not
-an [**atomic-integer**](../atomic-integer) object.\
-Signals an error of type **type-error** if `old` is not a non-negative
-integer.\
-Signals an error of type **type-error** if `new` is not a non-negative
-integer.
+Signals an error of type
+[**type-error**](http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error)
+if `atomic-integer` is not an [**atomic-integer**](../atomic-integer)
+object.\
+Signals an error of type
+[**type-error**](http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error)
+if `old` is not a non-negative integer.\
+Signals an error of type
+[**type-error**](http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error)
+if `new` is not a non-negative integer.
 
 #### See also:
 
