@@ -42,10 +42,11 @@ Exceptional situations: None.
 Notes: Only has an effect on Allegro, CMUCL and Lispworks.</description></item><item><title>Function INTERRUPT-THREAD</title><link>https://sionescu.github.io/bordeaux-threads/threads/interrupt-thread/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/interrupt-thread/</guid><description>Syntax: interrupt-thread thread function &amp;amp;rest arguments =&amp;gt; thread
 Arguments and values: thread -&amp;gt; a thread object.
 function -&amp;gt; a function object.
-arguments -&amp;gt; a list of values.
+arguments -&amp;gt; values.
 Description: Interrupt thread and apply function to arguments within its dynamic context, then continue with the interrupted path of execution.
 Returns the thread object it acted on.
-Exceptional situations: An error of type type-error will be signaled if thread is not a thread object.</description></item><item><title>Function SIGNAL-IN-THREAD, WARN-IN-THREAD, ERROR-IN-THREAD</title><link>https://sionescu.github.io/bordeaux-threads/threads/signal-in-thread/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/signal-in-thread/</guid><description>Syntax: signal-in-thread thread datum &amp;amp;rest arguments =&amp;gt; thread
+Exceptional situations: An error of type type-error will be signaled if thread is not a thread object.
+An error of type type-error will be signaled if function is not a function designator.</description></item><item><title>Function SIGNAL-IN-THREAD, WARN-IN-THREAD, ERROR-IN-THREAD</title><link>https://sionescu.github.io/bordeaux-threads/threads/signal-in-thread/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/threads/signal-in-thread/</guid><description>Syntax: signal-in-thread thread datum &amp;amp;rest arguments =&amp;gt; thread
 warn-in-thread thread datum &amp;amp;rest arguments =&amp;gt; thread
 error-in-thread thread datum &amp;amp;rest arguments =&amp;gt; thread
 Arguments and values: thread -&amp;gt; a thread object.
