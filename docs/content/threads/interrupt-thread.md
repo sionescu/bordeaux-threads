@@ -12,7 +12,7 @@ weight: 11
 
 *thread* -> a [thread](../class-thread) object.\
 *function* -> a function object.\
-*arguments* -> a list of values.
+*arguments* -> values.
 
 #### Description:
 
@@ -32,11 +32,6 @@ An error of
 [**type-error**](http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error)
 will be signaled if `function` is not a [function
 designator](http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_f.htm#function_designator).
-An error of
-[type](http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_t.htm#type)
-[**type-error**](http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error)
-will be signaled if `arguments` is not a
-[list](http://www.lispworks.com/documentation/HyperSpec/Body/t_list.htm).
 
 #### See also:
 
