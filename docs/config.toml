@@ -1,10 +1,9 @@
 baseURL = "https://sionescu.github.io/bordeaux-threads/"
-# baseURL = "https://capella.cddr.org/bordeaux-threads/"
 languageCode = "en-us"
 title = "Bordeaux-Threads"
 
 theme = "techdoc"
-publishDir = "../../bordeaux-threads.docs/"
+publishDir = "public"
 
 defaultContentLanguage = "en"
 defaultContentLanguageInSubdir= false
