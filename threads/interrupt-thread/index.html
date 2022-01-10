@@ -18,11 +18,9 @@
 Arguments and values: thread -> a thread object.
 function -> a function object.
 arguments -> a list of values.
-Description: Interrupt thread and execute function within its dynamic context by applying function to arguments before continuing with the interrupted path of execution.
+Description: Interrupt thread and apply function to arguments within its dynamic context, then continue with the interrupted path of execution.
 Returns the thread object it acted on.
-Exceptional situations: None.
-See also: make-thread, join-thread
-Notes: This may not be a good idea if thread is holding locks or doing anything important.">
+Exceptional situations: An error of type type-error will be signaled if thread is not a thread object.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://sionescu.github.io/bordeaux-threads/threads/interrupt-thread/"><meta property="article:section" content="threads">
 <meta property="article:published_time" content="2022-01-07T08:00:00+00:00">
@@ -33,23 +31,19 @@ Notes: This may not be a good idea if thread is holding locks or doing anything 
 Arguments and values: thread -> a thread object.
 function -> a function object.
 arguments -> a list of values.
-Description: Interrupt thread and execute function within its dynamic context by applying function to arguments before continuing with the interrupted path of execution.
+Description: Interrupt thread and apply function to arguments within its dynamic context, then continue with the interrupted path of execution.
 Returns the thread object it acted on.
-Exceptional situations: None.
-See also: make-thread, join-thread
-Notes: This may not be a good idea if thread is holding locks or doing anything important.">
+Exceptional situations: An error of type type-error will be signaled if thread is not a thread object.">
 <meta itemprop=name content="Function INTERRUPT-THREAD">
 <meta itemprop=description content="Syntax: interrupt-thread thread function &rest arguments => thread
 Arguments and values: thread -> a thread object.
 function -> a function object.
 arguments -> a list of values.
-Description: Interrupt thread and execute function within its dynamic context by applying function to arguments before continuing with the interrupted path of execution.
+Description: Interrupt thread and apply function to arguments within its dynamic context, then continue with the interrupted path of execution.
 Returns the thread object it acted on.
-Exceptional situations: None.
-See also: make-thread, join-thread
-Notes: This may not be a good idea if thread is holding locks or doing anything important."><meta itemprop=datePublished content="2022-01-07T08:00:00+00:00">
+Exceptional situations: An error of type type-error will be signaled if thread is not a thread object."><meta itemprop=datePublished content="2022-01-07T08:00:00+00:00">
 <meta itemprop=dateModified content="2022-01-07T08:00:00+00:00">
-<meta itemprop=wordCount content="81">
+<meta itemprop=wordCount content="121">
 <meta itemprop=keywords content></head>
 <body><div class=container><header>
 <h1>Bordeaux-Threads</h1>
@@ -72,12 +66,24 @@ Notes: This may not be a good idea if thread is holding locks or doing anything 
 <em>function</em> -> a function object.<br>
 <em>arguments</em> -> a list of values.</p>
 <h4 id=description>Description:</h4>
-<p>Interrupt <code>thread</code> and execute <code>function</code> within its dynamic context
-by applying <code>function</code> to <code>arguments</code> before continuing with the
-interrupted path of execution.</p>
+<p>Interrupt <code>thread</code> and apply <code>function</code> to <code>arguments</code> within its
+dynamic context, then continue with the interrupted path of execution.</p>
 <p>Returns the thread object it acted on.</p>
 <h4 id=exceptional-situations>Exceptional situations:</h4>
-<p>None.</p>
+<p>An error of
+<a href=http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_t.htm#type>type</a>
+<a href=http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error><strong>type-error</strong></a>
+will be signaled if <code>thread</code> is not a <a href=../class-thread><strong>thread</strong></a> object.<br>
+An error of
+<a href=http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_t.htm#type>type</a>
+<a href=http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error><strong>type-error</strong></a>
+will be signaled if <code>function</code> is not a <a href=http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_f.htm#function_designator>function
+designator</a>.
+An error of
+<a href=http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_t.htm#type>type</a>
+<a href=http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error><strong>type-error</strong></a>
+will be signaled if <code>arguments</code> is not a
+<a href=http://www.lispworks.com/documentation/HyperSpec/Body/t_list.htm>list</a>.</p>
 <h4 id=see-also>See also:</h4>
 <p><a href=../make-thread><strong>make-thread</strong></a>, <a href=../join-thread><strong>join-thread</strong></a></p>
 <h4 id=notes>Notes:</h4>
