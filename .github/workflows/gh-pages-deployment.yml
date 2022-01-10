@@ -2,11 +2,8 @@ name: GitHub Pages
 
 on:
   push:
-    branches:
-      - master
-    paths:
-      - 'docs/**'
-  pull_request:
+    branches: [ master ]
+    paths: [ 'docs/**' ]
 
 jobs:
   build-deploy:
