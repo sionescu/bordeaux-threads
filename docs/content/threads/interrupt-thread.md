@@ -16,15 +16,27 @@ weight: 11
 
 #### Description:
 
-Interrupt `thread` and execute `function` within its dynamic context
-by applying `function` to `arguments` before continuing with the
-interrupted path of execution.
+Interrupt `thread` and apply `function` to `arguments` within its
+dynamic context, then continue with the interrupted path of execution.
 
 Returns the thread object it acted on.
 
 #### Exceptional situations:
 
-None.
+An error of
+[type](http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_t.htm#type)
+[**type-error**](http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error)
+will be signaled if `thread` is not a [**thread**](../class-thread) object.\
+An error of
+[type](http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_t.htm#type)
+[**type-error**](http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error)
+will be signaled if `function` is not a [function
+designator](http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_f.htm#function_designator).
+An error of
+[type](http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_t.htm#type)
+[**type-error**](http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error)
+will be signaled if `arguments` is not a
+[list](http://www.lispworks.com/documentation/HyperSpec/Body/t_list.htm).
 
 #### See also:
 
