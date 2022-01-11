@@ -45,13 +45,13 @@
                                :native-thread native-thread))))))
 
 (defun %get-thread-wrapper (native-thread)
-  (with-lock-held (.known-threads-lock.)
-    (multiple-value-bind (thread presentp)
-        (gethash native-thread .known-threads.)
-      (if presentp
-          thread
-          (bt-error "Thread wrapper is supposed to exist for ~S"
-                    native-thread)))))
+  (multiple-value-bind (thread presentp)
+      (with-lock-held (.known-threads-lock.)
+        (gethash native-thread .known-threads.))
+    (if presentp
+        thread
+        (bt-error "Thread wrapper is supposed to exist for ~S"
+                  native-thread))))
 
 (defun (setf thread-wrapper) (thread native-thread)
   (with-lock-held (.known-threads-lock.)
