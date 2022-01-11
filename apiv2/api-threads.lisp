@@ -20,11 +20,18 @@
   (print-unreadable-object (thread stream :type t :identity t)
     (format stream "~S" (thread-name thread))))
 
+(define-global-var* .known-threads-lock.
+  (make-lock :name "known-threads-lock"))
+
 (define-global-var* .known-threads.
   (trivial-garbage:make-weak-hash-table #-genera :weakness #-genera :key))
 
-(define-global-var* .known-threads-lock.
-    (make-lock :name "known-threads-lock"))
+(define-global-var* .thread-counter. -1)
+
+(defun make-unknown-thread-name ()
+  (format nil "Unkown thread ~S"
+          (with-lock-held (.known-threads-lock.)
+            (incf .thread-counter.))))
 
 (defun ensure-thread-wrapper (native-thread)
   (with-lock-held (.known-threads-lock.)
@@ -192,7 +199,8 @@ It is safe to call repeatedly."
     variables without first rebinding them in the new thread."
   (check-type function (and (not null) (or symbol function)))
   (check-type name (or null string))
-  (let ((thread (make-instance 'thread :name name)))
+  (let* ((name (or name (make-unknown-thread-name)))
+         (thread (make-instance 'thread :name name)))
     (with-slots (native-thread %lock) thread
       (with-lock-held (%lock)
         (let ((%thread
