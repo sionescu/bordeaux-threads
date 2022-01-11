@@ -6,7 +6,7 @@ weight: 2
 
 #### Syntax:
 
-**with-timoeut** (timeout) declaration\* forms\* => results
+**with-timeout** (timeout) declaration\* forms\* => results
 
 #### Arguments and values:
 
