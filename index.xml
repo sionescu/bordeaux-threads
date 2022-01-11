@@ -43,7 +43,7 @@ Arguments and values: thread -&amp;gt; an instance of class thread.
 name -&amp;gt; a string or nil
 native-thread -&amp;gt; a host thread instance.
 Description: These accessors return the public slots of class thread.
-Exceptional situations: None.</description></item><item><title>Macro WITH-TIMEOUT</title><link>https://sionescu.github.io/bordeaux-threads/timeouts/with-timeout/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/timeouts/with-timeout/</guid><description>Syntax: with-timoeut (timeout) declaration* forms* =&amp;gt; results
+Exceptional situations: None.</description></item><item><title>Macro WITH-TIMEOUT</title><link>https://sionescu.github.io/bordeaux-threads/timeouts/with-timeout/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/timeouts/with-timeout/</guid><description>Syntax: with-timeout (timeout) declaration* forms* =&amp;gt; results
 Arguments and values: timeout -&amp;gt; a non-negative real number.
 declaration -&amp;gt; a declare expression; not evaluated.
 forms -&amp;gt; an implicit progn.
