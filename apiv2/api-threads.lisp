@@ -114,8 +114,7 @@ CL:WITH-STANDARD-IO-SYNTAX. Forms are evaluated in the calling thread."
 (defvar *current-thread*)
 
 (defun compute-special-bindings (bindings)
-  (remove-duplicates (acons '*current-thread* nil
-                            (append bindings +standard-io-bindings+))
+  (remove-duplicates (append bindings +standard-io-bindings+)
                      :from-end t :key #'car))
 
 (defun establish-dynamic-env (thread function special-bindings trap-conditions)
