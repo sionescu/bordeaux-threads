@@ -83,9 +83,9 @@
   It is unspecified which thread gets a wakeup and does not
   necessarily relate to the order that the threads went to sleep in.
 
-  CONDITION-NOTIFY returns T if a thread was woken up, otherwise NIL."
+  CONDITION-NOTIFY returns always NIL."
   (%condition-notify condition-variable)
-  t)
+  nil)
 
 (defun condition-broadcast (condition-variable)
   "Notify all threads waiting for CONDITION-VARIABLE.
@@ -93,7 +93,6 @@
   The order of wakeup is unspecified and does not necessarily relate
   to the order that the threads went to sleep in.
 
-  CONDITION-BROADCAST returns T if at least one thread was woken up,
-  otherwise NIL."
+  CONDITION-BROADCAST returns always NIL."
   (%condition-broadcast condition-variable)
-  t)
+  nil)

@@ -19,9 +19,7 @@ boolean](http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_g.htm#gene
 
 Notify one of the threads waiting for `condition-variable`.
 
-Returns
-[true](http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_t.htm#true)
-if a thread was woken up, otherwise
+Returns always
 [false](http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_f.htm#false).
 
 #### Exceptional situations:
@@ -40,3 +38,8 @@ if `condition-variable` is not a
 
 It is unspecified which thread gets a wakeup and does not necessarily
 relate to the order in which the threads went to sleep.
+
+**condition-notify** always returns
+[false](http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_f.htm#false)
+because not all implementations' primitives can tell whether or not
+some threads were indeed woken up.

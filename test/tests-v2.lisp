@@ -430,6 +430,35 @@ lock."
           (with-lock-held (res-lock)
             (condition-wait res-cv res-lock)
             (is-false lock-was-acquired-p)))))))
+
+#+#.(bt2::implemented-p* 'bt2:make-condition-variable)
+(test condition-notify.no-waiting-threads
+  "Test that `CONDITION-NOTIFY` returns NIL whether or not there are
+threads waiting."
+  (let ((lock (make-lock :name "Test lock"))
+        (cv (make-condition-variable :name "Test condition variable")))
+    (is-false (condition-notify cv))
+    (make-thread (lambda ()
+                   (with-lock-held (lock)
+                     (condition-wait cv lock))))
+    (is-false (condition-notify cv))))
+
+#+#.(bt2::implemented-p* 'bt2:make-condition-variable)
+(test condition-broadcast.return-value
+  "Test that `CONDITION-BROADCAST` returns NIL whether or not there
+are threads waiting."
+  (let ((lock (make-lock :name "Test lock"))
+        (cv (make-condition-variable :name "Test condition variable")))
+    (is-false (condition-notify cv))
+    (make-thread (lambda ()
+                   (with-lock-held (lock)
+                     (condition-wait cv lock)))
+                 :name "Waiting thread 1")
+    (make-thread (lambda ()
+                   (with-lock-held (lock)
+                     (condition-wait cv lock)))
+                 :name "Waiting thread 2")
+    (is-false (condition-broadcast cv))))
 
 
 ;;;
