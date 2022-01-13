@@ -22,14 +22,14 @@ Description: Atomically release lock and enqueue the calling thread waiting for 
 Arguments and values: condition-variable -&amp;gt; a condition-variable object.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Notify one of the threads waiting for condition-variable.
-Returns true if a thread was woken up, otherwise false.
+Returns always false.
 Exceptional situations: Signals an error of type type-error if condition-variable is not a condition-variable object.
 See also: condition-wait, condition-broadcast
 Notes: It is unspecified which thread gets a wakeup and does not necessarily relate to the order in which the threads went to sleep.</description></item><item><title>Function CONDITION-BROADCAST</title><link>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-broadcast/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/condition-variables/condition-broadcast/</guid><description>Syntax: condition-broadcast condition-variable -&amp;gt; generalized-boolean
 Arguments and values: condition-variable -&amp;gt; a condition-variable object.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Notify all the threads waiting for condition-variable.
-Returns true if at least one thread was woken up, otherwise false.
+Returns always false.
 Exceptional situations: Signals an error of type type-error if condition-variable is not a condition-variable object.
 See also: condition-wait, condition-notify
 Notes: The order of wakeup is unspecified and does not necessarily relate to the order in which the threads went to sleep.</description></item></channel></rss>

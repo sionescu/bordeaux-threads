@@ -18,7 +18,7 @@
 Arguments and values: condition-variable -> a condition-variable object.
 generalized-boolean -> a generalized boolean.
 Description: Notify one of the threads waiting for condition-variable.
-Returns true if a thread was woken up, otherwise false.
+Returns always false.
 Exceptional situations: Signals an error of type type-error if condition-variable is not a condition-variable object.
 See also: condition-wait, condition-broadcast
 Notes: It is unspecified which thread gets a wakeup and does not necessarily relate to the order in which the threads went to sleep.">
@@ -32,7 +32,7 @@ Notes: It is unspecified which thread gets a wakeup and does not necessarily rel
 Arguments and values: condition-variable -> a condition-variable object.
 generalized-boolean -> a generalized boolean.
 Description: Notify one of the threads waiting for condition-variable.
-Returns true if a thread was woken up, otherwise false.
+Returns always false.
 Exceptional situations: Signals an error of type type-error if condition-variable is not a condition-variable object.
 See also: condition-wait, condition-broadcast
 Notes: It is unspecified which thread gets a wakeup and does not necessarily relate to the order in which the threads went to sleep.">
@@ -41,12 +41,12 @@ Notes: It is unspecified which thread gets a wakeup and does not necessarily rel
 Arguments and values: condition-variable -> a condition-variable object.
 generalized-boolean -> a generalized boolean.
 Description: Notify one of the threads waiting for condition-variable.
-Returns true if a thread was woken up, otherwise false.
+Returns always false.
 Exceptional situations: Signals an error of type type-error if condition-variable is not a condition-variable object.
 See also: condition-wait, condition-broadcast
 Notes: It is unspecified which thread gets a wakeup and does not necessarily relate to the order in which the threads went to sleep."><meta itemprop=datePublished content="2022-01-07T08:00:00+00:00">
 <meta itemprop=dateModified content="2022-01-07T08:00:00+00:00">
-<meta itemprop=wordCount content="80">
+<meta itemprop=wordCount content="93">
 <meta itemprop=keywords content></head>
 <body><div class=container><header>
 <h1>Bordeaux-Threads</h1>
@@ -71,9 +71,7 @@ Notes: It is unspecified which thread gets a wakeup and does not necessarily rel
 boolean</a>.</p>
 <h4 id=description>Description:</h4>
 <p>Notify one of the threads waiting for <code>condition-variable</code>.</p>
-<p>Returns
-<a href=http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_t.htm#true>true</a>
-if a thread was woken up, otherwise
+<p>Returns always
 <a href=http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_f.htm#false>false</a>.</p>
 <h4 id=exceptional-situations>Exceptional situations:</h4>
 <p>Signals an error of type
@@ -86,6 +84,10 @@ if <code>condition-variable</code> is not a
 <h4 id=notes>Notes:</h4>
 <p>It is unspecified which thread gets a wakeup and does not necessarily
 relate to the order in which the threads went to sleep.</p>
+<p><strong>condition-notify</strong> always returns
+<a href=http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_f.htm#false>false</a>
+because not all implementations' primitives can tell whether or not
+some threads were indeed woken up.</p>
 <div class=edit-meta>
 Last updated on 2022-01-07
 <br>
