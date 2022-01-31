@@ -44,6 +44,10 @@
   (is (equal "foo" (thread-name
                     (make-thread (lambda () t) :name "foo")))))
 
+(test thread-name.all-strings
+  (is (every #'(lambda (thread) (stringp (thread-name thread)))
+             (all-threads))))
+
 (defparameter *some-special* :global-value)
 
 (test default-special-bindings.sees-global-bindings

@@ -16,7 +16,8 @@
   mp:*current-process*)
 
 (defun %thread-name (thread)
-  (mp:process-name thread))
+  ;; Some system threads have symbols for a name.
+  (string (mp:process-name thread)))
 
 (defun %join-thread (thread)
   (mp:process-join thread))
