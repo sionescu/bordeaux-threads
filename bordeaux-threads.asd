@@ -28,9 +28,9 @@
   :description "Bordeaux Threads makes writing portable multi-threaded apps simple."
   :version (:read-file-form "version.sexp")
   :depends-on (:alexandria :global-vars :trivial-features :trivial-garbage
-               #+(and allegro (version>= 9))       (:require "smputil")
+               #+(and allegro (version>= 9)) (:require "smputil")
                #+(and allegro (not (version>= 9))) (:require "process")
-               #+corman                            (:require "threads"))
+               (:feature :corman (:require "threads")))
   :components ((:static-file "version.sexp")
                (:module "api-v1"
                 :pathname "apiv1/"
@@ -38,26 +38,23 @@
                 :components
                 ((:file "pkgdcl")
                  (:file "bordeaux-threads")
-                 (:file #+(and thread-support armedbear) "impl-abcl"
-                        #+(and thread-support allegro)   "impl-allegro"
-                        #+(and thread-support clasp)     "impl-clasp"
-                        #+(and thread-support clisp)     "impl-clisp"
-                        #+(and thread-support openmcl)   "impl-clozure"
-                        #+(and thread-support cmu)       "impl-cmucl"
-                        #+(and thread-support corman)    "impl-corman"
-                        #+(and thread-support ecl)       "impl-ecl"
-                        #+(and thread-support genera)    "impl-genera"
-                        #+(and thread-support mezzano)   "impl-mezzano"
-                        #+(and thread-support mkcl)      "impl-mkcl"
-                        #+(and thread-support lispworks) "impl-lispworks"
-                        #+(and thread-support digitool)  "impl-mcl"
-                        #+(and thread-support sbcl)      "impl-sbcl"
-                        #+(and thread-support scl)       "impl-scl"
-                        #-thread-support                 "impl-null")
-                 #+(and thread-support lispworks (or lispworks4 lispworks5))
-                 (:file "impl-lispworks-condition-variables")
-                 #+(and thread-support digitool)
-                 (:file "condition-variables")
+                 (:file "impl-abcl" :if-feature :armedbear)
+                 (:file "impl-allegro" :if-feature (:and :allegro :multiprocessing))
+                 (:file "impl-clasp" :if-feature (:and :clasp :threads))
+                 (:file "impl-clisp" :if-feature (:and :clisp :mt))
+                 (:file "impl-clozure" :if-feature (:and :openmcl :openmcl-native-threads))
+                 (:file "impl-cmucl" :if-feature (:and :cmu :mp))
+                 (:file "impl-corman" :if-feature :corman)
+                 (:file "impl-ecl" :if-feature (:and :ecl :threads))
+                 (:file "impl-genera" :if-feature :genera)
+                 (:file "impl-mezzano" :if-feature :mezzano)
+                 (:file "impl-mkcl" :if-feature :mkcl)
+                 (:file "impl-lispworks" :if-feature :lispworks)
+                 (:file "impl-mcl" :if-feature (:and :digitool :ccl-5.1))
+                 (:file "impl-sbcl" :if-feature (:and :sbcl :sb-thread))
+                 (:file "impl-scl" :if-feature :scl)
+                 (:file "impl-lispworks-condition-variables" :if-feature (:or :lispworks4 :lispworks5))
+                 (:file "condition-variables" :if-feature (:and :digitool :ccl-5.1))
                  (:file "default-implementations")))
                (:module "api-v2"
                 :pathname "apiv2/"
