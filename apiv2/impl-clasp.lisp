@@ -12,7 +12,7 @@
 (defun %make-thread (function name)
   (mp:process-run-function name function))
 
-(defun current-thread ()
+(defun %current-thread ()
   mp:*current-process*)
 
 (defun %thread-name (thread)
