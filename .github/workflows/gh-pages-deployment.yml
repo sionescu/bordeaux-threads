@@ -4,7 +4,8 @@ on:
   push:
     branches: [ master ]
     paths: [ 'docs/**' ]
-  workflow_dispatch
+  workflow_dispatch:
+    inputs:
 
 jobs:
   build-deploy:
