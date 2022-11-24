@@ -1,195 +1,41 @@
-<!doctype html><html lang=en-us>
-<head><meta charset=utf-8>
-<meta http-equiv=x-ua-compatible content="IE=edge">
-<meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Function ACQUIRE-RECURSIVE-LOCK, RELEASE-RECURSIVE-LOCK - Bordeaux-Threads</title>
-<meta name=description content="Common Lisp threading library">
-<meta name=generator content="Hugo 0.91.2">
-<link href=https://sionescu.github.io/bordeaux-threads//index.xml rel=alternate type=application/rss+xml>
-<link rel=canonical href=https://sionescu.github.io/bordeaux-threads/locks/acquire-release-recursive-lock/>
-<link rel=stylesheet href=https://sionescu.github.io/bordeaux-threads/css/theme.min.css>
-<script src=https://use.fontawesome.com/releases/v5.0.6/js/all.js></script>
-<link rel=stylesheet href=https://sionescu.github.io/bordeaux-threads/css/chroma.min.css>
-<script src=https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js></script>
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>Function ACQUIRE-RECURSIVE-LOCK, RELEASE-RECURSIVE-LOCK - Bordeaux-Threads</title><meta name=description content="Common Lisp threading library"><meta name=generator content="Hugo 0.107.0"><link href=https://sionescu.github.io/bordeaux-threads//index.xml rel=alternate type=application/rss+xml><link rel=canonical href=https://sionescu.github.io/bordeaux-threads/locks/acquire-release-recursive-lock/><link rel=stylesheet href=https://sionescu.github.io/bordeaux-threads/css/theme.min.css><script src=https://use.fontawesome.com/releases/v5.0.6/js/all.js></script>
+<link rel=stylesheet href=https://sionescu.github.io/bordeaux-threads/css/chroma.min.css><script src=https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js></script>
 <script src=https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js></script>
-<script src=https://sionescu.github.io/bordeaux-threads/js/bundle.js></script><style>:root{}</style>
-<meta property="og:title" content="Function ACQUIRE-RECURSIVE-LOCK, RELEASE-RECURSIVE-LOCK">
-<meta property="og:description" content="Syntax: acquire-recursive-lock lock &key (wait t) timeout => generalized-boolean
+<script src=https://sionescu.github.io/bordeaux-threads/js/bundle.js></script><style>:root{}</style><meta property="og:title" content="Function ACQUIRE-RECURSIVE-LOCK, RELEASE-RECURSIVE-LOCK"><meta property="og:description" content="Syntax: acquire-recursive-lock lock &key (wait t) timeout => generalized-boolean
 release-recursive-lock lock => lock
 Arguments and values: lock -> a recursive-lock object.
 wait -> a generalized boolean.
 timeout -> a non-negative real number.
 generalized-boolean -> a generalized boolean.
 Description: Acquire lock for the calling thread.
-wait governs what happens if the lock is not available: if wait is true, the calling thread will wait until the lock is available and then acquire it; if wait is nil, acquire-recursive-lock will return immediately.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://sionescu.github.io/bordeaux-threads/locks/acquire-release-recursive-lock/"><meta property="article:section" content="locks">
-<meta property="article:published_time" content="2022-01-07T08:00:00+00:00">
-<meta property="article:modified_time" content="2022-01-07T08:00:00+00:00">
-<meta name=twitter:card content="summary">
-<meta name=twitter:title content="Function ACQUIRE-RECURSIVE-LOCK, RELEASE-RECURSIVE-LOCK">
-<meta name=twitter:description content="Syntax: acquire-recursive-lock lock &key (wait t) timeout => generalized-boolean
+wait governs what happens if the lock is not available: if wait is true, the calling thread will wait until the lock is available and then acquire it; if wait is nil, acquire-recursive-lock will return immediately."><meta property="og:type" content="article"><meta property="og:url" content="https://sionescu.github.io/bordeaux-threads/locks/acquire-release-recursive-lock/"><meta property="article:section" content="locks"><meta property="article:published_time" content="2022-01-07T08:00:00+00:00"><meta property="article:modified_time" content="2022-01-07T08:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Function ACQUIRE-RECURSIVE-LOCK, RELEASE-RECURSIVE-LOCK"><meta name=twitter:description content="Syntax: acquire-recursive-lock lock &key (wait t) timeout => generalized-boolean
 release-recursive-lock lock => lock
 Arguments and values: lock -> a recursive-lock object.
 wait -> a generalized boolean.
 timeout -> a non-negative real number.
 generalized-boolean -> a generalized boolean.
 Description: Acquire lock for the calling thread.
-wait governs what happens if the lock is not available: if wait is true, the calling thread will wait until the lock is available and then acquire it; if wait is nil, acquire-recursive-lock will return immediately.">
-<meta itemprop=name content="Function ACQUIRE-RECURSIVE-LOCK, RELEASE-RECURSIVE-LOCK">
-<meta itemprop=description content="Syntax: acquire-recursive-lock lock &key (wait t) timeout => generalized-boolean
+wait governs what happens if the lock is not available: if wait is true, the calling thread will wait until the lock is available and then acquire it; if wait is nil, acquire-recursive-lock will return immediately."><meta itemprop=name content="Function ACQUIRE-RECURSIVE-LOCK, RELEASE-RECURSIVE-LOCK"><meta itemprop=description content="Syntax: acquire-recursive-lock lock &key (wait t) timeout => generalized-boolean
 release-recursive-lock lock => lock
 Arguments and values: lock -> a recursive-lock object.
 wait -> a generalized boolean.
 timeout -> a non-negative real number.
 generalized-boolean -> a generalized boolean.
 Description: Acquire lock for the calling thread.
-wait governs what happens if the lock is not available: if wait is true, the calling thread will wait until the lock is available and then acquire it; if wait is nil, acquire-recursive-lock will return immediately."><meta itemprop=datePublished content="2022-01-07T08:00:00+00:00">
-<meta itemprop=dateModified content="2022-01-07T08:00:00+00:00">
-<meta itemprop=wordCount content="146">
-<meta itemprop=keywords content></head>
-<body><div class=container><header>
-<h1>Bordeaux-Threads</h1>
-<span class=version>Version 0.8.8</span>
-<a href=https://github.com/sionescu/bordeaux-threads class=github><i class="fab fa-github"></i></a>
-<p class=description>Common Lisp threading library</p>
-</header>
-<div class=global-menu>
-<nav>
-<ul>
-<li><a href=/bordeaux-threads/>Home</a></li></ul>
-</nav>
-</div>
-<div class=content-container>
-<main><h1>Function ACQUIRE-RECURSIVE-LOCK, RELEASE-RECURSIVE-LOCK</h1>
-<h4 id=syntax>Syntax:</h4>
-<p><strong>acquire-recursive-lock</strong> lock &key (wait t) timeout => generalized-boolean<br>
-<strong>release-recursive-lock</strong> lock => lock</p>
-<h4 id=arguments-and-values>Arguments and values:</h4>
-<p><em>lock</em> -> a <a href=../recursive-lock><strong>recursive-lock</strong></a> object.<br>
-<em>wait</em> -> a <a href=http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_g.htm#generalized_boolean>generalized
-boolean</a>.<br>
-<em>timeout</em> -> a non-negative real number.<br>
-<em>generalized-boolean</em> -> a <a href=http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_g.htm#generalized_boolean>generalized
-boolean</a>.</p>
-<h4 id=description>Description:</h4>
-<p>Acquire <code>lock</code> for the calling thread.</p>
-<p><code>wait</code> governs what happens if the lock is not available: if <code>wait</code> is
+wait governs what happens if the lock is not available: if wait is true, the calling thread will wait until the lock is available and then acquire it; if wait is nil, acquire-recursive-lock will return immediately."><meta itemprop=datePublished content="2022-01-07T08:00:00+00:00"><meta itemprop=dateModified content="2022-01-07T08:00:00+00:00"><meta itemprop=wordCount content="146"><meta itemprop=keywords content></head><body><div class=container><header><h1>Bordeaux-Threads</h1><span class=version>Version 0.8.8</span>
+<a href=https://github.com/sionescu/bordeaux-threads class=github><i class="fab fa-github"></i></a><p class=description>Common Lisp threading library</p></header><div class=global-menu><nav><ul><li><a href=/bordeaux-threads/>Home</a></li></ul></nav></div><div class=content-container><main><h1>Function ACQUIRE-RECURSIVE-LOCK, RELEASE-RECURSIVE-LOCK</h1><h4 id=syntax>Syntax:</h4><p><strong>acquire-recursive-lock</strong> lock &key (wait t) timeout => generalized-boolean<br><strong>release-recursive-lock</strong> lock => lock</p><h4 id=arguments-and-values>Arguments and values:</h4><p><em>lock</em> -> a <a href=../recursive-lock><strong>recursive-lock</strong></a> object.<br><em>wait</em> -> a <a href=http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_g.htm#generalized_boolean>generalized
+boolean</a>.<br><em>timeout</em> -> a non-negative real number.<br><em>generalized-boolean</em> -> a <a href=http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_g.htm#generalized_boolean>generalized
+boolean</a>.</p><h4 id=description>Description:</h4><p>Acquire <code>lock</code> for the calling thread.</p><p><code>wait</code> governs what happens if the lock is not available: if <code>wait</code> is
 true, the calling thread will wait until the lock is available and
 then acquire it; if <code>wait</code> is nil, <code>acquire-recursive-lock</code> will
 return immediately. If <code>wait</code> is true, <code>timeout</code> may specify a maximum
-amount of seconds to wait for the lock to become available.</p>
-<p><code>acquire-recursive-lock</code> returns
+amount of seconds to wait for the lock to become available.</p><p><code>acquire-recursive-lock</code> returns
 <a href=http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_t.htm#true>true</a>
 if the lock was acquired, otherwise
-<a href=http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_f.htm#false>false</a>.</p>
-<h4 id=exceptional-situations>Exceptional situations:</h4>
-<p>Signals an error of type
+<a href=http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_f.htm#false>false</a>.</p><h4 id=exceptional-situations>Exceptional situations:</h4><p>Signals an error of type
 <a href=http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error><strong>type-error</strong></a>
-if <code>lock</code> is not a <a href=../recursive-lock><strong>recursive-lock</strong></a> object.<br>
-Signals an error of type
+if <code>lock</code> is not a <a href=../recursive-lock><strong>recursive-lock</strong></a> object.<br>Signals an error of type
 <a href=http://www.lispworks.com/documentation/HyperSpec/Body/e_tp_err.htm#type-error><strong>type-error</strong></a>
-if <code>timeout</code> is neither nil nor a non-negative real number.</p>
-<h4 id=see-also>See also:</h4>
-<p><a href=../recursive-lock><strong>recursive-lock</strong></a></p>
-<h4 id=notes>Notes:</h4>
-<p>None.</p>
-<div class=edit-meta>
-Last updated on 2022-01-07
-<br>
-Published on 2022-01-07
-<br><a href=https://github.com/sionescu/bordeaux-threads/edit/master/content/locks/acquire-release-recursive-lock.md class=edit-page><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><nav class=pagination><a class="nav nav-prev" href=https://sionescu.github.io/bordeaux-threads/locks/make-recursive-lock/ title="Function MAKE-RECURSIVE-LOCK"><i class="fas fa-arrow-left" aria-hidden=true></i> Prev - Function MAKE-RECURSIVE-LOCK</a>
-<a class="nav nav-next" href=https://sionescu.github.io/bordeaux-threads/locks/with-recursive-lock-held/ title="Macro WITH-RECURSIVE-LOCK-HELD">Next - Macro WITH-RECURSIVE-LOCK-HELD <i class="fas fa-arrow-right" aria-hidden=true></i></a>
-</nav><footer><p class=powered>Powered by <a href=https://gohugo.io>Hugo</a>. Theme by <a href=https://themes.gohugo.io/hugo-theme-techdoc/>TechDoc</a>. Designed by <a href=https://github.com/thingsym/hugo-theme-techdoc>Thingsym</a>.</p>
-</footer>
-</main><div class=sidebar>
-<nav class=slide-menu>
-<ul>
-<li><a href=https://sionescu.github.io/bordeaux-threads/>Home</a></li>
-<li class=has-sub-menu><a href=https://sionescu.github.io/bordeaux-threads/threads/>Threads dictionary<span class="mark closed">+</span></a>
-<ul class=sub-menu>
-<li><a href=https://sionescu.github.io/bordeaux-threads/threads/class-thread/>Class THREAD</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/threads/thread-readers/>Function THREAD-NAME, THREAD-NATIVE-THREAD</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/threads/threadp/>Function: THREADP</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/threads/make-thread/>Function: MAKE-THREAD</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/threads/default-special-bindings/>Variable *DEFAULT-SPECIAL-BINDINGS*</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/threads/current-all-threads/>Function CURRENT-THREAD, ALL-THREADS</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/threads/join-thread/>Function JOIN-THREAD</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/threads/thread-yield/>Function THREAD-YIELD</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/threads/start-multiprocessing/>Function START-MULTIPROCESSING</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/threads/interrupt-thread/>Function INTERRUPT-THREAD</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/threads/signal-in-thread/>Function SIGNAL-IN-THREAD, WARN-IN-THREAD, ERROR-IN-THREAD</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/threads/destroy-thread/>Function DESTROY-THREAD</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/threads/thread-alive-p/>Function THREAD-ALIVE-P</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/threads/bordeaux-thread-error/>Condition type BORDEAUX-THREADS-ERROR</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/threads/abnormal-exit/>Condition type ABNORMAL-EXIT</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/threads/abnormal-exit-condition/>Function ABNORMAL-EXIT-CONDITION</a></li>
-</ul>
-</li>
-<li class="parent has-sub-menu"><a href=https://sionescu.github.io/bordeaux-threads/locks/>Locks dictionary<span class="mark opened">-</span></a>
-<ul class=sub-menu>
-<li><a href=https://sionescu.github.io/bordeaux-threads/locks/lock/>Class LOCK</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/locks/lockp/>Function LOCKP</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/locks/recursive-lock/>Class RECURSIVE-LOCK</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/locks/recursive-lock-p/>Function RECURSIVE-LOCK-P</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/locks/lock-readers/>Function LOCK-NAME, LOCK-NATIVE-LOCK</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/locks/native-lock/>Host type NATIVE-LOCK</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/locks/native-lock-p/>Function NATIVE-LOCK-P</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/locks/native-recursive-lock/>Host type NATIVE-RECURSIVE-LOCK</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/locks/native-recursive-lock-p/>Function NATIVE-RECURSIVE-LOCK-P</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/locks/make-lock/>Function MAKE-LOCK</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/locks/acquire-release-lock/>Function ACQUIRE-LOCK, RELEASE-LOCK</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/locks/with-lock-held/>Macro WITH-LOCK-HELD</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/locks/make-recursive-lock/>Function MAKE-RECURSIVE-LOCK</a></li>
-<li class=active><a href=https://sionescu.github.io/bordeaux-threads/locks/acquire-release-recursive-lock/>Function ACQUIRE-RECURSIVE-LOCK, RELEASE-RECURSIVE-LOCK</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/locks/with-recursive-lock-held/>Macro WITH-RECURSIVE-LOCK-HELD</a></li>
-</ul>
-</li>
-<li class=has-sub-menu><a href=https://sionescu.github.io/bordeaux-threads/condition-variables/>Condition Variables dictionary<span class="mark closed">+</span></a>
-<ul class=sub-menu>
-<li><a href=https://sionescu.github.io/bordeaux-threads/condition-variables/condition-variable/>Class CONDITION-VARIABLE</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/condition-variables/condition-variable-p/>Function CONDITION-VARIABLE-P</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/condition-variables/make-condition-variable/>Function MAKE-CONDITION-VARIABLE</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/condition-variables/condition-wait/>Function CONDITION-WAIT</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/condition-variables/condition-notify/>Function CONDITION-NOTIFY</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/condition-variables/condition-broadcast/>Function CONDITION-BROADCAST</a></li>
-</ul>
-</li>
-<li class=has-sub-menu><a href=https://sionescu.github.io/bordeaux-threads/semaphores/>Semaphores dictionary<span class="mark closed">+</span></a>
-<ul class=sub-menu>
-<li><a href=https://sionescu.github.io/bordeaux-threads/semaphores/semaphore/>Class SEMAPHORE</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/semaphores/semaphorep/>Function SEMAPHOREP</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/semaphores/make-semaphore/>Function MAKE-SEMAPHORE</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/semaphores/signal-semaphore/>Function SIGNAL-SEMAPHORE</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/semaphores/wait-on-semaphore/>Function WAIT-ON-SEMAPHORE</a></li>
-</ul>
-</li>
-<li class=has-sub-menu><a href=https://sionescu.github.io/bordeaux-threads/atomics/>Atomics dictionary<span class="mark closed">+</span></a>
-<ul class=sub-menu>
-<li><a href=https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer/>Class ATOMIC-INTEGER</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-p/>Function ATOMIC-INTEGER-P</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/atomics/make-atomic-integer/>Function MAKE-ATOMIC-INTEGER</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-cas/>Function ATOMIC-INTEGER-CAS</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-decf/>Function ATOMIC-INTEGER-DECF</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-incf/>Function ATOMIC-INTEGER-INCF</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-value/>Function ATOMIC-INTEGER-VALUE</a></li>
-</ul>
-</li>
-<li class=has-sub-menu><a href=https://sionescu.github.io/bordeaux-threads/timeouts/>Timeouts dictionary<span class="mark closed">+</span></a>
-<ul class=sub-menu>
-<li><a href=https://sionescu.github.io/bordeaux-threads/timeouts/timeout/>Class TIMEOUT</a></li>
-<li><a href=https://sionescu.github.io/bordeaux-threads/timeouts/with-timeout/>Macro WITH-TIMEOUT</a></li>
-</ul>
-</li>
-</ul>
-</nav>
-<div class=sidebar-footer></div>
-</div>
-</div><a href=# id=backtothetop-fixed class=backtothetop data-backtothetop-duration=600 data-backtothetop-easing=easeOutQuart data-backtothetop-fixed-fadein=1000 data-backtothetop-fixed-fadeout=1000 data-backtothetop-fixed-bottom=10 data-backtothetop-fixed-right=20>
-<span class="fa-layers fa-fw">
-<i class="fas fa-circle"></i>
-<i class="fas fa-arrow-circle-up"></i>
-</span></a>
-</div>
-</body>
-</html>
+if <code>timeout</code> is neither nil nor a non-negative real number.</p><h4 id=see-also>See also:</h4><p><a href=../recursive-lock><strong>recursive-lock</strong></a></p><h4 id=notes>Notes:</h4><p>None.</p><div class=edit-meta>Last updated on 2022-01-07<br>Published on 2022-01-07<br><a href=https://github.com/sionescu/bordeaux-threads/edit/master/content/locks/acquire-release-recursive-lock.md class=edit-page><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><nav class=pagination><a class="nav nav-prev" href=https://sionescu.github.io/bordeaux-threads/locks/make-recursive-lock/ title="Function MAKE-RECURSIVE-LOCK"><i class="fas fa-arrow-left" aria-hidden=true></i> Prev - Function MAKE-RECURSIVE-LOCK</a>
+<a class="nav nav-next" href=https://sionescu.github.io/bordeaux-threads/locks/with-recursive-lock-held/ title="Macro WITH-RECURSIVE-LOCK-HELD">Next - Macro WITH-RECURSIVE-LOCK-HELD <i class="fas fa-arrow-right" aria-hidden=true></i></a></nav><footer><p class=powered>Powered by <a href=https://gohugo.io>Hugo</a>. Theme by <a href=https://themes.gohugo.io/hugo-theme-techdoc/>TechDoc</a>. Designed by <a href=https://github.com/thingsym/hugo-theme-techdoc>Thingsym</a>.</p></footer></main><div class=sidebar><nav class=slide-menu><ul><li><a href=https://sionescu.github.io/bordeaux-threads/>Home</a></li><li class=has-sub-menu><a href=https://sionescu.github.io/bordeaux-threads/threads/>Threads dictionary<span class="mark closed">+</span></a><ul class=sub-menu><li><a href=https://sionescu.github.io/bordeaux-threads/threads/class-thread/>Class THREAD</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/threads/thread-readers/>Function THREAD-NAME, THREAD-NATIVE-THREAD</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/threads/threadp/>Function: THREADP</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/threads/make-thread/>Function: MAKE-THREAD</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/threads/default-special-bindings/>Variable *DEFAULT-SPECIAL-BINDINGS*</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/threads/current-all-threads/>Function CURRENT-THREAD, ALL-THREADS</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/threads/join-thread/>Function JOIN-THREAD</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/threads/thread-yield/>Function THREAD-YIELD</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/threads/start-multiprocessing/>Function START-MULTIPROCESSING</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/threads/interrupt-thread/>Function INTERRUPT-THREAD</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/threads/signal-in-thread/>Function SIGNAL-IN-THREAD, WARN-IN-THREAD, ERROR-IN-THREAD</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/threads/destroy-thread/>Function DESTROY-THREAD</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/threads/thread-alive-p/>Function THREAD-ALIVE-P</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/threads/bordeaux-thread-error/>Condition type BORDEAUX-THREADS-ERROR</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/threads/abnormal-exit/>Condition type ABNORMAL-EXIT</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/threads/abnormal-exit-condition/>Function ABNORMAL-EXIT-CONDITION</a></li></ul></li><li class="parent has-sub-menu"><a href=https://sionescu.github.io/bordeaux-threads/locks/>Locks dictionary<span class="mark opened">-</span></a><ul class=sub-menu><li><a href=https://sionescu.github.io/bordeaux-threads/locks/lock/>Class LOCK</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/locks/lockp/>Function LOCKP</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/locks/recursive-lock/>Class RECURSIVE-LOCK</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/locks/recursive-lock-p/>Function RECURSIVE-LOCK-P</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/locks/lock-readers/>Function LOCK-NAME, LOCK-NATIVE-LOCK</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/locks/native-lock/>Host type NATIVE-LOCK</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/locks/native-lock-p/>Function NATIVE-LOCK-P</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/locks/native-recursive-lock/>Host type NATIVE-RECURSIVE-LOCK</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/locks/native-recursive-lock-p/>Function NATIVE-RECURSIVE-LOCK-P</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/locks/make-lock/>Function MAKE-LOCK</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/locks/acquire-release-lock/>Function ACQUIRE-LOCK, RELEASE-LOCK</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/locks/with-lock-held/>Macro WITH-LOCK-HELD</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/locks/make-recursive-lock/>Function MAKE-RECURSIVE-LOCK</a></li><li class=active><a href=https://sionescu.github.io/bordeaux-threads/locks/acquire-release-recursive-lock/>Function ACQUIRE-RECURSIVE-LOCK, RELEASE-RECURSIVE-LOCK</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/locks/with-recursive-lock-held/>Macro WITH-RECURSIVE-LOCK-HELD</a></li></ul></li><li class=has-sub-menu><a href=https://sionescu.github.io/bordeaux-threads/condition-variables/>Condition Variables dictionary<span class="mark closed">+</span></a><ul class=sub-menu><li><a href=https://sionescu.github.io/bordeaux-threads/condition-variables/condition-variable/>Class CONDITION-VARIABLE</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/condition-variables/condition-variable-p/>Function CONDITION-VARIABLE-P</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/condition-variables/make-condition-variable/>Function MAKE-CONDITION-VARIABLE</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/condition-variables/condition-wait/>Function CONDITION-WAIT</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/condition-variables/condition-notify/>Function CONDITION-NOTIFY</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/condition-variables/condition-broadcast/>Function CONDITION-BROADCAST</a></li></ul></li><li class=has-sub-menu><a href=https://sionescu.github.io/bordeaux-threads/semaphores/>Semaphores dictionary<span class="mark closed">+</span></a><ul class=sub-menu><li><a href=https://sionescu.github.io/bordeaux-threads/semaphores/semaphore/>Class SEMAPHORE</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/semaphores/semaphorep/>Function SEMAPHOREP</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/semaphores/make-semaphore/>Function MAKE-SEMAPHORE</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/semaphores/signal-semaphore/>Function SIGNAL-SEMAPHORE</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/semaphores/wait-on-semaphore/>Function WAIT-ON-SEMAPHORE</a></li></ul></li><li class=has-sub-menu><a href=https://sionescu.github.io/bordeaux-threads/atomics/>Atomics dictionary<span class="mark closed">+</span></a><ul class=sub-menu><li><a href=https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer/>Class ATOMIC-INTEGER</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-p/>Function ATOMIC-INTEGER-P</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/atomics/make-atomic-integer/>Function MAKE-ATOMIC-INTEGER</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-cas/>Function ATOMIC-INTEGER-CAS</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-decf/>Function ATOMIC-INTEGER-DECF</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-incf/>Function ATOMIC-INTEGER-INCF</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-value/>Function ATOMIC-INTEGER-VALUE</a></li></ul></li><li class=has-sub-menu><a href=https://sionescu.github.io/bordeaux-threads/timeouts/>Timeouts dictionary<span class="mark closed">+</span></a><ul class=sub-menu><li><a href=https://sionescu.github.io/bordeaux-threads/timeouts/timeout/>Class TIMEOUT</a></li><li><a href=https://sionescu.github.io/bordeaux-threads/timeouts/with-timeout/>Macro WITH-TIMEOUT</a></li></ul></li></ul></nav><div class=sidebar-footer></div></div></div><a href=# id=backtothetop-fixed class=backtothetop data-backtothetop-duration=600 data-backtothetop-easing=easeOutQuart data-backtothetop-fixed-fadein=1000 data-backtothetop-fixed-fadeout=1000 data-backtothetop-fixed-bottom=10 data-backtothetop-fixed-right=20><span class="fa-layers fa-fw"><i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i></span></a></div></body></html>
