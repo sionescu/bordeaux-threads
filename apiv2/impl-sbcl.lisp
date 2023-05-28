@@ -65,7 +65,8 @@
 ;;; Recursive locks
 ;;;
 
-(deftype native-recursive-lock () 'sb-thread:mutex)
+(deftype native-recursive-lock ()
+  'sb-thread:mutex)
 
 (defun %make-recursive-lock (name)
   (sb-thread:make-mutex :name name))

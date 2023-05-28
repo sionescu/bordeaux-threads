@@ -48,6 +48,8 @@
    #:lock-native-lock
    #:native-lock
    #:native-lock-p
+   #:native-recursive-lock
+   #:native-recursive-lock-p
 
    #:make-lock
    #:acquire-lock
