@@ -172,7 +172,7 @@ It is safe to call repeatedly."
                     &key
                       name
                       (initial-bindings *default-special-bindings*)
-                      (trap-conditions t))
+                      trap-conditions)
   "Creates and returns a thread named NAME, which will call the
   function FUNCTION with no arguments: when FUNCTION returns, the
   thread terminates.
