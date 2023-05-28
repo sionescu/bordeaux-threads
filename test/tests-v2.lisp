@@ -32,7 +32,8 @@
 #+#.(bt2::implemented-p* 'bt2:join-thread)
 (test current-thread.error
   (let ((thread (make-thread (lambda ()
-                               (error "FOOBAR")))))
+                               (error "FOOBAR"))
+                             :trap-conditions t)))
     (signals abnormal-exit (join-thread thread))))
 
 (test threadp.should-identify-threads
@@ -149,7 +150,7 @@
 (test thread-termination.handle-condition
   (flet ((thread-fn ()
            (error 'test-error)))
-    (let ((thread (make-thread #'thread-fn)))
+    (let ((thread (make-thread #'thread-fn :trap-conditions t)))
       (handler-case
           (join-thread thread)
         (abnormal-exit (e)
