@@ -496,10 +496,10 @@ are threads waiting."
     (is (= 4 (atomic-integer-decf aint 1)))))
 
 #+(or abcl allegro ccl clisp ecl lispworks sbcl)
-(test atomic-integer-cas.return-value
+(test atomic-integer-compare-and-swap.return-value
   (let ((aint (make-atomic-integer :value 4)))
-    (is (null (atomic-integer-cas aint 0 100)))
-    (is (eql t (atomic-integer-cas aint 4 7)))))
+    (is (null (atomic-integer-compare-and-swap aint 0 100)))
+    (is (eql t (atomic-integer-compare-and-swap aint 4 7)))))
 
 #+(or abcl allegro ccl clisp ecl lispworks sbcl)
 (test atomic-integer.concurrency

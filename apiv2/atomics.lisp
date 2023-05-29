@@ -77,7 +77,7 @@ The counter is a machine word: 32/64 bits depending on CPU."
   #-(or allegro ccl clasp clisp ecl genera lispworks sbcl)
   (signal-not-implemented 'make-atomic-integer))
 
-(defun atomic-integer-cas (atomic-integer old new)
+(defun atomic-integer-compare-and-swap (atomic-integer old new)
   "If the current value of `ATOMIC-INTEGER` is equal to `OLD`, replace
 it with `NEW`.
 

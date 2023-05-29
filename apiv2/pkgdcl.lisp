@@ -81,7 +81,7 @@
   ;; Atomic operations
   (:export
    #:make-atomic-integer
-   #:atomic-integer-cas
+   #:atomic-integer-compare-and-swap
    #:atomic-integer-decf
    #:atomic-integer-incf
    #:atomic-integer-value)
