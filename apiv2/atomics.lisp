@@ -48,7 +48,8 @@
   #+64-bit '(unsigned-byte 64))
 
 (defstruct (atomic-integer
-            (:constructor %make-atomic-integer ()))
+             (:constructor %make-atomic-integer ())
+             #+ecl (:atomic-accessors t))
   "Wrapper for an UNSIGNED-BYTE that allows atomic
 increment, decrement and swap.
 The counter is a machine word: 32/64 bits depending on CPU."
