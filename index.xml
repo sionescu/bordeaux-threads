@@ -76,7 +76,7 @@ Arguments and values: object -&amp;gt; an object.
 generalized-boolean -&amp;gt; a generalized boolean.
 Description: Returns true if object is of type thread, otherwise false.
 Exceptional situations: None.
-Notes: (threadp object) == (typep object 'thread)</description></item><item><title>Function ATOMIC-INTEGER-CAS</title><link>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-cas/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-cas/</guid><description>Syntax: atomic-integer-cas atomic-integer old new =&amp;gt; generalized-boolean
+Notes: (threadp object) == (typep object 'thread)</description></item><item><title>Function ATOMIC-INTEGER-COMPARE-AND-SWAP</title><link>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-compare-and-swap/</link><pubDate>Fri, 07 Jan 2022 08:00:00 +0000</pubDate><guid>https://sionescu.github.io/bordeaux-threads/atomics/atomic-integer-compare-and-swap/</guid><description>Syntax: atomic-integer-compare-and-swap atomic-integer old new =&amp;gt; generalized-boolean
 Arguments and values: atomic-integer -&amp;gt; an atomic-integer object.
 old, new -&amp;gt; non-negative integers.
 generalized-boolean -&amp;gt; a generalized boolean.
