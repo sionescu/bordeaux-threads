@@ -1,12 +1,12 @@
 ---
 date: 2022-01-07T08:00:00Z
-title: Function ATOMIC-INTEGER-CAS
+title: Function ATOMIC-INTEGER-COMPARE-AND-SWAP
 weight: 4
 ---
 
 #### Syntax:
 
-**atomic-integer-cas** atomic-integer old new => generalized-boolean
+**atomic-integer-compare-and-swap** atomic-integer old new => generalized-boolean
 
 #### Arguments and values:
 
