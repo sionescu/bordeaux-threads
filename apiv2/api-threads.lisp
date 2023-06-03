@@ -29,7 +29,7 @@
 (define-global-var* .thread-counter. -1)
 
 (defun make-unknown-thread-name ()
-  (format nil "Unkown thread ~S"
+  (format nil "Unknown thread ~S"
           (with-lock-held (.known-threads-lock.)
             (incf .thread-counter.))))
 
