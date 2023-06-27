@@ -8,8 +8,12 @@ Distributed under the MIT license (see LICENSE file)
 
 (in-package #:bordeaux-threads)
 
+(eval-when (:compile-toplevel :execute)
+  (unless (<= ext:+ecl-version-number+ 210201)
+    (pushnew :has-timeouts *features*)))
+
 ;;; documentation on the ECL Multiprocessing interface can be found at
-;;; http://ecls.sourceforge.net/cgi-bin/view/Main/MultiProcessing
+;;; https://ecl.common-lisp.dev/static/manual/Native-threads.html
 
 (deftype thread ()
   'mp:process)
@@ -74,11 +78,12 @@ Distributed under the MIT license (see LICENSE file)
 
 (defun condition-wait (condition-variable lock &key timeout)
   (if timeout
-      (handler-case (with-timeout (timeout)
-                      (mp:condition-variable-wait condition-variable lock))
-        (timeout ()
-          (acquire-lock lock)
-          nil))
+      #-has-timeouts (handler-case (with-timeout (timeout)
+                                     (mp:condition-variable-wait condition-variable lock))
+                       (timeout ()
+                         (acquire-lock lock)
+                         nil))
+      #+has-timeouts (mp:condition-variable-timedwait condition-variable lock timeout)
       (mp:condition-variable-wait condition-variable lock)))
 
 (defun condition-notify (condition-variable)
@@ -110,5 +115,8 @@ Distributed under the MIT license (see LICENSE file)
 
 (defun join-thread (thread)
   (mp:process-join thread))
+
+(eval-when (:compile-toplevel :execute)
+  (setf *features* (remove :has-timeouts *features*)))
 
 (mark-supported)

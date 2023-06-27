@@ -2,6 +2,10 @@
 
 (in-package :bordeaux-threads-2)
 
+(eval-when (:compile-toplevel :execute)
+  (unless (<= ext:+ecl-version-number+ 210201)
+    (pushnew :has-timeouts *features*)))
+
 ;;;
 ;;; Threads
 ;;;
@@ -51,20 +55,35 @@
 (defun %make-lock (name)
   (mp:make-lock :name name))
 
-(mark-not-implemented 'acquire-lock :timeout)
+#-has-timeouts
+(progn
+  (mark-not-implemented 'acquire-lock :timeout)
+  (defun %acquire-lock (lock waitp timeout)
+    (when timeout
+      (signal-not-implemented 'acquire-lock :timeout))
+    (mp:get-lock lock waitp)))
+
+#+has-timeouts
 (defun %acquire-lock (lock waitp timeout)
-  (when timeout
-    (signal-not-implemented 'acquire-lock :timeout))
-  (mp:get-lock lock waitp))
+  (mp:get-lock lock (cond ((not waitp) nil)
+                          (timeout timeout)
+                          (t t))))
 
 (defun %release-lock (lock)
   (mp:giveup-lock lock))
 
-(mark-not-implemented 'with-lock-held :timeout)
+#-has-timeouts
+(progn
+  (mark-not-implemented 'with-lock-held :timeout)
+  (defmacro %with-lock ((place timeout) &body body)
+    (if timeout
+        `(signal-not-implemented 'with-lock-held :timeout)
+        `(mp:with-lock (,place) ,@body))))
+
+#+has-timeouts
 (defmacro %with-lock ((place timeout) &body body)
-  (if timeout
-      `(signal-not-implemented 'with-lock-held :timeout)
-      `(mp:with-lock (,place) ,@body)))
+  `(mp:with-lock (,place :wait-form (or ,timeout t))
+     ,@body))
 
 ;;;
 ;;; Recursive locks
@@ -76,20 +95,35 @@
 (defun %make-recursive-lock (name)
   (mp:make-lock :name name :recursive t))
 
-(mark-not-implemented 'acquire-recursive-lock :timeout)
+#-has-timeouts
+(progn
+  (mark-not-implemented 'acquire-recursive-lock :timeout)
+  (defun %acquire-recursive-lock (lock waitp timeout)
+    (when timeout
+      (signal-not-implemented 'acquire-recursive-lock :timeout))
+    (mp:get-lock lock waitp)))
+
+#+has-timeouts
 (defun %acquire-recursive-lock (lock waitp timeout)
-  (when timeout
-    (signal-not-implemented 'acquire-recursive-lock :timeout))
-  (mp:get-lock lock waitp))
+  (mp:get-lock lock (cond ((not waitp) nil)
+                          (timeout timeout)
+                          (t t))))
 
 (defun %release-recursive-lock (lock)
   (mp:giveup-lock lock))
 
-(mark-not-implemented 'with-recursive-lock-held :timeout)
+#-has-timeouts
+(progn
+  (mark-not-implemented 'with-recursive-lock-held :timeout)
+  (defmacro %with-recursive-lock ((place timeout) &body body)
+    (if timeout
+        `(signal-not-implemented 'with-recursive-lock-held :timeout)
+        `(mp:with-lock (,place) ,@body))))
+
+#+has-timeouts
 (defmacro %with-recursive-lock ((place timeout) &body body)
-  (if timeout
-      `(signal-not-implemented 'with-recursive-lock-held :timeout)
-      `(mp:with-lock (,place) ,@body)))
+  `(mp:with-lock (,place :wait-form (or ,timeout t))
+     ,@body))
 
 
 ;;;
@@ -110,11 +144,12 @@
      (mp:wait-on-semaphore semaphore)
      t)
     ((plusp timeout)
-     (handler-case
-         (with-timeout (timeout)
-           (mp:wait-on-semaphore semaphore)
-           t)
-       (timeout () nil)))
+     #-has-timeouts (handler-case
+                        (with-timeout (timeout)
+                          (mp:wait-on-semaphore semaphore)
+                          t)
+                      (timeout () nil))
+     #+has-timeouts (mp:semaphore-wait semaphore 1 timeout))
     (t
      (if (mp:try-get-semaphore semaphore) t nil))))
 
@@ -132,12 +167,13 @@
 
 (defun %condition-wait (cv lock timeout)
   (if timeout
-      (handler-case
-          (with-timeout (timeout)
-            (mp:condition-variable-wait cv lock))
-        (timeout ()
-          (%acquire-lock lock t nil)
-          nil))
+      #-has-timeouts (handler-case
+                         (with-timeout (timeout)
+                           (mp:condition-variable-wait cv lock))
+                       (timeout ()
+                         (%acquire-lock lock t nil)
+                         nil))
+      #+has-timeouts (mp:condition-variable-timedwait cv lock timeout)
       (mp:condition-variable-wait cv lock)))
 
 (defun %condition-notify (cv)
@@ -145,3 +181,6 @@
 
 (defun %condition-broadcast (cv)
   (mp:condition-variable-broadcast cv))
+
+(eval-when (:compile-toplevel :execute)
+  (setf *features* (remove :has-timeouts *features*)))
