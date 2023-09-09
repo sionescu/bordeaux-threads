@@ -9,7 +9,10 @@ structures such as queues, mailboxes, thread pools, execution graphs,
 etc&mldr; tend to be more specialized and are better left to other
 libraries.</p><p>This document describes the second version of the API (APIv2), which
 differs from the first version in a few key points and aims to provide
-a more uniformous interface across all Common Lisp implementations.</p><h2 id=host-support>Host support</h2><p>When Bordeaux-Threads was created, most Common Lisp implementations
+a more uniformous interface across all Common Lisp implementations.</p><h2 id=migration-from-apiv1-to-apiv2>Migration from APIv1 to APIv2</h2><p>APIv2 is mostly compatible with v1, and in most cases it should
+suffice to replace all references to package <code>bordeaux-threads</code> (or
+<code>bt</code>) with <code>bordeaux-threads-2</code> (or <code>bt2</code>).</p><p>For more details, there&rsquo;s a <a href=https://blog.cddr.org/posts/2023-05-27-bordeaux-threads-apiv2/>blog
+post</a>.</p><h2 id=host-support>Host support</h2><p>When Bordeaux-Threads was created, most Common Lisp implementations
 were either single-threaded or provided user-space scheduling akin to
 green threads, and therefore Bordeaux-Threads tried to support all
 such implementations as well as possible.</p><p>Bordeaux-Threads APIV2 no longer supports single-threaded
