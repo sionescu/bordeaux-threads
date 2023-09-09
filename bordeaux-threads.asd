@@ -56,7 +56,8 @@
                          (:file "impl-mcl" :if-feature :digitool)
                          (:file "impl-sbcl" :if-feature :sbcl)
                          (:file "impl-scl" :if-feature :scl)
-                         (:file "impl-lispworks-condition-variables" :if-feature :lispworks)
+                         (:file "impl-lispworks-condition-variables" :if-feature (:and :lispworks
+                                                                                       (:or :lispworks4 :lispworks5)))
                          (:file "condition-variables" :if-feature :digitool)
                          (:file "default-implementations")))
                (:module "api-v2"
