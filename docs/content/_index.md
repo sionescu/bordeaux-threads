@@ -16,6 +16,15 @@ This document describes the second version of the API (APIv2), which
 differs from the first version in a few key points and aims to provide
 a more uniformous interface across all Common Lisp implementations.
 
+## Migration from APIv1 to APIv2
+
+APIv2 is mostly compatible with v1, and in most cases it should
+suffice to replace all references to package `bordeaux-threads` (or
+`bt`) with `bordeaux-threads-2` (or `bt2`).
+
+For more details, there's a [blog
+post](https://blog.cddr.org/posts/2023-05-27-bordeaux-threads-apiv2/).
+
 ## Host support
 
 When Bordeaux-Threads was created, most Common Lisp implementations

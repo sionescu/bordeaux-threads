@@ -41,6 +41,7 @@ Distributed under the MIT license (see LICENSE file)
        (mt:mutex-recursive-p object)))
 
 (defun make-lock (&optional name)
+  (warn "Bordeaux-Threads APIv1 is deprecated. Please migrate to APIv2.")
   (mt:make-mutex :name (or name "Anonymous lock")))
 
 (defun acquire-lock (lock &optional (wait-p t))

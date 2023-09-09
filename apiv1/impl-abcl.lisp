@@ -59,6 +59,7 @@ Distributed under the MIT license (see LICENSE file)
   (typep object 'mutex-recursive))
 
 (defun make-lock (&optional name)
+  (warn "Bordeaux-Threads APIv1 is deprecated. Please migrate to APIv2.")
   (make-mutex 
    :name (or name "Anonymous lock")
    :lock (jnew "java.util.concurrent.locks.ReentrantLock")))

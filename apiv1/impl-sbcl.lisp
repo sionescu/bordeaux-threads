@@ -41,6 +41,7 @@ Distributed under the MIT license (see LICENSE file)
   (typep object 'sb-thread:mutex))
 
 (defun make-lock (&optional name)
+  (warn "Bordeaux-Threads APIv1 is deprecated. Please migrate to APIv2.")
   (sb-thread:make-mutex :name (or name "Anonymous lock")))
 
 (defun acquire-lock (lock &optional (wait-p t))

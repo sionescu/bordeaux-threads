@@ -34,6 +34,7 @@ Distributed under the MIT license (see LICENSE file)
   (mezzano.supervisor:mutex-p object))
 
 (defun make-lock (&optional name)
+  (warn "Bordeaux-Threads APIv1 is deprecated. Please migrate to APIv2.")
   (mezzano.supervisor:make-mutex name))
 
 (defun acquire-lock (lock &optional (wait-p t))

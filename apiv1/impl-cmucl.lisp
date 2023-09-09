@@ -51,6 +51,7 @@ Distributed under the MIT license (see LICENSE file)
   (typep object 'mp::recursive-lock))
 
 (defun make-lock (&optional name)
+  (warn "Bordeaux-Threads APIv1 is deprecated. Please migrate to APIv2.")
   (mp:make-lock (or name "Anonymous lock")
                 :kind :error-check))
 
