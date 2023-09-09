@@ -59,10 +59,6 @@ It is safe to call repeatedly."
   (%make-thread (binding-default-specials function initial-bindings)
                 (or name "Anonymous thread")))
 
-(define-compiler-macro make-thread (&whole form)
-  (warn "Bordeaux-Threads APIv1 is deprecated. Please migrate to APIv2.")
-  form)
-
 (defdfun %make-thread (function name)
   "The actual implementation-dependent function that creates threads."
   (declare (ignore function name))
@@ -105,10 +101,6 @@ It is safe to call repeatedly."
   ;; be freshly consed - EQ comparison of locks?
   (declare (ignore name))
   (list nil))
-
-(define-compiler-macro make-lock (&whole form)
-  (warn "Bordeaux-Threads APIv1 is deprecated. Please migrate to APIv2.")
-  form)
 
 (defdfun acquire-lock (lock &optional wait-p)
   "Acquire the lock LOCK for the calling thread.
