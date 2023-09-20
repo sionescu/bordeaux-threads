@@ -43,7 +43,6 @@ Distributed under the MIT license (see LICENSE file)
        (mp:recursive-lock-p object)))
 
 (defun make-lock (&optional name)
-  (warn "Bordeaux-Threads APIv1 is deprecated. Please migrate to APIv2.")
   (mp:make-lock :name (or name :anonymous)))
 
 (defun acquire-lock (lock &optional (wait-p t))

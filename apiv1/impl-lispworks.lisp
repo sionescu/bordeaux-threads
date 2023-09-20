@@ -62,7 +62,6 @@ Distributed under the MIT license (see LICENSE file)
        (mp:lock-recursive-p object)))
 
 (defun make-lock (&optional name)
-  (warn "Bordeaux-Threads APIv1 is deprecated. Please migrate to APIv2.")
   (mp:make-lock :name (or name "Anonymous lock")
                 #-(or lispworks4 lispworks5) :recursivep
                 #-(or lispworks4 lispworks5) nil))

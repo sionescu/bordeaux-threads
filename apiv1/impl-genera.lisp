@@ -39,7 +39,6 @@ Distributed under the MIT license (see LICENSE file)
   lock-argument)
 
 (defun make-lock (&optional name)
-  (warn "Bordeaux-Threads APIv1 is deprecated. Please migrate to APIv2.")
   (let ((lock (process:make-lock (or name "Anonymous lock"))))
     (make-lock-internal :lock lock
                         :lock-argument nil)))
