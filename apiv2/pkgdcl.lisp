@@ -80,6 +80,7 @@
 
   ;; Atomic operations
   (:export
+   #:atomic-integer
    #:make-atomic-integer
    #:atomic-integer-compare-and-swap
    #:atomic-integer-decf
