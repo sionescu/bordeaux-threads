@@ -1,8 +1,8 @@
 ;;;; -*- Mode: LISP; Syntax: ANSI-Common-lisp; Base: 10; Package: CL-USER -*-
 ;;;; The above modeline is required for Genera. Do not change.
 
-(defpackage :bordeaux-threads-2
-  (:nicknames :bt2)
+(defpackage :bt2
+  (:nicknames :bordeaux-threads-2)
   (:use :common-lisp :alexandria :global-vars)
   #+abcl
   (:import-from :java #:jnew #:jcall #:jclass #:jmethod)
