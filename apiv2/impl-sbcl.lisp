@@ -52,11 +52,42 @@
 (defun %make-lock (name)
   (sb-thread:make-mutex :name name))
 
+(defun %try-lock (lock)
+  (sb-sys:without-interrupts
+    (sb-thread:grab-mutex lock :waitp nil)))
+
+(defun %lock (lock)
+  (sb-sys:without-interrupts
+    (sb-sys:allow-with-interrupts
+      (loop :while (not (sb-thread:grab-mutex lock :waitp t)))
+      t)))
+
+(defun %timedlock (lock timeout)
+  (let ((deadline (+ (get-internal-real-time)
+                     (* internal-time-units-per-second
+                        timeout))))
+    (sb-sys:without-interrupts
+      (sb-sys:allow-with-interrupts
+        (loop :while (not (sb-thread:grab-mutex lock :waitp t :timeout timeout))
+              :for now := (get-internal-real-time)
+              :do (if (>= now deadline)
+                      (return-from %timedlock nil)
+                      (setf timeout (/ (- deadline now)
+                                       internal-time-units-per-second))))
+        t))))
+
 (defun %acquire-lock (lock waitp timeout)
-  (sb-thread:grab-mutex lock :waitp waitp :timeout timeout))
+  (cond
+    ((not waitp)
+     (%try-lock lock))
+    ((null timeout)
+     (%lock lock))
+    (t
+     (%timedlock lock timeout))))
 
 (defun %release-lock (lock)
-  (sb-thread:release-mutex lock))
+  (sb-sys:without-interrupts
+    (sb-thread:release-mutex lock)))
 
 (defmacro %with-lock ((place timeout) &body body)
   `(sb-thread:with-mutex (,place :timeout ,timeout) ,@body))
