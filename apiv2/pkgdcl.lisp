@@ -10,7 +10,7 @@
   (:import-from :sb-ext #:timeout)
 
   (:export
-   #:*supports-threads-p*
+   #:+supports-threads-p+
    #:bordeaux-threads-error
    #:not-implemented)
 
