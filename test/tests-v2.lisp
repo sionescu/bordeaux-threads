@@ -314,48 +314,51 @@
 ;;;
 
 #+#.(bt2::implemented-p* 'bt2:make-semaphore)
-(progn
-  (test semaphore.typed
-    (is (typep (make-semaphore) 'semaphore))
-    (is (semaphorep (make-semaphore)))
-    (is (not (semaphorep (make-lock)))))
+(test semaphore.typed
+  (is (typep (make-semaphore) 'semaphore))
+  (is (semaphorep (make-semaphore)))
+  (is (not (semaphorep (make-lock)))))
 
-  (test semaphore.signal
-    (let ((sem (make-semaphore)))
-      (make-thread (lambda () (sleep 0.4) (signal-semaphore sem)))
-      (is-true (wait-on-semaphore sem))
-      (is-true (signal-semaphore sem))))
+#+#.(bt2::implemented-p* 'bt2:signal-semaphore)
+(test semaphore.signal
+  (let ((sem (make-semaphore)))
+    (make-thread (lambda () (sleep 0.4) (signal-semaphore sem)))
+    (is-true (wait-on-semaphore sem))
+    (is-true (signal-semaphore sem))))
 
-  (test semaphore.wait-on-nonzero-creation
-    "Tests that `WAIT-ON-SEMAPHORE` correctly returns T
+#+#.(bt2::implemented-p* 'bt2:wait-on-semaphore :timeout)
+(test semaphore.wait-on-nonzero-creation
+  "Tests that `WAIT-ON-SEMAPHORE` correctly returns T
 on a smaphore that was initialized to a non-zero value.
 In other words, it tests that `SIGNAL-SEMAPHORE` is not
 the only cause that can wake a waiter."
-    (let ((sem (make-semaphore :count 1)))
-      (is-true (wait-on-semaphore sem :timeout 0))))
+  (let ((sem (make-semaphore :count 1)))
+    (is-true (wait-on-semaphore sem :timeout 0))))
 
-  (test semaphore.wait.timeout
-    (let* ((sem (make-semaphore)))
-      (is-false (wait-on-semaphore sem :timeout 0))
-      (is-false (wait-on-semaphore sem :timeout 0.2))))
+#+#.(bt2::implemented-p* 'bt2:wait-on-semaphore :timeout)
+(test semaphore.wait.timeout
+  (let* ((sem (make-semaphore)))
+    (is-false (wait-on-semaphore sem :timeout 0))
+    (is-false (wait-on-semaphore sem :timeout 0.2))))
 
-  (test semaphore.signal-n-of-m
-    (let* ((sem (make-semaphore :count 1))
-           (lock (make-lock))
-           (count 0)
-           (waiter (lambda ()
-                     (wait-on-semaphore sem)
-                     (with-lock-held (lock) (incf count)))))
-      (make-thread (lambda ()
-                     (sleep 0.2)
-                     (signal-semaphore sem :count 3)))
-      (dotimes (v 5) (make-thread waiter))
-      (sleep 0.3)
-      (is (= 4 count))
-      ;; release other waiters
-      (is (eql t (signal-semaphore sem :count 2)))
-      (sleep 0.1)
-      (is (= 5 count)))))
+#+#.(bt2::implemented-p* 'bt2:wait-on-semaphore)
+(test semaphore.signal-n-of-m
+  (let* ((sem (make-semaphore :count 1))
+         (lock (make-lock))
+         (count 0)
+         (waiter (lambda ()
+                   (wait-on-semaphore sem)
+                   (with-lock-held (lock) (incf count)))))
+    (make-thread (lambda ()
+                   (sleep 0.2)
+                   (signal-semaphore sem :count 3)))
+    (dotimes (v 5) (make-thread waiter))
+    (sleep 0.3)
+    (is (= 4 count))
+    ;; release other waiters
+    (is (eql t (signal-semaphore sem :count 2)))
+    (sleep 0.1)
+    (is (= 5 count))))
 
 
 ;;;
@@ -368,7 +371,7 @@ the only cause that can wake a waiter."
   (is (condition-variable-p (make-condition-variable)))
   (is (not (condition-variable-p (make-lock)))))
 
-#+#.(bt2::implemented-p* 'bt2:make-condition-variable)
+#+#.(bt2::implemented-p* 'bt2:condition-broadcast)
 (test condition-variable.concurrency
   (setf *shared* 0)
   (let ((cv (make-condition-variable)))
@@ -436,7 +439,7 @@ lock."
             (condition-wait res-cv res-lock)
             (is-false lock-was-acquired-p)))))))
 
-#+#.(bt2::implemented-p* 'bt2:make-condition-variable)
+#+#.(bt2::implemented-p* 'bt2:condition-notify)
 (test condition-notify.no-waiting-threads
   "Test that `CONDITION-NOTIFY` returns NIL whether or not there are
 threads waiting."
@@ -448,7 +451,7 @@ threads waiting."
                      (condition-wait cv lock))))
     (is-false (condition-notify cv))))
 
-#+#.(bt2::implemented-p* 'bt2:make-condition-variable)
+#+#.(bt2::implemented-p* 'bt2:condition-broadcast)
 (test condition-broadcast.return-value
   "Test that `CONDITION-BROADCAST` returns NIL whether or not there
 are threads waiting."

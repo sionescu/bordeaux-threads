@@ -241,6 +241,8 @@ Distributed under the MIT license (see LICENSE file)
     (sleep 0.1)
     (is (= count 5))))
 
+;; condition-wait with timeout not supported on CMUCL
+#-cmucl
 (test semaphore-wait-timeout
   (let ((sem (make-semaphore))
         (flag nil))
