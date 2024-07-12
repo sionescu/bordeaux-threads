@@ -8,6 +8,15 @@
   #+allegro `(excl:atomic-conditional-setf ,place ,new ,old)
   #+ccl `(ccl::conditional-store ,place ,old ,new)
   #+clasp `(mp:cas ,place ,old ,new)
+  #+cmu (with-gensyms (tmp-old tmp-new)
+          `(let ((,tmp-old ,old)
+                 (,tmp-new ,new))
+             (mp:without-scheduling ()
+               (if (eql ,tmp-old ,place)
+                   (progn
+                     (setf ,place ,tmp-new)
+                     t)
+                   nil))))
   #+ecl (with-gensyms (tmp)
           `(let ((,tmp ,old))
              (eql ,tmp (mp:compare-and-swap ,place ,tmp ,new))))
@@ -16,7 +25,7 @@
   #+sbcl (with-gensyms (tmp)
            `(let ((,tmp ,old))
               (eql ,tmp (sb-ext:compare-and-swap ,place ,old ,new))))
-  #-(or allegro ccl clasp ecl genera lispworks sbcl)
+  #-(or allegro ccl clasp cmu ecl genera lispworks sbcl)
   (signal-not-implemented 'atomic-cas))
 
 (defmacro atomic-decf (place &optional (delta 1))
@@ -24,11 +33,12 @@
   #+allegro `(excl:decf-atomic ,place ,delta)
   #+ccl `(ccl::atomic-incf-decf ,place (- ,delta))
   #+clasp `(mp:atomic-decf ,place ,delta)
+  #+cmu `(mp:atomic-decf ,place ,delta)
   #+ecl `(- (mp:atomic-decf ,place ,delta) ,delta)
   #+genera `(process:atomic-decf ,place ,delta)
   #+lispworks `(system:atomic-decf ,place ,delta)
   #+sbcl `(- (sb-ext:atomic-decf ,place ,delta) ,delta)
-  #-(or allegro ccl clasp ecl genera lispworks sbcl)
+  #-(or allegro ccl clasp cmu ecl genera lispworks sbcl)
   (signal-not-implemented 'atomic-decf))
 
 (defmacro atomic-incf (place &optional (delta 1))
@@ -36,11 +46,12 @@
   #+allegro `(excl:incf-atomic ,place ,delta)
   #+ccl `(ccl::atomic-incf-decf ,place ,delta)
   #+clasp `(mp:atomic-incf ,place ,delta)
+  #+cmu `(mp:atomic-incf ,place ,delta)
   #+ecl `(+ (mp:atomic-incf ,place ,delta) ,delta)
   #+genera `(process:atomic-incf ,place ,delta)
   #+lispworks `(system:atomic-incf ,place ,delta)
   #+sbcl `(+ (sb-ext:atomic-incf ,place ,delta) ,delta)
-  #-(or allegro ccl clasp ecl genera lispworks sbcl)
+  #-(or allegro ccl clasp cmu ecl genera lispworks sbcl)
   (signal-not-implemented 'atomic-incf))
 
 (deftype %atomic-integer-value ()
@@ -56,7 +67,7 @@ The counter is a machine word: 32/64 bits depending on CPU."
 
   #+(or allegro ccl clasp ecl genera lispworks)
   (cell (make-array 1 :element-type t))
-  #+(or clisp sbcl)
+  #+(or clisp cmu sbcl)
   (cell 0 :type %atomic-integer-value)
   #+clisp
   (%lock (%make-lock nil) :type native-lock))
@@ -65,16 +76,16 @@ The counter is a machine word: 32/64 bits depending on CPU."
   (print-unreadable-object (aint stream :type t :identity t)
     (format stream "~S" (atomic-integer-value aint))))
 
-#-(or allegro ccl clasp clisp ecl genera lispworks sbcl)
+#-(or allegro ccl clasp cmu clisp ecl genera lispworks sbcl)
 (mark-not-implemented 'make-atomic-integer)
 (defun make-atomic-integer (&key (value 0))
   "Create an `ATOMIC-INTEGER` with initial value `VALUE`"
   (check-type value %atomic-integer-value)
-  #+(or allegro ccl clasp clisp ecl genera lispworks sbcl)
+  #+(or allegro ccl clasp clisp cmu ecl genera lispworks sbcl)
   (let ((aint (%make-atomic-integer)))
     (setf (atomic-integer-value aint) value)
     aint)
-  #-(or allegro ccl clasp clisp ecl genera lispworks sbcl)
+  #-(or allegro ccl clasp clisp cmu ecl genera lispworks sbcl)
   (signal-not-implemented 'make-atomic-integer))
 
 (defun atomic-integer-compare-and-swap (atomic-integer old new)
@@ -86,8 +97,8 @@ Returns T if the replacement was successful, otherwise NIL."
            (type %atomic-integer-value old new)
            (optimize (safety 0) (speed 3)))
   #-clisp
-  (atomic-cas #-sbcl (svref (atomic-integer-cell atomic-integer) 0)
-              #+sbcl (atomic-integer-cell atomic-integer)
+  (atomic-cas #-(or cmu sbcl) (svref (atomic-integer-cell atomic-integer) 0)
+              #+(or cmu sbcl) (atomic-integer-cell atomic-integer)
               old new)
   #+clisp
   (%with-lock ((atomic-integer-%lock atomic-integer) nil)
@@ -105,8 +116,8 @@ Returns the new value of `ATOMIC-INTEGER`."
            (type %atomic-integer-value delta)
            (optimize (safety 0) (speed 3)))
   #-clisp
-  (atomic-decf #-sbcl (svref (atomic-integer-cell atomic-integer) 0)
-               #+sbcl (atomic-integer-cell atomic-integer)
+  (atomic-decf #-(or cmu sbcl) (svref (atomic-integer-cell atomic-integer) 0)
+               #+(or cmu sbcl) (atomic-integer-cell atomic-integer)
                delta)
   #+clisp
   (%with-lock ((atomic-integer-%lock atomic-integer) nil)
@@ -120,8 +131,8 @@ Returns the new value of `ATOMIC-INTEGER`."
            (type %atomic-integer-value delta)
            (optimize (safety 0) (speed 3)))
   #-clisp
-  (atomic-incf #-sbcl (svref (atomic-integer-cell atomic-integer) 0)
-               #+sbcl (atomic-integer-cell atomic-integer)
+  (atomic-incf #-(or cmu sbcl) (svref (atomic-integer-cell atomic-integer) 0)
+               #+(or cmu sbcl) (atomic-integer-cell atomic-integer)
                delta)
   #+clisp
   (%with-lock ((atomic-integer-%lock atomic-integer) nil)
@@ -133,8 +144,8 @@ Returns the new value of `ATOMIC-INTEGER`."
            (optimize (safety 0) (speed 3)))
   #-clisp
   (progn
-    #-sbcl (svref (atomic-integer-cell atomic-integer) 0)
-    #+sbcl (atomic-integer-cell atomic-integer))
+    #-(or cmu sbcl) (svref (atomic-integer-cell atomic-integer) 0)
+    #+(or cmu sbcl) (atomic-integer-cell atomic-integer))
   #+clisp
   (%with-lock ((atomic-integer-%lock atomic-integer) nil)
     (atomic-integer-cell atomic-integer)))
@@ -144,8 +155,8 @@ Returns the new value of `ATOMIC-INTEGER`."
            (type %atomic-integer-value newval)
            (optimize (safety 0) (speed 3)))
   #-clisp
-  (setf #-sbcl (svref (atomic-integer-cell atomic-integer) 0)
-        #+sbcl (atomic-integer-cell atomic-integer)
+  (setf #-(or cmu sbcl) (svref (atomic-integer-cell atomic-integer) 0)
+        #+(or cmu sbcl) (atomic-integer-cell atomic-integer)
         newval)
   #+clisp
   (%with-lock ((atomic-integer-%lock atomic-integer) nil)

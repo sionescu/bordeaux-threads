@@ -492,19 +492,19 @@ are threads waiting."
 ;;; Atomics
 ;;;
 
-#+(or abcl allegro ccl clisp ecl lispworks sbcl)
+#+(or abcl allegro ccl clisp cmu ecl lispworks sbcl)
 (test atomic-integer-incf-decf.return-value
   (let ((aint (make-atomic-integer :value 0)))
     (is (= 5 (atomic-integer-incf aint 5)))
     (is (= 4 (atomic-integer-decf aint 1)))))
 
-#+(or abcl allegro ccl clisp ecl lispworks sbcl)
+#+(or abcl allegro ccl clisp cmu ecl lispworks sbcl)
 (test atomic-integer-compare-and-swap.return-value
   (let ((aint (make-atomic-integer :value 4)))
     (is (null (atomic-integer-compare-and-swap aint 0 100)))
     (is (eql t (atomic-integer-compare-and-swap aint 4 7)))))
 
-#+(or abcl allegro ccl clisp ecl lispworks sbcl)
+#+(or abcl allegro ccl clisp cmu ecl lispworks sbcl)
 (test atomic-integer.concurrency
   (let* ((aint (make-atomic-integer :value 1000000))
          (thread-inc
