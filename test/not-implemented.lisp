@@ -6,7 +6,8 @@
 (in-suite :bordeaux-threads-2)
 
 (test not-implemented.whole-function
-  (let ((*not-implemented* (make-hash-table :test #'equal))
+  (let ((*missing-functions* (make-hash-table :test #'eql))
+        (*missing-features* (make-hash-table :test #'equal))
         (op 'acquire-lock)
         (feature :some-feature))
     (is-true (implemented-p op))
@@ -16,14 +17,15 @@
     (is-false (implemented-p op feature))))
 
 (test not-implemented.one-feature
-  (let ((*not-implemented* (make-hash-table :test #'equal))
+  (let ((*missing-functions* (make-hash-table :test #'eql))
+        (*missing-features* (make-hash-table :test #'equal))
         (op 'acquire-lock)
         (feature :timeout))
     (is-true (implemented-p op))
     (is-true (implemented-p op feature))
     (mark-not-implemented op feature)
     (is-true (implemented-p op))
-    (is-false (implemented-p op :feature))))
+    (is-false (implemented-p op feature))))
 
 ;;;
 ;;; Threads

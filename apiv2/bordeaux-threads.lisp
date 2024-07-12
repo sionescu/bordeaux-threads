@@ -54,21 +54,26 @@
       (error 'keyarg-not-implemented :operation op :keyarg keyarg)
       (error 'operation-not-implemented :operation op)))
 
-(defparameter *not-implemented* (make-hash-table :test #'equal))
+(defparameter *missing-functions*
+  (make-hash-table :test #'eql))
+
+(defparameter *missing-features*
+  (make-hash-table :test #'equal))
 
 (defun mark-not-implemented (op &rest features)
-  (setf (gethash op *not-implemented*) features))
+  (if (null features)
+      (setf (gethash op *missing-functions*) t)
+      (dolist (f features)
+        (setf (gethash (cons op f) *missing-features*) t))))
 
 (defun implemented-p (op &optional feature)
-  (multiple-value-bind (missing-features found)
-      (gethash op *not-implemented*)
-    (cond
-      ((not found)
-       t)
-      (t
-       (if (null feature)
-           (not (null missing-features))
-           (find feature missing-features))))))
+  (cond
+    ((null feature)
+     (not (gethash op *missing-functions*)))
+    ((gethash op *missing-functions*)
+     nil)
+    (t
+     (not (gethash (cons op feature) *missing-features*)))))
 
 (defun implemented-p* (op &optional feature)
   (if (implemented-p op feature)
