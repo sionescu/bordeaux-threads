@@ -57,6 +57,7 @@ semaphore, then COUNT of them are woken up."
     ;; Semaphore acquired.
     t))
 
+#+cmu (mark-not-implemented 'wait-on-semaphore :timeout)
 (defun wait-on-semaphore (semaphore &key timeout)
   "Decrement the count of SEMAPHORE by 1 if the count is larger than zero.
 
