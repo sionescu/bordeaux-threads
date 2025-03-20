@@ -108,12 +108,12 @@
 (deftype semaphore () 'ccl:semaphore)
 
 ;;; CCL:MAKE-SEMAPHORE had been extended to accept COUNT argument
-#+(ccl-1.12)
+#+ccl-1.12
 (defun %make-semaphore (name count)
   (declare (ignore name))
   (ccl:make-semaphore :count count))
 
-#-(ccl-1.12)
+#-ccl-1.12
 (defun %make-semaphore (name count)
   (declare (ignore name count))
   (ccl:make-semaphore))
