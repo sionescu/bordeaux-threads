@@ -6,6 +6,9 @@
 ;;; Threads
 ;;;
 
+;; Suppresses the undefined function compiler warning
+(defun %start-multiprocessing ())
+
 (deftype native-thread ()
   'process:process)
 
