@@ -9,6 +9,7 @@
         (and allegro multiprocessing)
         (and clasp threads)
         (and clisp mt)
+        amilisp
         (and openmcl openmcl-native-threads)
         (and cmu mp)
         corman
@@ -43,6 +44,7 @@
                          (:file "bordeaux-threads")
                          (:file "impl-abcl" :if-feature :armedbear)
                          (:file "impl-allegro" :if-feature :allegro)
+                         (:file "impl-amilisp" :if-feature :amilisp)
                          (:file "impl-clasp" :if-feature :clasp)
                          (:file "impl-clisp" :if-feature :clisp)
                          (:file "impl-clozure" :if-feature :openmcl)
@@ -70,6 +72,7 @@
                          (:file "timeout-interrupt")
                          (:file "impl-abcl" :if-feature :abcl)
                          (:file "impl-allegro" :if-feature :allegro)
+                         (:file "impl-amilisp" :if-feature :amilisp)
                          (:file "impl-clasp" :if-feature :clasp)
                          (:file "impl-clisp" :if-feature :clisp)
                          (:file "impl-clozure" :if-feature :clozure)

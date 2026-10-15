@@ -24,7 +24,7 @@
   (make-lock :name "known-threads-lock"))
 
 (define-global-var* .known-threads.
-  (trivial-garbage:make-weak-hash-table #-genera :weakness #-genera :key))
+  (trivial-garbage:make-weak-hash-table #-(or genera amilisp) :weakness #-(or genera amilisp) :key))
 
 (define-global-var* .thread-counter. -1)
 
